@@ -2,12 +2,11 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
+# 复制 requirements 文件
+COPY requirements.txt .
+
 # 安装 MkDocs 和依赖
-RUN pip install --no-cache-dir \
-    mkdocs>=1.5.0 \
-    mkdocs-material>=9.0.0 \
-    mkdocs-git-revision-date-localized-plugin \
-    mkdocs-minify-plugin
+RUN pip install --no-cache-dir -r requirements.txt
 
 # 复制应用代码
 COPY app.py .
