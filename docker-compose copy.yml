@@ -1,0 +1,210 @@
+version: '3.8'
+
+services:
+  # Gitea Git 服务器
+  gitea:
+    image: gitea/gitea:1.20
+    container_name: knowledge-gitea
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - GITEA__database__DB_TYPE=postgres
+      - GITEA__database__HOST=db:5432
+      - GITEA__database__NAME=gitea
+      - GITEA__database__USER=${GITEA_DB_USER:-gitea}
+      - GITEA__database__PASSWD=${GITEA_DB_PASS:-giteapass}
+      - GITEA__server__DOMAIN=${GITEA_DOMAIN:-localhost}
+      - GITEA__server__ROOT_URL=http://${GITEA_DOMAIN:-localhost}:${GITEA_PORT:-3000}
+      - GITEA__actions__ENABLED=true
+    ports:
+      - "${GITEA_PORT:-3000}:3000"
+      - "${GITEA_SSH_PORT:-2222}:22"
+    volumes:
+      - gitea-data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - db
+    restart: unless-stopped
+    networks:
+      - knowledge-network
+
+  # Wiki.js 服务
+  wiki:
+    image: requarks/wiki:2
+    container_name: knowledge-wiki
+    environment:
+      DB_TYPE: postgres
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: ${WIKI_DB_USER:-wikijs}
+      DB_PASS: ${WIKI_DB_PASS:-wikijspass}
+      DB_NAME: ${WIKI_DB_NAME:-wiki}
+      # Git 同步配置
+      GIT_SYNC_REPO_URL: ${GIT_SYNC_REPO_URL:-http://gitea:3000/admin/knowledge-system.git}
+      GIT_SYNC_BRANCH: ${GIT_SYNC_BRANCH:-main}
+      GIT_SYNC_USERNAME: ${GITEA_USER:-admin}
+      GIT_SYNC_PASSWORD: ${GITEA_PASSWORD}
+      GIT_SYNC_INTERVAL: ${GIT_SYNC_INTERVAL:-PT5M}
+    ports:
+      - "${WIKI_PORT:-3001}:3000"
+    volumes:
+      - wiki-data:/wiki/data
+      - wiki-repo:/wiki/repo
+    depends_on:
+      - db
+      - gitea
+    restart: unless-stopped
+    networks:
+      - knowledge-network
+
+  # PostgreSQL 数据库（共享）
+  db:
+    image: postgres:15-alpine
+    container_name: knowledge-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgrespass}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    restart: unless-stopped
+    networks:
+      - knowledge-network
+
+  # Qdrant 向量数据库
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: knowledge-qdrant
+    ports:
+      - "${QDRANT_PORT:-6333}:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant-data:/qdrant/storage
+    restart: unless-stopped
+    networks:
+      - knowledge-network
+
+  # Webhook 处理器
+  webhook-handler:
+    build: ./webhook-handler
+    container_name: knowledge-webhook
+    environment:
+      WEBHOOK_SECRET: ${WEBHOOK_SECRET}
+      WIKI_URL: http://wiki:3000
+      WIKI_TOKEN: ${WIKI_TOKEN}
+      AI_URL: http://ai-assistant:8000
+      MKDOCS_URL: http://mkdocs-builder:8080
+    ports:
+      - "9000:9000"
+    depends_on:
+      - wiki
+      - ai-assistant
+      - mkdocs-builder
+    restart: unless-stopped
+    networks:
+      - knowledge-network
+
+  # AI 助手服务
+  ai-assistant:
+    build: ./ai-assistant
+    container_name: knowledge-ai
+    environment:
+      QDRANT_HOST: qdrant
+      QDRANT_PORT: 6333
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      EMBEDDING_MODEL: ${EMBEDDING_MODEL:-paraphrase-multilingual-MiniLM-L12-v2}
+      GITEA_URL: http://gitea:3000
+      GITEA_TOKEN: ${GITEA_TOKEN}
+      REPO_PATH: ${GITEA_USER:-admin}/knowledge-system
+    ports:
+      - "${AI_PORT:-3003}:8000"
+    volumes:
+      - ./ai-assistant/models:/app/models
+      - ai-cache:/app/cache
+    depends_on:
+      - qdrant
+      - gitea
+    restart: unless-stopped
+    networks:
+      - knowledge-network
+
+  # MkDocs 构建服务
+  mkdocs-builder:
+    build: ./mkdocs-builder
+    container_name: knowledge-mkdocs
+    environment:
+      GITEA_URL: http://gitea:3000
+      GITEA_TOKEN: ${GITEA_TOKEN}
+      REPO_PATH: ${GITEA_USER:-admin}/knowledge-system
+      BUILD_ON_STARTUP: "true"
+    ports:
+      - "${MKDOCS_PORT:-3002}:8080"
+    volumes:
+      - mkdocs-site:/app/site
+    depends_on:
+      - gitea
+    restart: unless-stopped
+    networks:
+      - knowledge-network
+
+volumes:
+  # Gitea数据 → 宿主机  /mnt/nas_share/appdata/knowledge/gitea
+  gitea-data:
+    driver: local
+    driver_opts:
+      type: none       # 禁用默认文件系统类型
+      o: bind          # 绑定挂载（将宿主机路径绑定到卷）
+      device: /mnt/nas_share/appdata/knowledge/gitea  # 宿主机实际路径
+  
+  # Wiki.js应用配置 → 宿主机  /mnt/nas_share/appdata/knowledge/wiki-data
+  wiki-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /mnt/nas_share/appdata/knowledge/wiki-data
+  
+  # Wiki.js Git缓存 → 宿主机  /mnt/nas_share/appdata/knowledge/wiki-repo
+  wiki-repo:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /mnt/nas_share/appdata/knowledge/wiki-repo
+  
+  # PostgreSQL数据 → 宿主机  /mnt/nas_share/appdata/knowledge/postgres
+  db-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /mnt/nas_share/appdata/knowledge/postgres
+  
+  # Qdrant向量数据 → 宿主机  /mnt/nas_share/appdata/knowledge/qdrant
+  qdrant-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /mnt/nas_share/appdata/knowledge/qdrant
+  
+  # AI助手缓存 → 宿主机  /mnt/nas_share/appdata/knowledge/ai-cache
+  ai-cache:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /mnt/nas_share/appdata/knowledge/ai-cache
+  
+  # MkDocs静态站点 → 宿主机  /mnt/nas_share/appdata/knowledge/mkdocs-site
+  mkdocs-site:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /mnt/nas_share/appdata/knowledge/mkdocs-site
+
+networks:
+  knowledge-network:
+    driver: bridge
