@@ -17,6 +17,7 @@ from fastapi.responses import JSONResponse
 import httpx
 
 from wiki_client import WikiJsClient
+from monitoring import ServiceMonitor
 
 # Configure logging
 logging.basicConfig(
@@ -41,6 +42,9 @@ MKDOCS_URL = os.getenv("MKDOCS_URL", "http://mkdocs-builder:8080")
 
 # Initialize Wiki.js client
 wiki_client = WikiJsClient(base_url=WIKI_URL, api_token=WIKI_TOKEN)
+
+# Initialize service monitor
+monitor = ServiceMonitor("webhook-handler")
 
 
 def verify_signature(payload: bytes, signature: str, secret: str) -> bool:
@@ -143,6 +147,7 @@ async def trigger_wiki_sync() -> Dict[str, Any]:
         
         if result["success"]:
             logger.info("Wiki.js sync triggered successfully")
+            monitor.record_sync(True, "Wiki sync successful", 0)
             return {
                 "service": "wiki",
                 "status": "success",
@@ -151,6 +156,7 @@ async def trigger_wiki_sync() -> Dict[str, Any]:
             }
         else:
             logger.error(f"Wiki.js sync failed: {result['message']}")
+            monitor.record_sync(False, f"Wiki sync failed: {result['message']}", 0)
             return {
                 "service": "wiki",
                 "status": "error",
@@ -160,6 +166,8 @@ async def trigger_wiki_sync() -> Dict[str, Any]:
                 
     except Exception as e:
         logger.error(f"Error triggering Wiki.js sync: {e}", exc_info=True)
+        monitor.record_sync(False, f"Wiki sync error: {str(e)}", 0)
+        monitor.record_error()
         return {
             "service": "wiki",
             "status": "error",
@@ -238,6 +246,7 @@ async def trigger_ai_embedding_update(changed_files: list[str]) -> Dict[str, Any
             
             if response.status_code == 200:
                 logger.info("AI embedding update triggered successfully")
+                monitor.record_sync(True, "AI embedding update successful", len(changed_files))
                 return {
                     "service": "ai-assistant",
                     "status": "success",
@@ -246,6 +255,7 @@ async def trigger_ai_embedding_update(changed_files: list[str]) -> Dict[str, Any
                 }
             else:
                 logger.error(f"AI embedding update failed: {response.status_code} - {response.text}")
+                monitor.record_sync(False, f"AI update failed: {response.status_code}", 0)
                 return {
                     "service": "ai-assistant",
                     "status": "error",
@@ -254,6 +264,8 @@ async def trigger_ai_embedding_update(changed_files: list[str]) -> Dict[str, Any
                 
     except httpx.TimeoutException:
         logger.error("AI embedding update request timed out")
+        monitor.record_sync(False, "AI update timeout", 0)
+        monitor.record_error()
         return {
             "service": "ai-assistant",
             "status": "error",
@@ -261,6 +273,8 @@ async def trigger_ai_embedding_update(changed_files: list[str]) -> Dict[str, Any
         }
     except Exception as e:
         logger.error(f"Error triggering AI embedding update: {e}", exc_info=True)
+        monitor.record_sync(False, f"AI update error: {str(e)}", 0)
+        monitor.record_error()
         return {
             "service": "ai-assistant",
             "status": "error",
@@ -352,18 +366,71 @@ async def root():
 
 @app.get("/health")
 async def health_check():
-    """Detailed health check endpoint."""
-    # Check Wiki.js connectivity
-    wiki_health = await wiki_client.health_check()
+    """
+    详细健康检查端点
     
-    return {
-        "status": "healthy",
-        "webhook_secret_configured": bool(WEBHOOK_SECRET),
-        "wiki_url": WIKI_URL,
-        "wiki_healthy": wiki_health["healthy"],
-        "ai_url": AI_URL,
-        "mkdocs_url": MKDOCS_URL
+    Requirements: 13.3
+    """
+    # 记录请求
+    monitor.record_request()
+    
+    components = {}
+    
+    # Check Wiki.js connectivity
+    try:
+        wiki_health = await wiki_client.health_check()
+        components['wiki'] = {
+            'status': 'ok' if wiki_health["healthy"] else 'error',
+            'url': WIKI_URL,
+            'details': wiki_health
+        }
+    except Exception as e:
+        components['wiki'] = {
+            'status': 'error',
+            'url': WIKI_URL,
+            'message': str(e)
+        }
+    
+    # Check AI service connectivity
+    try:
+        async with httpx.AsyncClient(timeout=5.0) as client:
+            response = await client.get(f"{AI_URL}/health")
+            components['ai_assistant'] = {
+                'status': 'ok' if response.status_code == 200 else 'error',
+                'url': AI_URL
+            }
+    except Exception as e:
+        components['ai_assistant'] = {
+            'status': 'error',
+            'url': AI_URL,
+            'message': str(e)
+        }
+    
+    # Check MkDocs service connectivity
+    try:
+        async with httpx.AsyncClient(timeout=5.0) as client:
+            response = await client.get(f"{MKDOCS_URL}/health")
+            components['mkdocs'] = {
+                'status': 'ok' if response.status_code == 200 else 'error',
+                'url': MKDOCS_URL
+            }
+    except Exception as e:
+        components['mkdocs'] = {
+            'status': 'error',
+            'url': MKDOCS_URL,
+            'message': str(e)
+        }
+    
+    # Add configuration status
+    components['configuration'] = {
+        'status': 'ok',
+        'webhook_secret_configured': bool(WEBHOOK_SECRET)
     }
+    
+    # Get health status from monitor
+    health_status = monitor.get_health_status(components)
+    
+    return health_status.to_dict()
 
 
 @app.post("/api/wiki/sync")
@@ -412,6 +479,9 @@ async def wiki_sync_status():
     
     Requirements: 4.4, 8.2
     """
+    # 记录请求
+    monitor.record_request()
+    
     try:
         result = await wiki_client.get_sync_status()
         
@@ -434,8 +504,84 @@ async def wiki_sync_status():
                 }
             )
     except Exception as e:
+        monitor.record_error()
         logger.error(f"Error querying sync status: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/sync/status")
+async def sync_status():
+    """
+    获取同步状态 API
+    
+    Requirements: 13.3
+    """
+    # 记录请求
+    monitor.record_request()
+    
+    try:
+        sync_status = monitor.get_sync_status()
+        return sync_status.to_dict()
+    except Exception as e:
+        monitor.record_error()
+        logger.error(f"Error getting sync status: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to get sync status: {str(e)}"
+        )
+
+
+@app.get("/api/metrics")
+async def system_metrics():
+    """
+    获取系统指标 API
+    
+    Requirements: 13.3
+    """
+    # 记录请求
+    monitor.record_request()
+    
+    try:
+        metrics = monitor.get_system_metrics()
+        service_stats = monitor.get_service_stats()
+        
+        return {
+            'system': metrics.to_dict(),
+            'service': service_stats
+        }
+    except Exception as e:
+        monitor.record_error()
+        logger.error(f"Error getting system metrics: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to get system metrics: {str(e)}"
+        )
+
+
+@app.get("/api/sync/history")
+async def sync_history(limit: int = 10):
+    """
+    获取最近的同步历史
+    
+    Requirements: 13.3
+    """
+    # 记录请求
+    monitor.record_request()
+    
+    try:
+        history = monitor.get_recent_sync_history(limit=limit)
+        return {
+            'status': 'ok',
+            'history': history,
+            'count': len(history)
+        }
+    except Exception as e:
+        monitor.record_error()
+        logger.error(f"Error getting sync history: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to get sync history: {str(e)}"
+        )
 
 
 @app.post("/hooks/knowledge-sync")
@@ -451,6 +597,9 @@ async def handle_webhook(
     
     Requirements: 8.3, 8.4
     """
+    # 记录请求
+    monitor.record_request()
+    
     try:
         # Read raw body for signature verification
         body = await request.body()
@@ -458,6 +607,7 @@ async def handle_webhook(
         # Verify webhook signature
         if not verify_signature(body, x_gitea_signature or "", WEBHOOK_SECRET):
             logger.error("Invalid webhook signature")
+            monitor.record_error()
             raise HTTPException(status_code=401, detail="Invalid signature")
         
         # Parse JSON payload
@@ -465,6 +615,7 @@ async def handle_webhook(
             event_data = await request.json()
         except Exception as e:
             logger.error(f"Failed to parse JSON payload: {e}")
+            monitor.record_error()
             raise HTTPException(status_code=400, detail="Invalid JSON payload")
         
         # Get event type
@@ -479,6 +630,7 @@ async def handle_webhook(
         raise
     except Exception as e:
         logger.error(f"Error processing webhook: {e}", exc_info=True)
+        monitor.record_error()
         raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
 
