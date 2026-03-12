@@ -159,10 +159,16 @@ nav:
     - 02-technologies/index.md
     - 嵌入式:
       - 02-technologies/embedded/index.md
-      - MCU: 02-technologies/embedded/mcu/index.md
-      - RTOS: 02-technologies/embedded/rtos/index.md
-      - 驱动: 02-technologies/embedded/driver/index.md
-      - 协议: 02-technologies/embedded/protocol/index.md
+      - 硬件层: 02-technologies/embedded/01-hardware-layer/
+      - 驱动与BSP层: 02-technologies/embedded/02-driver-bsp-layer/
+      - 操作系统层: 02-technologies/embedded/03-operating-system-layer/
+      - 中间件层: 02-technologies/embedded/04-middleware-layer/
+      - 应用层: 02-technologies/embedded/05-application-layer/
+      - 通信与网络: 02-technologies/embedded/06-communication-networking/
+      - 云端后台: 02-technologies/embedded/07-cloud-backend/
+      - 工具链: 02-technologies/embedded/08-toolchain/
+      - 行业领域: 02-technologies/embedded/09-industry-domains/
+      - 横切关注点: 02-technologies/embedded/10-cross-cutting-concerns/
     - AI: 02-technologies/ai/index.md
     - 云计算: 02-technologies/cloud/index.md
   
