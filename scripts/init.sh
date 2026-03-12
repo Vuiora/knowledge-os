@@ -128,8 +128,8 @@ if [ ! -f README.md ]; then
 4. 访问服务：
    - Gitea: http://localhost:3001
    - Wiki.js: http://localhost:3000
-   - MkDocs: http://localhost:8080
-   - AI 助手: http://localhost:8000
+   - MkDocs: http://localhost:3002
+   - AI 助手: http://localhost:3003
 
 ## 目录结构
 
@@ -157,13 +157,26 @@ else
     echo "✓ README.md 已存在"
 fi
 
+# 创建 .env 文件（如果不存在）
+if [ ! -f .env ]; then
+    echo "创建 .env 文件..."
+    cp .env.example .env
+    echo "✓ .env 文件创建完成"
+    echo ""
+    echo "⚠ 重要：请编辑 .env 文件设置安全的密码和 API 密钥"
+    echo "  可以运行 'bash scripts/generate-secrets.sh' 生成安全密钥"
+else
+    echo "✓ .env 文件已存在"
+fi
+
 echo ""
 echo "=========================================="
 echo "初始化完成！"
 echo "=========================================="
 echo ""
 echo "下一步："
-echo "1. 复制并配置环境变量: cp .env.example .env"
-echo "2. 启动 Docker 服务: docker-compose up -d"
+echo "1. 编辑 .env 文件设置密码和 API 密钥"
+echo "   提示：运行 'bash scripts/generate-secrets.sh' 生成安全密钥"
+echo "2. 启动 Docker 服务: bash scripts/deploy.sh"
 echo "3. 在 Obsidian 中打开 knowledge/ 目录"
 echo ""
