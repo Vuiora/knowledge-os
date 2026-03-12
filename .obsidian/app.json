@@ -1,0 +1,21 @@
+{
+  "vimMode": false,
+  "showLineNumber": true,
+  "strictLineBreaks": false,
+  "defaultViewMode": "source",
+  "alwaysUpdateLinks": true,
+  "newLinkFormat": "relative",
+  "useMarkdownLinks": false,
+  "showFrontmatter": true,
+  "foldHeading": true,
+  "foldIndent": true,
+  "showIndentGuide": true,
+  "showUnsupportedFiles": false,
+  "attachmentFolderPath": "./",
+  "promptDelete": true,
+  "spellcheck": false,
+  "spellcheckLanguages": ["en-US", "zh-CN"],
+  "readableLineLength": true,
+  "livePreview": true,
+  "theme": "obsidian"
+}

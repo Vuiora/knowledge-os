@@ -1,0 +1,16 @@
+# Obsidian 个人配置文件（不同步到 Git）
+
+# 工作区布局（每个用户可能不同）
+workspace.json
+workspace-mobile.json
+
+# 缓存文件
+.DS_Store
+*.tmp
+
+# 插件缓存
+plugins/*/data.json.bak
+
+# 个人设置（可选，根据团队需求决定是否排除）
+# app.json
+# hotkeys.json
