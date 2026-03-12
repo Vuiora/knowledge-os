@@ -31,8 +31,8 @@ bash scripts/deploy.sh
 |------|------|------|
 | Gitea | http://localhost:3001 | Git 服务器 |
 | Wiki.js | http://localhost:3000 | 团队知识库 |
-| AI Assistant | http://localhost:8000 | AI 问答 |
-| MkDocs | http://localhost:8080 | 文档站点 |
+| AI Assistant | http://localhost:3003 | AI 问答 |
+| MkDocs | http://localhost:3002 | 文档站点 |
 | Webhook | http://localhost:9000 | 同步服务 |
 
 ### 3. 初始配置
