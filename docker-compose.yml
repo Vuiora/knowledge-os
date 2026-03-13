@@ -16,6 +16,7 @@ services:
       - GITEA__server__DOMAIN=${GITEA_DOMAIN:-localhost}
       - GITEA__server__ROOT_URL=http://${GITEA_DOMAIN:-localhost}:${GITEA_PORT:-3000}
       - GITEA__actions__ENABLED=true
+      - GITEA__webhook__ALLOWED_HOST_LIST=*
     ports:
       - "${GITEA_PORT:-3000}:3000"
       - "${GITEA_SSH_PORT:-2222}:22"
