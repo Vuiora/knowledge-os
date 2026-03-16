@@ -138,14 +138,7 @@
 
 ## 🛠️ 内容模板
 
-为了保持内容的一致性和质量，我们提供了多种模板：
-
-- **[文章模板](templates/article-template.md)** - 技术文章写作
-- **[教程模板](templates/tutorial-template.md)** - 教程和指南
-- **[项目模板](templates/project-template.md)** - 项目文档
-- **[参考模板](templates/reference-template.md)** - 技术参考
-- **[视频模板](templates/video-template.md)** - 视频笔记
-- **[测验模板](templates/quiz-template.md)** - 知识测验
+为了保持内容的一致性和质量，我们提供了多种模板供参考。
 
 ## 📊 知识统计
 
@@ -167,9 +160,9 @@
 
 ## 🔗 相关资源
 
-- **系统文档** - 查看 [README](../README.md) 了解整个知识系统
-- **部署指南** - 参考 [SETUP-GUIDE](../SETUP-GUIDE.md) 部署自己的知识库
-- **使用手册** - 阅读 [用户指南](../docs/USER_GUIDE.md) 了解详细用法
+- **系统文档** - 查看项目 README 了解整个知识系统
+- **部署指南** - 参考 SETUP-GUIDE 部署自己的知识库
+- **使用手册** - 阅读用户指南了解详细用法
 
 ## 📮 反馈与支持
 
