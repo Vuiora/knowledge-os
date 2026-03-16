@@ -18,6 +18,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY app.py .
 COPY gitea_client.py .
 COPY builder.py .
+COPY monitoring.py .
+COPY logging_config.py .
+COPY error_handler.py .
 
 # 复制 MkDocs 配置模板
 COPY mkdocs.yml.template .
