@@ -1,0 +1,34 @@
+# 开发环境配置
+# 适用于开发和测试阶段
+
+scan:
+  root_dir: "knowledge"
+  excluded_dirs:
+    - "javascripts"
+    - "stylesheets"
+    - "_site"
+    - "_wiki"
+    - "templates"
+    - ".git"
+    - "__pycache__"
+    - "node_modules"
+
+templates:
+  main_layer: "templates/main_layer.md"
+  sub_topic: "templates/sub_topic.md"
+  difficulty: "templates/difficulty.md"
+  content: "templates/content.md"
+
+generation:
+  # 开发时允许覆盖，方便测试
+  force_overwrite: true
+  # 创建备份以防万一
+  create_backup: true
+  # 不使用预览模式
+  dry_run: false
+
+logging:
+  # 详细日志便于调试
+  level: "DEBUG"
+  # 输出到开发日志文件
+  file: "dev.log"

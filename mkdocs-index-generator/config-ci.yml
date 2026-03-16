@@ -1,0 +1,33 @@
+# CI/CD 环境配置
+# 适用于持续集成和自动化部署
+
+scan:
+  root_dir: "knowledge"
+  excluded_dirs:
+    - "javascripts"
+    - "stylesheets"
+    - "_site"
+    - "_wiki"
+    - "templates"
+    - ".git"
+    - "__pycache__"
+
+templates:
+  main_layer: "templates/main_layer.md"
+  sub_topic: "templates/sub_topic.md"
+  difficulty: "templates/difficulty.md"
+  content: "templates/content.md"
+
+generation:
+  # CI 环境可以覆盖文件
+  force_overwrite: true
+  # 创建备份以便回滚
+  create_backup: true
+  # 不使用预览模式
+  dry_run: false
+
+logging:
+  # 记录所有信息便于排查问题
+  level: "INFO"
+  # 输出到 CI 日志文件
+  file: "ci.log"

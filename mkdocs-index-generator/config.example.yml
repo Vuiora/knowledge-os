@@ -1,0 +1,49 @@
+# MkDocs Index Generator 配置示例
+
+# 扫描配置
+scan:
+  # 文档根目录
+  root_dir: "knowledge"
+  
+  # 排除的目录列表
+  excluded_dirs:
+    - "javascripts"
+    - "stylesheets"
+    - "_site"
+    - "_wiki"
+    - "templates"
+    - ".git"
+    - "__pycache__"
+
+# 模板配置
+templates:
+  # 主层级目录模板
+  main_layer: "templates/main_layer.md"
+  
+  # 子主题目录模板
+  sub_topic: "templates/sub_topic.md"
+  
+  # 难度级别目录模板
+  difficulty: "templates/difficulty.md"
+  
+  # 内容目录模板
+  content: "templates/content.md"
+
+# 生成配置
+generation:
+  # 是否强制覆盖已存在的文件
+  force_overwrite: false
+  
+  # 覆盖前是否创建备份
+  create_backup: true
+  
+  # 预览模式（不实际写入文件）
+  dry_run: false
+
+# 日志配置
+logging:
+  # 日志级别: DEBUG, INFO, WARNING, ERROR
+  level: "INFO"
+  
+  # 日志文件路径（留空则只输出到控制台）
+  file: "mkdocs_generator.log"

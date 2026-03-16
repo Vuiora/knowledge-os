@@ -1,0 +1,27 @@
+# MkDocs Index Generator 配置文件
+
+# 扫描配置
+scan:
+  root_dir: "../knowledge"
+  excluded_dirs:
+    - "javascripts"
+    - "stylesheets"
+    - "_site"
+    - "_wiki"
+    - ".git"
+    - ".obsidian"
+
+# 模板配置
+templates:
+  template_dir: "templates"
+
+# 生成配置
+generation:
+  force_overwrite: false
+  create_backup: true
+  dry_run: false
+
+# 日志配置
+logging:
+  level: "INFO"
+  file: "mkdocs_generator.log"

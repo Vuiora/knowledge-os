@@ -1,0 +1,36 @@
+# 生产环境配置
+# 适用于正式部署和自动化流程
+
+scan:
+  root_dir: "knowledge"
+  excluded_dirs:
+    - "javascripts"
+    - "stylesheets"
+    - "_site"
+    - "_wiki"
+    - "templates"
+    - ".git"
+    - "__pycache__"
+    - "node_modules"
+    - "temp"
+    - "backup"
+
+templates:
+  main_layer: "templates/main_layer.md"
+  sub_topic: "templates/sub_topic.md"
+  difficulty: "templates/difficulty.md"
+  content: "templates/content.md"
+
+generation:
+  # 生产环境保护已有文件
+  force_overwrite: false
+  # 必须创建备份
+  create_backup: true
+  # 不使用预览模式
+  dry_run: false
+
+logging:
+  # 只记录重要信息
+  level: "WARNING"
+  # 输出到生产日志文件
+  file: "prod.log"

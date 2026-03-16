@@ -1,0 +1,8 @@
+# 最小配置示例
+# 只包含必需的配置项，其他使用默认值
+
+scan:
+  root_dir: "knowledge"
+  excluded_dirs:
+    - "_site"
+    - "_wiki"
