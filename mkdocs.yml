@@ -1,6 +1,6 @@
 # 工程师知识库 - MkDocs 配置
 site_name: 工程师知识库
-site_description: 个人工程知识管理系统
+site_description: 个人工程知识管理系统，覆盖嵌入式、AI、云计算等全栈技术领域
 site_author: Engineer
 site_url: https://knowledge.example.com
 
@@ -36,11 +36,13 @@ theme:
         name: 切换到浅色模式
 
   features:
+    - navigation.instant        # 即时加载
+    - navigation.tracking       # 锚点跟踪
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.sections
-    - navigation.top
-    - navigation.tracking
+    - navigation.expand         # 默认展开
+    - navigation.top            # 返回顶部按钮
     - navigation.indexes        # 分组首页支持
     - navigation.path           # 面包屑导航
     - search.suggest
@@ -49,6 +51,8 @@ theme:
     - content.code.copy
     - content.code.annotate
     - content.tooltips          # 工具提示
+    - content.action.edit       # 编辑此页按钮
+    - content.action.view       # 查看源代码按钮
     - toc.follow
 
   icon:
@@ -65,7 +69,15 @@ plugins:
       lang:
         - zh
         - en
-      separator: '[\s\-\.\u4e00-\u9fff]+'
+      separator: '[\s\u200b\-\.\u4e00-\u9fff]+'
+      pipeline:
+        - stemmer
+        - stopWordFilter
+        - trimmer
+  - git-revision-date-localized:
+      enable_creation_date: true
+      type: datetime
+      enable_git_follow: false
   - minify:
       minify_html: true
       minify_js: true
@@ -128,8 +140,10 @@ extra:
 extra_css:
   - stylesheets/extra.css
 
-# 额外 JavaScript（替换已停服的 polyfill.io）
+# 额外 JavaScript
 extra_javascript:
+  - https://unpkg.com/mermaid@10/dist/mermaid.min.js
+  - javascripts/mermaid-init.js
   - javascripts/mathjax.js
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 
