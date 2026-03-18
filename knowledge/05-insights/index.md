@@ -7,6 +7,7 @@
 - [工程实践](engineering/index.md) - 工程方法与实践经验
 - [职业发展](career/index.md) - 职业规划与成长路径
 - [技术趋势](technology-trend/index.md) - 技术发展趋势分析
+- [金融知识体系](finance/index.md) - 系统化金融投资知识与实践
 
 ## 核心主题
 

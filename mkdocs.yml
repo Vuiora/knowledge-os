@@ -9,48 +9,52 @@ repo_name: knowledge-system
 repo_url: http://localhost:3001/admin/knowledge-system
 edit_uri: _edit/main/knowledge/
 
+# 排除不需要构建的目录
+exclude_docs: |
+  _site/
+  _wiki/
+  __pycache__/
+  *.py
+  *.pyc
+
 # 主题配置
 theme:
   name: material
   language: zh
   palette:
-    # 浅色模式
     - scheme: default
       primary: indigo
       accent: indigo
       toggle:
         icon: material/brightness-7
         name: 切换到深色模式
-    # 深色模式
     - scheme: slate
       primary: indigo
       accent: indigo
       toggle:
         icon: material/brightness-4
         name: 切换到浅色模式
-  
-  # 功能特性
+
   features:
-    - navigation.tabs           # 顶部导航标签
-    - navigation.tabs.sticky    # 固定导航标签
-    - navigation.sections       # 导航分组
-    - navigation.expand         # 默认展开导航
-    - navigation.top            # 返回顶部按钮
-    - navigation.tracking       # 锚点跟踪
-    - search.suggest            # 搜索建议
-    - search.highlight          # 搜索高亮
-    - search.share              # 搜索分享
-    - content.code.copy         # 代码复制按钮
-    - content.code.annotate     # 代码注释
-    - toc.follow                # 目录跟随
-    - toc.integrate             # 目录集成
-  
-  # 图标
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.top
+    - navigation.tracking
+    - navigation.indexes        # 分组首页支持
+    - navigation.path           # 面包屑导航
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+    - content.tooltips          # 工具提示
+    - toc.follow
+
   icon:
     repo: fontawesome/brands/git-alt
     logo: material/book-open-page-variant
-  
-  # 字体
+
   font:
     text: Noto Sans SC
     code: Roboto Mono
@@ -61,7 +65,7 @@ plugins:
       lang:
         - zh
         - en
-      separator: '[\s\-\.]+'
+      separator: '[\s\-\.\u4e00-\u9fff]+'
   - minify:
       minify_html: true
       minify_js: true
@@ -71,19 +75,18 @@ plugins:
 
 # Markdown 扩展
 markdown_extensions:
-  # Python Markdown
   - abbr
   - admonition
   - attr_list
   - def_list
   - footnotes
   - md_in_html
+  - tables
   - toc:
       permalink: true
       permalink_title: 锚点链接
       toc_depth: 3
-  
-  # Python Markdown Extensions
+
   - pymdownx.arithmatex:
       generic: true
   - pymdownx.betterem:
@@ -111,26 +114,23 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
+  - pymdownx.snippets
 
 # 额外配置
 extra:
-  # 社交链接
   social:
     - icon: fontawesome/brands/github
       link: https://github.com
       name: GitHub
-  
-  # 版权信息
-  copyright: Copyright &copy; 2024 Engineer Knowledge System
+  copyright: Copyright &copy; 2025 Engineer Knowledge System
 
 # 额外 CSS
 extra_css:
   - stylesheets/extra.css
 
-# 额外 JavaScript
+# 额外 JavaScript（替换已停服的 polyfill.io）
 extra_javascript:
   - javascripts/mathjax.js
-  - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 
 # 文档目录
@@ -139,33 +139,138 @@ docs_dir: knowledge
 # 导航结构
 nav:
   - 首页: index.md
-  
+
   - 基础知识:
-    - 01-foundations/index.md
+    - 概览: 01-foundations/index.md
     - 操作系统: 01-foundations/operating-system/index.md
     - 网络: 01-foundations/network/index.md
     - 算法: 01-foundations/algorithm/index.md
     - 数据库: 01-foundations/database/index.md
-  
+
   - 技术栈:
-    - 02-technologies/index.md
-    - 嵌入式: 02-technologies/embedded/index.md
+    - 概览: 02-technologies/index.md
+    - 嵌入式:
+      - 概览: 02-technologies/embedded/index.md
+      - 硬件层:
+        - 概览: 02-technologies/embedded/01-hardware-layer/index.md
+        - 芯片架构: 02-technologies/embedded/01-hardware-layer/01-chip-architecture/index.md
+        - 硬件设计基础: 02-technologies/embedded/01-hardware-layer/02-hardware-design-fundamentals/index.md
+        - 电源管理: 02-technologies/embedded/01-hardware-layer/03-power-management/index.md
+        - 传感器技术: 02-technologies/embedded/01-hardware-layer/04-sensor-technology/index.md
+        - 执行器控制: 02-technologies/embedded/01-hardware-layer/05-actuator-control/index.md
+        - 通信接口硬件: 02-technologies/embedded/01-hardware-layer/06-communication-interface-hardware/index.md
+      - 驱动与BSP层:
+        - 概览: 02-technologies/embedded/02-driver-bsp-layer/index.md
+        - Bootloader开发: 02-technologies/embedded/02-driver-bsp-layer/01-bootloader-development/index.md
+        - 设备驱动开发: 02-technologies/embedded/02-driver-bsp-layer/02-device-driver-development/index.md
+        - 内存管理: 02-technologies/embedded/02-driver-bsp-layer/03-memory-management/index.md
+        - 中断与异常处理: 02-technologies/embedded/02-driver-bsp-layer/04-interrupt-exception-handling/index.md
+        - 时钟与定时器: 02-technologies/embedded/02-driver-bsp-layer/05-clock-timer-management/index.md
+        - 设备树与BSP: 02-technologies/embedded/02-driver-bsp-layer/06-device-tree-bsp/index.md
+      - 操作系统层:
+        - 概览: 02-technologies/embedded/03-operating-system-layer/index.md
+        - 裸机编程: 02-technologies/embedded/03-operating-system-layer/01-bare-metal-programming/index.md
+        - RTOS基础: 02-technologies/embedded/03-operating-system-layer/02-rtos-fundamentals/index.md
+        - FreeRTOS: 02-technologies/embedded/03-operating-system-layer/03-freertos/index.md
+        - RT-Thread: 02-technologies/embedded/03-operating-system-layer/04-rt-thread/index.md
+        - 嵌入式Linux: 02-technologies/embedded/03-operating-system-layer/05-embedded-linux/index.md
+        - Android系统: 02-technologies/embedded/03-operating-system-layer/06-android-system/index.md
+      - 中间件层:
+        - 概览: 02-technologies/embedded/04-middleware-layer/index.md
+        - 文件系统: 02-technologies/embedded/04-middleware-layer/01-file-systems/index.md
+        - 存储技术: 02-technologies/embedded/04-middleware-layer/02-storage-technology/index.md
+        - 图形显示: 02-technologies/embedded/04-middleware-layer/03-graphics-display/index.md
+        - 多媒体处理: 02-technologies/embedded/04-middleware-layer/04-multimedia-processing/index.md
+        - 安全加密: 02-technologies/embedded/04-middleware-layer/05-security-encryption/index.md
+        - 数据库与数据管理: 02-technologies/embedded/04-middleware-layer/06-database-data-management/index.md
+      - 应用层:
+        - 概览: 02-technologies/embedded/05-application-layer/index.md
+        - 嵌入式AI/ML: 02-technologies/embedded/05-application-layer/01-embedded-ai-ml/index.md
+        - 用户界面开发: 02-technologies/embedded/05-application-layer/02-user-interface-development/index.md
+        - 应用框架: 02-technologies/embedded/05-application-layer/03-application-frameworks/index.md
+        - OTA与远程管理: 02-technologies/embedded/05-application-layer/04-ota-remote-management/index.md
+      - 通信与网络:
+        - 概览: 02-technologies/embedded/06-communication-networking/index.md
+        - 无线通信: 02-technologies/embedded/06-communication-networking/01-wireless-communication/index.md
+        - 网络协议: 02-technologies/embedded/06-communication-networking/02-network-protocols/index.md
+        - IoT云接入: 02-technologies/embedded/06-communication-networking/03-iot-cloud-integration/index.md
+      - 云端与后台:
+        - 概览: 02-technologies/embedded/07-cloud-backend/index.md
+        - 后端开发: 02-technologies/embedded/07-cloud-backend/01-backend-development/index.md
+        - 云服务: 02-technologies/embedded/07-cloud-backend/02-cloud-services/index.md
+        - 数据分析与可视化: 02-technologies/embedded/07-cloud-backend/03-data-analysis-visualization/index.md
+      - 工具链:
+        - 概览: 02-technologies/embedded/08-toolchain/index.md
+        - 开发工具: 02-technologies/embedded/08-toolchain/01-development-tools/index.md
+        - 调试与测试: 02-technologies/embedded/08-toolchain/02-debugging-testing/index.md
+        - 性能优化: 02-technologies/embedded/08-toolchain/03-performance-optimization/index.md
+        - CI/CD与DevOps: 02-technologies/embedded/08-toolchain/04-cicd-devops/index.md
+      - 行业领域:
+        - 概览: 02-technologies/embedded/09-industry-domains/index.md
+        - 汽车电子: 02-technologies/embedded/09-industry-domains/01-automotive-electronics/index.md
+        - 工业自动化: 02-technologies/embedded/09-industry-domains/02-industrial-automation/index.md
+        - 医疗设备: 02-technologies/embedded/09-industry-domains/03-medical-devices/index.md
+        - 消费电子: 02-technologies/embedded/09-industry-domains/04-consumer-electronics/index.md
+        - 航空航天与国防: 02-technologies/embedded/09-industry-domains/05-aerospace-defense/index.md
+      - 横切关注点:
+        - 概览: 02-technologies/embedded/10-cross-cutting-concerns/index.md
+        - 编程语言: 02-technologies/embedded/10-cross-cutting-concerns/01-programming-languages/index.md
+        - 软件架构与设计模式: 02-technologies/embedded/10-cross-cutting-concerns/02-software-architecture-design-patterns/index.md
+        - 安全与可靠性: 02-technologies/embedded/10-cross-cutting-concerns/03-security-reliability/index.md
+        - 项目管理与职业: 02-technologies/embedded/10-cross-cutting-concerns/04-project-management-career/index.md
     - AI: 02-technologies/ai/index.md
     - 云计算: 02-technologies/cloud/index.md
-  
+
   - 架构设计:
-    - 03-architecture/index.md
+    - 概览: 03-architecture/index.md
     - 嵌入式系统: 03-architecture/embedded-system/index.md
     - 分布式系统: 03-architecture/distributed-system/index.md
     - 平台架构: 03-architecture/platform/index.md
-  
+
   - 项目实践:
-    - 04-projects/index.md
+    - 概览: 04-projects/index.md
     - 智能戒指: 04-projects/smart-ring/index.md
     - 防鼾枕: 04-projects/anti-snore-pillow/index.md
-  
+
   - 技术洞察:
-    - 05-insights/index.md
+    - 概览: 05-insights/index.md
     - 工程实践: 05-insights/engineering/index.md
     - 职业发展: 05-insights/career/index.md
     - 技术趋势: 05-insights/technology-trend/index.md
+    - 金融知识:
+      - 概览: 05-insights/finance/index.md
+      - 学习路径: 05-insights/finance/learning-paths.md
+      - 知识地图: 05-insights/finance/knowledge-map.md
+      - 仪表盘: 05-insights/finance/dashboard.md
+      - 金融认知:
+        - 概览: 05-insights/finance/01-financial-cognition/index.md
+        - 金融市场: 05-insights/finance/01-financial-cognition/financial-markets.md
+        - 货币创造: 05-insights/finance/01-financial-cognition/money-creation.md
+        - 银行体系: 05-insights/finance/01-financial-cognition/banking-system.md
+        - 中央银行: 05-insights/finance/01-financial-cognition/central-banking.md
+        - 通货膨胀: 05-insights/finance/01-financial-cognition/inflation-theory.md
+      - 经济基础:
+        - 概览: 05-insights/finance/02-economic-foundation/index.md
+      - 公司分析:
+        - 概览: 05-insights/finance/03-company-analysis/index.md
+      - 投资体系:
+        - 概览: 05-insights/finance/04-investment-system/index.md
+      - 全球视野:
+        - 概览: 05-insights/finance/05-global-perspective/index.md
+      - 宏观框架:
+        - 概览: 05-insights/finance/06-macro-framework/index.md
+        - 经济机器: 05-insights/finance/06-macro-framework/economic-machine.md
+        - 债务周期: 05-insights/finance/06-macro-framework/debt-cycles.md
+        - 危机模式: 05-insights/finance/06-macro-framework/crisis-patterns.md
+        - 货币体系: 05-insights/finance/06-macro-framework/currency-systems.md
+        - 地缘政治: 05-insights/finance/06-macro-framework/geopolitics-finance.md
+        - 全球资本流动: 05-insights/finance/06-macro-framework/global-capital-flows.md
+        - 投资时钟: 05-insights/finance/06-macro-framework/investment-clock.md
+        - 宏观指标: 05-insights/finance/06-macro-framework/macro-indicators.md
+        - 宏观研究流程: 05-insights/finance/06-macro-framework/macro-research-process.md
+        - 宏观交易策略: 05-insights/finance/06-macro-framework/macro-trading-strategies.md
+        - 情景分析: 05-insights/finance/06-macro-framework/scenario-analysis.md
+      - 金融历史:
+        - 概览: 05-insights/finance/07-financial-history/index.md
+      - 实用工具:
+        - 概览: 05-insights/finance/08-practical-tools/index.md
