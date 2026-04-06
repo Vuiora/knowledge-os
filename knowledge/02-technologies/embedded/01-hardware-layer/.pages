@@ -1,0 +1,9 @@
+title: 硬件层
+nav:
+  - index.md
+  - 芯片架构: 01-chip-architecture
+  - 硬件设计基础: 02-hardware-design-fundamentals
+  - 电源管理: 03-power-management
+  - 传感器技术: 04-sensor-technology
+  - 执行器控制: 05-actuator-control
+  - 通信接口硬件: 06-communication-interface-hardware

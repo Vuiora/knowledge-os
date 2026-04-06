@@ -1,0 +1,13 @@
+title: 嵌入式
+nav:
+  - index.md
+  - 硬件层: 01-hardware-layer
+  - 驱动与BSP层: 02-driver-bsp-layer
+  - 操作系统层: 03-operating-system-layer
+  - 中间件层: 04-middleware-layer
+  - 应用层: 05-application-layer
+  - 通信与网络: 06-communication-networking
+  - 云端与后台: 07-cloud-backend
+  - 工具链: 08-toolchain
+  - 行业领域: 09-industry-domains
+  - 横切关注点: 10-cross-cutting-concerns

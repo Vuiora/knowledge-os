@@ -1,0 +1,7 @@
+nav:
+  - index.md
+  - 基础知识: 01-foundations
+  - 技术栈: 02-technologies
+  - 架构设计: 03-architecture
+  - 项目实践: 04-projects
+  - 技术洞察: 05-insights

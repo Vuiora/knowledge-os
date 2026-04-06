@@ -1,0 +1,6 @@
+title: 架构设计
+nav:
+  - index.md
+  - 嵌入式系统: embedded-system
+  - 分布式系统: distributed-system
+  - 平台架构: platform

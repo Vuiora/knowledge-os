@@ -1,0 +1,6 @@
+title: 技术栈
+nav:
+  - index.md
+  - 嵌入式: embedded
+  - AI: ai
+  - 云计算: cloud
