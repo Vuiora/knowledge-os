@@ -1,0 +1,8 @@
+title: 行业领域
+nav:
+  - index.md
+  - 汽车电子: 01-automotive-electronics
+  - 工业自动化: 02-industrial-automation
+  - 医疗设备: 03-medical-devices
+  - 消费电子: 04-consumer-electronics
+  - 航空航天与国防: 05-aerospace-defense

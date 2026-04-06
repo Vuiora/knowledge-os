@@ -2838,7 +2838,7 @@ A：
 
 1. **[智能音箱开发技术](../intermediate/01-smart-speaker.md)** - 学习语音交互技术
 2. **[生物信号处理基础](../../03-medical-devices/beginner/02-biosignal-processing.md)** - 深入学习信号处理
-3. **[低功耗设计](../../08-toolchain/03-performance-optimization/intermediate/02-power-optimization.md)** - 优化功耗设计
+3. **低功耗设计** - 优化功耗设计
 
 ## 参考资料
 

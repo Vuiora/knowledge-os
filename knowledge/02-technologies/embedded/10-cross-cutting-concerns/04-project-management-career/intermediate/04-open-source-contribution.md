@@ -1094,9 +1094,9 @@ Thank you!
 
 建议继续学习以下内容：
 
-1. **[技术博客与个人品牌建设](intermediate/07-technical-blogging.md)** - 学习如何分享你的开源经验
-2. **[团队协作与沟通技巧](intermediate/03-team-collaboration.md)** - 提升协作能力
-3. **[项目管理工具实践](advanced/01-project-management-tools.md)** - 学习使用专业工具
+1. **技术博客与个人品牌建设** - 学习如何分享你的开源经验
+2. **团队协作与沟通技巧** - 提升协作能力
+3. **项目管理工具实践** - 学习使用专业工具
 
 ## 参考资料
 

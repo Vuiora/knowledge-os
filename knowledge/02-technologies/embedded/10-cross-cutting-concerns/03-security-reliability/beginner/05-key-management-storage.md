@@ -2011,11 +2011,11 @@ typedef struct {
 
 ### 相关主题
 
-- [嵌入式系统安全概述](embedded-security-overview.md) - 安全基础知识
-- [信息安全基础知识](information-security-basics.md) - 加密和哈希原理
-- [安全启动与固件验证](secure-boot-firmware-verification.md) - 固件安全
-- [安全芯片(SE/TEE)应用](secure-element-tee.md) - 硬件安全深入
-- [安全通信协议实现](secure-communication-protocols.md) - TLS/DTLS应用
+- 嵌入式系统安全概述 - 安全基础知识
+- 信息安全基础知识 - 加密和哈希原理
+- 安全启动与固件验证 - 固件安全
+- 安全芯片(SE/TEE)应用 - 硬件安全深入
+- 安全通信协议实现 - TLS/DTLS应用
 
 
 ## 参考资料

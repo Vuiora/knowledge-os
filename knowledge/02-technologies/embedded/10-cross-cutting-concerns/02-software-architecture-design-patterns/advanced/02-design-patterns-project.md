@@ -2356,21 +2356,21 @@ void SmartHomeSystem::printSystemState() {
 
 ### 1. 深入学习设计模式
 
-- [结构型模式详解](../intermediate/07-structural-patterns.md) - 学习适配器、装饰器等模式
-- [行为型模式详解](../intermediate/08-behavioral-patterns.md) - 学习迭代器、访问者等模式
-- [并发模式](../advanced/03-concurrent-patterns.md) - 学习多线程环境下的设计模式
+- 结构型模式详解 - 学习适配器、装饰器等模式
+- 行为型模式详解 - 学习迭代器、访问者等模式
+- 并发模式 - 学习多线程环境下的设计模式
 
 ### 2. 架构设计进阶
 
-- [微服务架构](../advanced/04-microservices-architecture.md) - 学习服务拆分和通信
+- 微服务架构 - 学习服务拆分和通信
 - [事件驱动架构](../intermediate/03-event-driven-architecture.md) - 深入学习事件驱动设计
 - [领域驱动设计](../intermediate/06-domain-driven-design.md) - 学习DDD方法论
 
 ### 3. 实战项目
 
-- [物联网网关项目](../../09-industry-domains/iot-gateway-project.md) - 构建完整的IoT网关
-- [工业控制系统](../../09-industry-domains/industrial-control-project.md) - 实时系统设计
-- [智能车载系统](../../09-industry-domains/automotive-project.md) - 汽车电子应用
+- 物联网网关项目 - 构建完整的IoT网关
+- 工业控制系统 - 实时系统设计
+- 智能车载系统 - 汽车电子应用
 
 ## 参考资料
 

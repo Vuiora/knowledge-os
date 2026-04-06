@@ -1253,7 +1253,7 @@ EtherCAT:  ★★★★☆ (需要专业知识)
 **相关技术**：
 - [CAN总线应用](../../01-automotive-electronics/beginner/02-can-lin-automotive.md) - 学习汽车通信协议
 - [车载以太网技术](../../01-automotive-electronics/intermediate/01-automotive-ethernet.md) - 了解汽车以太网
-- [TCP/IP协议栈](../../06-communication-networking/02-network-protocols/beginner/01-tcpip-stack.md) - 深入网络基础
+- TCP/IP协议栈 - 深入网络基础
 
 ## 参考资料
 

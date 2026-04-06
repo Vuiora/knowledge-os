@@ -2453,6 +2453,6 @@ def visualize_spectrogram(audio_data, rate=16000):
 **适合人群**：有嵌入式开发基础，对智能音箱技术感兴趣的开发者
 
 **下一步学习**：
-- [智能手表系统开发](./advanced/01-smartwatch-system.md)
+- 智能手表系统开发
 - [智能家居系统设计](../beginner/01-smart-home-system.md)
 - [可穿戴设备开发](../beginner/02-wearable-device.md)

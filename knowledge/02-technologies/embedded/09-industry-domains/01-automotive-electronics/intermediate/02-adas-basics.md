@@ -2790,8 +2790,8 @@ cv2.destroyAllWindows()
 推荐进一步学习的内容：
 
 **基础深化**：
-- [AUTOSAR标准概述](./01-autosar-overview.md) - 了解汽车软件架构
-- [CAN/LIN总线应用开发](./02-can-lin-automotive.md) - 学习车载通信
+- AUTOSAR标准概述 - 了解汽车软件架构
+- CAN/LIN总线应用开发 - 学习车载通信
 - [车载以太网技术](./01-automotive-ethernet.md) - 掌握高速车载网络
 
 **进阶学习**：
@@ -2799,8 +2799,8 @@ cv2.destroyAllWindows()
 - [车载信息娱乐系统开发](../advanced/01-automotive-infotainment.md) - 了解座舱系统
 
 **相关技术**：
-- [计算机视觉基础](../../05-application-layer/03-ai-ml/beginner/01-computer-vision-basics.md) - 深入学习视觉算法
-- [嵌入式AI应用](../../05-application-layer/03-ai-ml/intermediate/01-embedded-ai.md) - 学习边缘AI技术
+- 计算机视觉基础 - 深入学习视觉算法
+- 嵌入式AI应用 - 学习边缘AI技术
 
 ## 参考资料
 

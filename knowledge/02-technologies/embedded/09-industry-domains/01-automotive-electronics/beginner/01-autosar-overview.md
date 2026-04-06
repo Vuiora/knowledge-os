@@ -703,7 +703,7 @@ PDU Router（路由）
 - [车载信息娱乐系统开发](../advanced/01-automotive-infotainment.md) - 实践复杂的车载系统
 
 **相关技术**：
-- [RTOS实时操作系统](../../03-operating-system-layer/01-rtos-basics/beginner/01-rtos-concepts.md) - 理解AUTOSAR的OS基础
+- RTOS实时操作系统 - 理解AUTOSAR的OS基础
 - [嵌入式通信协议](../../06-communication-networking/02-network-protocols/) - 深入学习通信技术
 
 ## 参考资料

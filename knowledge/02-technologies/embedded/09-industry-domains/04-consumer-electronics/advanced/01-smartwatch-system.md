@@ -1700,7 +1700,7 @@ class BleManager(private val context: Context) {
 
 ### 文档资料
 - [可穿戴设备开发](../beginner/02-wearable-device.md)
-- [低功耗设计](../../08-toolchain/03-performance-optimization/intermediate/02-power-optimization.md)
+- 低功耗设计
 - [LVGL官方文档](https://docs.lvgl.io/)
 - [nRF52840产品规格书](https://www.nordicsemi.com/Products/nRF52840)
 
@@ -1718,14 +1718,14 @@ class BleManager(private val context: Context) {
 完成本项目后，建议继续学习：
 
 **深入可穿戴设备开发**：
-- [智能眼镜开发](../advanced/02-smart-glasses.md)
+- 智能眼镜开发
 - [健康监测设备](../../03-medical-devices/)
-- [AR/VR设备开发](../advanced/03-ar-vr-device.md)
+- AR/VR设备开发
 
 **相关技术领域**：
 - [嵌入式AI](../../10-cross-cutting-concerns/05-embedded-ai/)
 - [边缘计算](../../07-cloud-backend/03-edge-computing/)
-- [5G通信](../../06-communication-networking/01-wireless-communication/intermediate/02-5g-embedded.md)
+- 5G通信
 
 ---
 

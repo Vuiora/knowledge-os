@@ -1855,7 +1855,7 @@ A：方案：
 
 1. **[工业机器人控制](../intermediate/02-industrial-robot.md)** - 学习机器人编程
 2. **[工业4.0与智能制造](../intermediate/03-industry-4.0.md)** - 了解智能制造
-3. **[OPC UA通信](../../06-communication-networking/02-network-protocols/advanced/01-opc-ua.md)** - 学习工业通信标准
+3. **OPC UA通信** - 学习工业通信标准
 
 ## 参考资料
 

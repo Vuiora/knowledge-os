@@ -1458,11 +1458,11 @@ st-flash write factory_image.bin 0x08000000
 
 ### 相关文章
 
-- [嵌入式系统安全概述](embedded-security-overview.md)
-- [信息安全基础知识](information-security-basics.md)
-- [密钥管理与存储](key-management-storage.md)
-- [安全芯片(SE/TEE)应用](secure-element-tee.md)
-- [高可靠性系统设计](high-reliability-system.md)
+- 嵌入式系统安全概述
+- 信息安全基础知识
+- 密钥管理与存储
+- 安全芯片(SE/TEE)应用
+- 高可靠性系统设计
 
 
 ## 延伸阅读

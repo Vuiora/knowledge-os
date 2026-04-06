@@ -1414,7 +1414,7 @@ undefined reference to `HAL_GPIO_Init'
 - [模块化设计原则](03-modular-design-principles.md) - 深入学习模块化设计
 - [状态机设计模式](04-state-machine-pattern.md) - 学习状态机在应用层的应用
 - [观察者模式](05-observer-pattern.md) - 学习事件驱动的设计方法
-- [接口设计最佳实践](../../intermediate/02-interface-oriented-programming.md) - 高级接口设计技巧
+- [接口设计最佳实践](../intermediate/02-interface-oriented-programming.md) - 高级接口设计技巧
 
 ## 参考资料
 

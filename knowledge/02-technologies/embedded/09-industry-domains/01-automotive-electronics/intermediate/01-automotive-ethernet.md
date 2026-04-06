@@ -2114,8 +2114,8 @@ DoIP网关
 推荐进一步学习的内容：
 
 **基础深化**：
-- [AUTOSAR标准概述](./01-autosar-overview.md) - 了解车载软件架构
-- [CAN/LIN总线应用开发](./02-can-lin-automotive.md) - 学习传统车载网络
+- AUTOSAR标准概述 - 了解车载软件架构
+- CAN/LIN总线应用开发 - 学习传统车载网络
 - [功能安全ISO 26262入门](./03-iso26262-intro.md) - 学习汽车功能安全
 
 **进阶学习**：
@@ -2123,8 +2123,8 @@ DoIP网关
 - [车载信息娱乐系统开发](../advanced/01-automotive-infotainment.md) - 实践车载以太网应用
 
 **相关技术**：
-- [TCP/IP协议栈](../../06-communication-networking/02-network-protocols/01-tcpip-stack.md) - 深入理解网络协议
-- [网络安全基础](../../10-cross-cutting-concerns/03-security/beginner/01-security-basics.md) - 学习网络安全
+- TCP/IP协议栈 - 深入理解网络协议
+- 网络安全基础 - 学习网络安全
 
 ## 参考资料
 

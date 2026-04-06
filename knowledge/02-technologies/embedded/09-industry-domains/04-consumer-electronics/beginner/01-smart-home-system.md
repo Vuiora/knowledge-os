@@ -2318,7 +2318,7 @@ A：
 
 1. **[可穿戴设备开发](02-wearable-device.md)** - 学习智能手环、手表开发
 2. **[智能音箱开发技术](../intermediate/01-smart-speaker.md)** - 学习语音交互技术
-3. **[MQTT协议详解](../../06-communication-networking/02-network-protocols/beginner/02-mqtt-protocol.md)** - 深入学习MQTT协议
+3. **MQTT协议详解** - 深入学习MQTT协议
 
 ## 参考资料
 

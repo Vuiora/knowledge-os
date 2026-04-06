@@ -2092,8 +2092,8 @@ if is_anomaly:
 - [工业自动化控制系统项目](../advanced/01-industrial-control-system.md) - 综合项目实践
 
 **相关技术**：
-- [数据库设计](../../07-cloud-backend/01-backend-development/beginner/02-database-design.md) - 数据库优化
-- [RESTful API](../../07-cloud-backend/01-backend-development/beginner/01-restful-api.md) - Web服务开发
+- 数据库设计 - 数据库优化
+- RESTful API - Web服务开发
 
 ## 参考资料
 

@@ -2813,10 +2813,10 @@ public:
 
 完成本项目后，建议继续学习：
 
-- [ADAS系统开发](02-adas-basics.md) - 学习高级驾驶辅助系统
-- [功能安全开发](03-iso26262-intro.md) - 深入ISO 26262标准
-- [车载以太网](01-automotive-ethernet.md) - 学习车载网络技术
-- [自动驾驶技术](../../../10-cross-cutting-concerns/01-ai-ml/advanced/01-autonomous-driving.md) - 探索自动驾驶
+- ADAS系统开发 - 学习高级驾驶辅助系统
+- 功能安全开发 - 深入ISO 26262标准
+- 车载以太网 - 学习车载网络技术
+- 自动驾驶技术 - 探索自动驾驶
 
 ## 参考资料
 

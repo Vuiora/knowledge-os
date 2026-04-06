@@ -1047,8 +1047,8 @@ void enter_low_power_mode(void) {
 - [《非暴力沟通》](https://book.douban.com/subject/3533221/) - 马歇尔·卢森堡
 - [《关键对话》](https://book.douban.com/subject/10586741/) - 科里·帕特森
 - [《团队协作的五大障碍》](https://book.douban.com/subject/4135306/) - 帕特里克·兰西奥尼
-- [敏捷开发在嵌入式中的应用](beginner/03-agile-in-embedded.md) - 了解敏捷团队协作
-- [项目管理概述](beginner/01-embedded-project-management.md) - 项目管理基础
+- 敏捷开发在嵌入式中的应用 - 了解敏捷团队协作
+- 项目管理概述 - 项目管理基础
 
 ## 参考资料
 
@@ -1065,4 +1065,4 @@ void enter_low_power_mode(void) {
 2. 选择一个你最近遇到的团队冲突，使用Thomas-Kilmann模型分析应该采用哪种策略？
 3. 为你的团队设计一个跨部门协作机制，包括会议安排、沟通渠道和工具使用。
 
-**下一步**：建议学习 [开源项目参与指南](intermediate/04-open-source-contribution.md)，了解如何在更大的社区中协作。
+**下一步**：建议学习 开源项目参与指南，了解如何在更大的社区中协作。

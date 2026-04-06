@@ -1326,16 +1326,16 @@ class IoTDataReceiver:
 **深入医疗设备开发**：
 - [医疗设备软件验证](../../10-cross-cutting-concerns/04-testing/) - 学习IEC 62304
 - [医疗设备网络安全](../../10-cross-cutting-concerns/03-security/) - 学习FDA网络安全指南
-- [医疗设备可用性工程](../intermediate/03-usability-engineering.md) - 学习IEC 62366
+- 医疗设备可用性工程 - 学习IEC 62366
 
 **相关技术领域**：
-- [低功耗蓝牙开发](../../06-communication-networking/01-wireless-communication/intermediate/03-ble-development.md)
-- [云端IoT平台](../../07-cloud-backend/02-cloud-services/beginner/01-iot-platform.md)
+- 低功耗蓝牙开发
+- 云端IoT平台
 - [移动应用开发](../../05-application-layer/03-mobile-development/)
 
 **行业应用**：
-- [远程医疗系统](../advanced/02-telemedicine-system.md)
-- [智能可穿戴设备](../../09-industry-domains/04-consumer-electronics/advanced/01-smartwatch-system.md)
+- 远程医疗系统
+- 智能可穿戴设备
 
 ## 参考资料
 

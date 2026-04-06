@@ -1756,8 +1756,8 @@ void encrypt_data(const unsigned char *plaintext, size_t len,
 
 - [事件驱动架构设计](03-event-driven-architecture.md) - 了解事件驱动在微服务中的应用
 - [分层架构设计实践](../beginner/02-layered-architecture.md) - 理解架构分层的基本原则
-- [Docker容器技术](../../08-toolchain/03-build-deployment/intermediate/docker-containers.md) - 学习容器化部署
-- [边缘计算平台](../../07-cloud-backend/02-cloud-services/intermediate/edge-computing.md) - 深入了解边缘计算
+- Docker容器技术 - 学习容器化部署
+- 边缘计算平台 - 深入了解边缘计算
 
 ## 参考资料
 

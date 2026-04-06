@@ -2110,9 +2110,9 @@ echo 0 | sudo tee /proc/sys/kernel/randomize_va_space
    - GPEN (GIAC Penetration Tester)
 
 5. **相关内容**
-   - [ISO 26262汽车功能安全](intermediate/06-iso26262-automotive-safety.md)
-   - [安全芯片(SE/TEE)应用](advanced/01-secure-element-tee.md)
-   - [高可靠性系统设计实战](advanced/02-high-reliability-system.md)
+   - ISO 26262汽车功能安全
+   - 安全芯片(SE/TEE)应用
+   - 高可靠性系统设计实战
 
 
 ## 延伸阅读

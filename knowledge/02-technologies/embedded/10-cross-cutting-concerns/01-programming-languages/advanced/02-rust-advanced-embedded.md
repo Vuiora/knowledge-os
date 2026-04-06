@@ -1566,7 +1566,7 @@ strip = true             # 移除符号
 建议继续学习：
 - [Rust嵌入式开发入门](../intermediate/05-rust-embedded-intro.md) - 基础教程
 - [多语言混合编程实践](../advanced/01-multi-language-programming.md) - Rust与C互操作
-- [嵌入式系统架构设计](../../02-software-architecture/advanced/01-embedded-architecture-design.md) - 架构设计
+- 嵌入式系统架构设计 - 架构设计
 
 ### 开源项目
 

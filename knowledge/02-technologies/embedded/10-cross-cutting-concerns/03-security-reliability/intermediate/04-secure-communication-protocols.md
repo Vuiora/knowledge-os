@@ -1702,10 +1702,10 @@ if (mbedtls_x509_crt_check_cn(cert, expected_cn, strlen(expected_cn)) != 0) {
 ## 延伸阅读
 
 ### 相关教程
-- [信息安全基础知识](information-security-basics.md) - 加密算法和安全原理
-- [密钥管理与存储](key-management-storage.md) - 密钥安全管理
-- [安全启动与固件验证](secure-boot-firmware-verification.md) - 固件安全
-- [渗透测试与漏洞分析](penetration-testing.md) - 安全测试方法
+- 信息安全基础知识 - 加密算法和安全原理
+- 密钥管理与存储 - 密钥安全管理
+- 安全启动与固件验证 - 固件安全
+- 渗透测试与漏洞分析 - 安全测试方法
 
 ### 技术文档
 - [mbedTLS官方文档](https://tls.mbed.org/kb) - mbedTLS知识库

@@ -1343,7 +1343,7 @@ Error: invalid instruction
 
 - [Rust高级嵌入式开发](../advanced/02-rust-advanced-embedded.md) - 使用Rust进行底层开发
 - [多语言混合编程实践](../advanced/01-multi-language-programming.md) - 深入学习混合编程
-- [性能优化高级技巧](../../08-toolchain/03-performance-optimization/advanced/01-advanced-optimization.md) - 系统级优化
+- 性能优化高级技巧 - 系统级优化
 
 ### 实践项目建议
 
