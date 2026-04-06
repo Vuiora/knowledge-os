@@ -1771,9 +1771,9 @@ uint8_t detect_falling_edge(edge_detector_t *det,
 推荐进一步学习的内容：
 
 1. **进阶主题**：
-   - [FPGA开发入门](../../fpga/01-fpga-basics.md)
-   - [Verilog硬件描述语言](../../fpga/02-verilog-intro.md)
-   - [状态机设计](../../fpga/03-state-machine.md)
+   - [FPGA开发入门](../advanced/03-fpga-basics.md)
+   - [Verilog硬件描述语言](../advanced/04-verilog-intro.md)
+   - [状态机设计](../advanced/05-state-machine.md)
 
 2. **相关知识**：
    - [嵌入式电路基础：电阻、电容、电感](01-basic-components.md)
@@ -1781,8 +1781,8 @@ uint8_t detect_falling_edge(edge_detector_t *det,
    - [信号完整性分析基础](../intermediate/01-signal-integrity.md)
 
 3. **实践项目**：
-   - [数字时钟设计](../projects/01-digital-clock.md)
-   - [交通灯控制器](../projects/02-traffic-light.md)
+   - 数字时钟设计
+   - 交通灯控制器
 
 ## 参考资料
 

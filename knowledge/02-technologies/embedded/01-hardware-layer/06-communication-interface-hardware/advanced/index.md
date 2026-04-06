@@ -12,6 +12,7 @@ description: 本部分包含 高级 级别的学习内容。
 
 ## 文档列表
 
+- [PMBus电源管理](01-pmbus-power-management.md) - 深入理解PMBus电源管理协议规范、命令集、遥测功能，掌握PMBus电源控制、监控、故障管理和配置技术
 - [multi interface hub](01-multi-interface-hub.md)
 
 ---

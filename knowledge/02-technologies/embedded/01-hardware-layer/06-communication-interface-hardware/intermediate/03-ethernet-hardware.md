@@ -1598,8 +1598,8 @@ void ETH_IRQHandler(void) {
 
 ### 协议实现
 
-- [lwIP协议栈移植](../../04-middleware-layer/03-communication-protocols/intermediate/01-lwip-stack.md)
-- [Modbus TCP实现](../../04-middleware-layer/03-communication-protocols/intermediate/03-modbus-tcp.md)
+- lwIP协议栈移植
+- Modbus TCP实现
 
 ### 硬件设计
 

@@ -12,7 +12,15 @@ description: 本部分包含 高级 级别的学习内容。
 
 ## 文档列表
 
-- [smart car control](01-smart-car-control.md)
+- [智能小车运动控制系统实战项目](01-smart-car-control.md)
+- [运动控制算法：梯形加减速与S曲线规划](02-motion-control-algorithms.md)
+- [多轴同步控制：协调运动与插补算法](03-multi-axis-sync.md)
+- [智能云台项目：自动追踪与姿态稳定](04-smart-gimbal-project.md)
+- [四自由度机械臂：运动学与轨迹控制](05-robot-arm-project.md)
+- [六足机器人：步态规划与多舵机协调控制](06-hexapod-robot.md)
+- [WiFi智能插座项目](07-smart-socket-project.md)
+- [多路继电器自动化控制系统](08-automation-system.md)
+- [环境监控与联动控制系统](09-environment-control.md)
 
 ---
 

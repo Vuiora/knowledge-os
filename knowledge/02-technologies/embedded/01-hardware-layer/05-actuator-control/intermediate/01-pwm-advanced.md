@@ -1681,7 +1681,7 @@ void PWM_Print_Stats(PWM_Channel_t channel) {
 - [直流电机驱动与控制](../beginner/01-dc-motor-control.md) - PWM基础应用
 - [无刷电机控制入门](../intermediate/02-bldc-motor-control.md) - 高级PWM应用
 - [PID控制算法实战](../intermediate/03-pid-control.md) - 闭环控制
-- [开关电源设计](../../03-power-management/intermediate/02-switching-power-supply.md) - PWM在电源中的应用
+- 开关电源设计 - PWM在电源中的应用
 
 ## 练习与项目
 

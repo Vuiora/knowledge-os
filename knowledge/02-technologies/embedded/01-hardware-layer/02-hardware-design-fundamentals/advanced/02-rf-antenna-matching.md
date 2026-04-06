@@ -68,7 +68,7 @@ cover_image: "/assets/images/rf-antenna-matching-cover.jpg"
 
 阻抗匹配是RF设计的核心，直接影响系统的发射功率、接收灵敏度和整体性能。不匹配的阻抗会导致信号反射、功率损耗、驻波比增大，严重时甚至损坏射频芯片。
 
-![RF系统框图](assets/rf-system-diagram.png)
+!RF系统框图
 *典型的2.4GHz无线系统框图*
 
 ### 学习目标

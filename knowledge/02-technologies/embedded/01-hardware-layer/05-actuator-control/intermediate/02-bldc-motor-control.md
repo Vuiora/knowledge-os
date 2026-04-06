@@ -1705,8 +1705,10 @@ void CAN_Command_Handler(CAN_RxHeaderTypeDef *header, uint8_t *data) {
 
 ### 相关教程
 - [PID控制算法实战](../intermediate/03-pid-control.md) - 深入学习PID控制理论和实践
-- [编码器接口应用](../../02-driver-bsp-layer/04-interrupt-exception-handling/intermediate/02-encoder-interface.md) - 学习高精度位置反馈
+- [编码器接口应用](../../../02-driver-bsp-layer/04-interrupt-exception-handling/intermediate/04-encoder-interface.md) - 学习高精度位置反馈
+<!-- 以下链接指向的文件路径不正确，待确认后修复
 - [电流采样与保护](../../03-operating-system-layer/02-analog-signal-processing/intermediate/01-current-sensing.md) - 学习电流检测和保护
+-->
 
 ### 进阶主题
 - 无感FOC控制算法

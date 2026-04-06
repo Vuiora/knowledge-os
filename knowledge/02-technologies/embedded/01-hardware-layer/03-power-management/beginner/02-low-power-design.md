@@ -2266,8 +2266,8 @@ void optimization_suggestions(void) {
    - [电池管理系统(BMS)设计实战](../intermediate/01-bms-design.md)
 
 3. **实践项目**：
-   - [低功耗物联网节点](../projects/01-low-power-iot-node.md)
-   - [可穿戴设备电源管理](../projects/02-wearable-power-management.md)
+   - 低功耗物联网节点
+   - 可穿戴设备电源管理
 
 ## 参考资料
 

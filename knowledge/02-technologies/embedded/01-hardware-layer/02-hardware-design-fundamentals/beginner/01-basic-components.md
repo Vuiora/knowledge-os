@@ -1382,8 +1382,8 @@ A:
    - [EMC设计实战：降低电磁干扰](../intermediate/02-emc-design.md)
 
 3. **实践项目**：
-   - [LED闪烁电路设计](../projects/01-led-blink.md)
-   - [简易电源设计](../projects/02-simple-power-supply.md)
+   - LED闪烁电路设计
+   - 简易电源设计
 
 ## 参考资料
 

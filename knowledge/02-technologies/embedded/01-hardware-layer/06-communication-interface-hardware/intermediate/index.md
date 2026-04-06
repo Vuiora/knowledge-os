@@ -15,6 +15,9 @@ description: 本部分包含 进阶 级别的学习内容。
 - [can bus hardware](01-can-bus-hardware.md)
 - [usb hardware](02-usb-hardware.md)
 - [ethernet hardware](03-ethernet-hardware.md)
+- [I2C多路复用器应用](04-i2c-multiplexer.md) - 深入理解I2C多路复用器芯片（TCA9548A）的工作原理、地址冲突解决方案、总线管理策略，掌握多设备I2C系统的设计与实现
+- [SMBus协议详解](05-smbus-protocol.md) - 深入理解SMBus（System Management Bus）协议规范、与I2C的区别、包错误检查（PEC）机制，掌握SMBus命令协议、超时处理和错误恢复技术
+- [CANopen协议实现](06-canopen-protocol.md) - CANopen工业通信协议的架构原理、对象字典、SDO/PDO通信服务和实战应用
 
 ---
 

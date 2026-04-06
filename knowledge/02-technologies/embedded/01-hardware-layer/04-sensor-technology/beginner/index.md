@@ -12,6 +12,7 @@ description: 本部分包含 入门 级别的学习内容。
 
 ## 文档列表
 
+- [sensor reading](01-sensor-reading.md) - 传感器数据采集基础：ADC使用、传感器校准、数据滤波
 - [temperature humidity sensor](01-temperature-humidity-sensor.md)
 - [accelerometer gyroscope](02-accelerometer-gyroscope.md)
 - [light pressure sensor](03-light-pressure-sensor.md)

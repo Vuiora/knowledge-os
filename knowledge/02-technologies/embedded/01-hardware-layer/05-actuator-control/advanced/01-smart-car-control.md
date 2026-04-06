@@ -1640,11 +1640,11 @@ void Sensor_Fusion_Update(RobotState *state) {
 
 **进阶学习**：
 - [传感器数据融合](../../04-sensor-technology/intermediate/02-sensor-fusion.md) - 多传感器融合技术
-- [RTOS应用](../../03-operating-system-layer/intermediate/01-freertos-basics.md) - 实时操作系统
+- RTOS应用 - 实时操作系统
 
 **高级主题**：
-- [SLAM算法](../../09-industry-domains/robotics/advanced/01-slam-basics.md) - 同步定位与建图
-- [路径规划](../../09-industry-domains/robotics/advanced/02-path-planning.md) - 智能路径规划算法
+- SLAM算法 - 同步定位与建图
+- 路径规划 - 智能路径规划算法
 
 
 ## 参考资料
@@ -1753,3 +1753,1972 @@ RPM = (脉冲数 * 60) / (编码器线数 * 4 * 减速比 * 时间)
 - 完成项目？分享你的成果照片和视频
 
 **版权声明**：本项目教程采用 CC BY-SA 4.0 协议，欢迎分享和改编，但请注明出处。
+
+---
+
+## 深入原理：差速驱动运动学与转弯半径
+
+### 差速驱动完整运动学模型
+
+差速驱动（Differential Drive）是移动机器人最常见的底盘结构，通过独立控制左右两轮速度实现全方向运动（除横向平移外）。
+
+#### 坐标系定义
+
+```
+         前方 (x轴正方向)
+           ↑
+           |
+  左轮 ←--+--→ 右轮
+           |
+           ↓
+       (机器人坐标系)
+
+世界坐标系 (World Frame):
+  Y
+  ↑
+  |
+  +----→ X
+  
+机器人位姿: (x, y, θ)
+  x: 世界坐标系X位置
+  y: 世界坐标系Y位置
+  θ: 机器人朝向角（相对X轴，逆时针为正）
+```
+
+#### 运动学方程推导
+
+**基本参数**：
+- `L`：轮距（两轮中心距离，单位 m）
+- `R`：车轮半径（单位 m）
+- `v_L`：左轮线速度（m/s）
+- `v_R`：右轮线速度（m/s）
+- `ω_L`：左轮角速度（rad/s），`v_L = ω_L × R`
+- `ω_R`：右轮角速度（rad/s），`v_R = ω_R × R`
+
+**正向运动学（Forward Kinematics）**：
+
+机器人质心线速度 v 和角速度 ω：
+```
+v = (v_R + v_L) / 2          // 两轮平均速度
+ω = (v_R - v_L) / L          // 速度差除以轮距
+```
+
+**逆向运动学（Inverse Kinematics）**：
+
+已知期望的 v 和 ω，求各轮速度：
+```
+v_L = v - (ω × L) / 2
+v_R = v + (ω × L) / 2
+```
+
+#### 转弯半径计算
+
+当 `v_L ≠ v_R` 时，机器人沿圆弧运动，转弯半径 R_turn：
+
+```
+R_turn = L/2 × (v_R + v_L) / (v_R - v_L)
+```
+
+**特殊情况分析**：
+
+| 运动模式 | 条件 | 转弯半径 |
+|----------|------|----------|
+| 直线前进 | v_L = v_R > 0 | ∞（无穷大） |
+| 直线后退 | v_L = v_R < 0 | ∞（无穷大） |
+| 原地左转 | v_L = -v_R < 0 | 0（原地旋转） |
+| 原地右转 | v_L = -v_R > 0 | 0（原地旋转） |
+| 左弧线 | v_R > v_L > 0 | R_turn > 0 |
+| 右弧线 | v_L > v_R > 0 | R_turn < 0 |
+| 左轮停止 | v_L = 0, v_R > 0 | L/2（绕左轮） |
+| 右轮停止 | v_R = 0, v_L > 0 | L/2（绕右轮） |
+
+**转弯半径与角速度关系**：
+```
+R_turn = v / ω    （当 ω ≠ 0 时）
+```
+
+**圆弧运动时间计算**：
+```c
+// 转过角度 angle_rad 所需时间
+float Arc_TurnTime(float angle_rad, float angular_vel) {
+    return fabs(angle_rad / angular_vel);
+}
+
+// 走过弧长 arc_length 所需时间
+float Arc_TravelTime(float arc_length, float linear_vel) {
+    return fabs(arc_length / linear_vel);
+}
+
+// 示例：以 v=0.2m/s, ω=0.5rad/s 转90度
+// 时间 = (π/2) / 0.5 = 3.14s
+// 弧长 = 0.2 × 3.14 = 0.628m
+// 转弯半径 = 0.2 / 0.5 = 0.4m
+```
+
+#### 运动学仿真代码
+
+```c
+// kinematics.h - 差速驱动运动学
+#ifndef KINEMATICS_H
+#define KINEMATICS_H
+
+#include <math.h>
+
+// 机器人物理参数
+#define WHEEL_BASE_M    0.15f   // 轮距 (m)
+#define WHEEL_RADIUS_M  0.0325f // 车轮半径 (m)
+
+// 机器人位姿
+typedef struct {
+    float x;       // 世界坐标X (m)
+    float y;       // 世界坐标Y (m)
+    float theta;   // 朝向角 (rad)，逆时针为正
+} RobotPose;
+
+// 机器人速度
+typedef struct {
+    float v;       // 线速度 (m/s)
+    float omega;   // 角速度 (rad/s)
+} RobotVelocity;
+
+// 正向运动学：轮速 → 机器人速度
+RobotVelocity Kinematics_Forward(float v_left, float v_right);
+
+// 逆向运动学：机器人速度 → 轮速
+void Kinematics_Inverse(RobotVelocity vel, float *v_left, float *v_right);
+
+// 位姿更新（积分）
+void Kinematics_UpdatePose(RobotPose *pose, RobotVelocity vel, float dt);
+
+// 计算转弯半径
+float Kinematics_TurnRadius(float v_left, float v_right);
+
+#endif
+
+// kinematics.c
+#include "kinematics.h"
+
+RobotVelocity Kinematics_Forward(float v_left, float v_right) {
+    RobotVelocity vel;
+    vel.v     = (v_right + v_left) / 2.0f;
+    vel.omega = (v_right - v_left) / WHEEL_BASE_M;
+    return vel;
+}
+
+void Kinematics_Inverse(RobotVelocity vel, float *v_left, float *v_right) {
+    *v_left  = vel.v - (vel.omega * WHEEL_BASE_M) / 2.0f;
+    *v_right = vel.v + (vel.omega * WHEEL_BASE_M) / 2.0f;
+}
+
+void Kinematics_UpdatePose(RobotPose *pose, RobotVelocity vel, float dt) {
+    // 使用中点积分（Runge-Kutta 2阶）提高精度
+    float theta_mid = pose->theta + vel.omega * dt / 2.0f;
+    pose->x     += vel.v * cosf(theta_mid) * dt;
+    pose->y     += vel.v * sinf(theta_mid) * dt;
+    pose->theta += vel.omega * dt;
+    
+    // 角度归一化到 [-π, π]
+    while (pose->theta >  M_PI) pose->theta -= 2.0f * M_PI;
+    while (pose->theta < -M_PI) pose->theta += 2.0f * M_PI;
+}
+
+float Kinematics_TurnRadius(float v_left, float v_right) {
+    float diff = v_right - v_left;
+    if (fabsf(diff) < 1e-6f) return 1e9f;  // 近似无穷大
+    return (WHEEL_BASE_M / 2.0f) * (v_right + v_left) / diff;
+}
+```
+
+### 巡线传感器阵列（IR 反射传感器）
+
+#### 传感器原理
+
+红外反射传感器（IR Reflectance Sensor）利用红外光在不同颜色表面的反射率差异来检测黑线：
+
+```
+        IR LED          光电晶体管
+          ↓                ↑
+    ┌─────────────────────────┐
+    │  ~~~~ 红外光 ~~~~       │
+    │                         │
+    └─────────────────────────┘
+         白色地面（高反射）→ 输出低电压
+         黑色线条（低反射）→ 输出高电压
+```
+
+**常用传感器型号**：
+- TCRT5000：模拟输出，灵敏度可调
+- QTR-8A/8RC：Pololu 8路传感器阵列
+- 自制阵列：5路或8路 TCRT5000
+
+#### 5路传感器阵列布局
+
+```
+传感器编号:  S0   S1   S2   S3   S4
+位置:       最左  左   中   右  最右
+            ↓    ↓    ↓    ↓    ↓
+         ┌────────────────────────┐
+         │  ○    ○    ○    ○    ○ │  ← 传感器阵列
+         └────────────────────────┘
+                    ↓
+              ═══════════          ← 黑色引导线（宽约15-20mm）
+```
+
+**传感器间距**：相邻传感器间距约 12-15mm，总宽度约 60mm，略宽于引导线。
+
+#### ADC 采样与归一化
+
+```c
+// line_sensor.h
+#ifndef LINE_SENSOR_H
+#define LINE_SENSOR_H
+
+#include "stm32f1xx_hal.h"
+#include <stdint.h>
+#include <stdbool.h>
+
+#define LINE_SENSOR_COUNT  5       // 传感器数量
+#define LINE_THRESHOLD     2048    // 黑白判断阈值（12位ADC，0-4095）
+#define LINE_SENSOR_WEIGHT_MAX  2  // 最大权重（传感器索引偏移量）
+
+// 传感器读数结构
+typedef struct {
+    uint16_t raw[LINE_SENSOR_COUNT];    // 原始ADC值
+    bool     on_line[LINE_SENSOR_COUNT]; // 是否在线上
+    float    position;                   // 线位置 [-1.0, +1.0]，0为中心
+    bool     line_detected;              // 是否检测到线
+} LineSensor_Data;
+
+// 初始化
+void LineSensor_Init(void);
+
+// 校准（在白色和黑色表面上分别调用）
+void LineSensor_Calibrate(void);
+
+// 读取传感器数据
+void LineSensor_Read(LineSensor_Data *data);
+
+// 获取线位置 [-1.0, +1.0]
+float LineSensor_GetPosition(void);
+
+#endif
+
+// line_sensor.c
+#include "line_sensor.h"
+#include <string.h>
+
+extern ADC_HandleTypeDef hadc1;
+
+// 校准值
+static uint16_t cal_min[LINE_SENSOR_COUNT];  // 白色表面最小值
+static uint16_t cal_max[LINE_SENSOR_COUNT];  // 黑色表面最大值
+
+// 传感器权重（用于计算加权位置）
+// 传感器0在最左，权重最负；传感器4在最右，权重最正
+static const float sensor_weights[LINE_SENSOR_COUNT] = {-2.0f, -1.0f, 0.0f, 1.0f, 2.0f};
+
+void LineSensor_Init(void) {
+    // 初始化校准值为默认
+    for (int i = 0; i < LINE_SENSOR_COUNT; i++) {
+        cal_min[i] = 0;
+        cal_max[i] = 4095;
+    }
+}
+
+void LineSensor_Calibrate(void) {
+    uint16_t samples[LINE_SENSOR_COUNT][10];
+    
+    // 采集10次样本
+    for (int s = 0; s < 10; s++) {
+        for (int i = 0; i < LINE_SENSOR_COUNT; i++) {
+            // 选择ADC通道并采样（实际需配置ADC多通道扫描）
+            HAL_ADC_Start(&hadc1);
+            HAL_ADC_PollForConversion(&hadc1, 10);
+            samples[i][s] = HAL_ADC_GetValue(&hadc1);
+        }
+        HAL_Delay(10);
+    }
+    
+    // 计算最小/最大值
+    for (int i = 0; i < LINE_SENSOR_COUNT; i++) {
+        cal_min[i] = samples[i][0];
+        cal_max[i] = samples[i][0];
+        for (int s = 1; s < 10; s++) {
+            if (samples[i][s] < cal_min[i]) cal_min[i] = samples[i][s];
+            if (samples[i][s] > cal_max[i]) cal_max[i] = samples[i][s];
+        }
+    }
+}
+
+void LineSensor_Read(LineSensor_Data *data) {
+    // 读取所有传感器ADC值
+    for (int i = 0; i < LINE_SENSOR_COUNT; i++) {
+        HAL_ADC_Start(&hadc1);
+        HAL_ADC_PollForConversion(&hadc1, 10);
+        data->raw[i] = HAL_ADC_GetValue(&hadc1);
+        
+        // 归一化到 [0, 1000]
+        uint16_t range = cal_max[i] - cal_min[i];
+        if (range == 0) range = 1;
+        uint16_t normalized = (uint16_t)(((int32_t)(data->raw[i] - cal_min[i]) * 1000) / range);
+        if (normalized > 1000) normalized = 1000;
+        
+        // 判断是否在线上（归一化值 > 500 表示黑线）
+        data->on_line[i] = (normalized > 500);
+    }
+    
+    // 计算加权位置
+    float weighted_sum = 0.0f;
+    float total_weight = 0.0f;
+    data->line_detected = false;
+    
+    for (int i = 0; i < LINE_SENSOR_COUNT; i++) {
+        if (data->on_line[i]) {
+            weighted_sum += sensor_weights[i];
+            total_weight += 1.0f;
+            data->line_detected = true;
+        }
+    }
+    
+    if (data->line_detected && total_weight > 0.0f) {
+        // 位置范围 [-2.0, +2.0]，归一化到 [-1.0, +1.0]
+        data->position = (weighted_sum / total_weight) / 2.0f;
+    } else {
+        data->position = 0.0f;  // 未检测到线时保持上次位置
+    }
+}
+
+float LineSensor_GetPosition(void) {
+    LineSensor_Data data;
+    LineSensor_Read(&data);
+    return data.position;
+}
+```
+
+#### 传感器安装要点
+
+```
+安装高度：距地面 3-8mm（过高灵敏度下降，过低易碰地）
+安装位置：车头前方，位于驱动轮前约 5-10cm
+倾斜角度：垂直向下，或略向前倾 5-10°
+
+          ┌──────────────────┐
+          │    STM32 主控    │
+          └────────┬─────────┘
+                   │
+          ┌────────┴─────────┐
+          │   传感器阵列      │  ← 安装在车头底部
+          └──────────────────┘
+                   ↓ 3-8mm
+          ══════════════════════  ← 地面/引导线
+```
+
+
+---
+
+## 核心算法扩展：PID 巡线、超声波避障与蓝牙控制
+
+### PID 巡线算法（横向偏差控制）
+
+#### 横向偏差（Cross-Track Error）定义
+
+横向偏差（CTE，Cross-Track Error）是机器人当前位置与期望路径之间的垂直距离。对于巡线任务，CTE 直接由传感器阵列的位置读数给出：
+
+```
+期望路径（黑线中心）
+        ↓
+════════╪════════════════  ← 黑线
+        │
+        │← CTE（横向偏差）
+        │
+       [车]  ← 机器人当前位置（偏右）
+```
+
+**CTE 与传感器位置的关系**：
+- 传感器位置 = 0.0：机器人在线中心，CTE = 0
+- 传感器位置 = +1.0：机器人偏右，需要左转（负角速度）
+- 传感器位置 = -1.0：机器人偏左，需要右转（正角速度）
+
+#### PID 巡线控制器实现
+
+```c
+// line_follower.h
+#ifndef LINE_FOLLOWER_H
+#define LINE_FOLLOWER_H
+
+#include "pid.h"
+#include "line_sensor.h"
+#include "motion_control.h"
+
+// 巡线参数
+typedef struct {
+    float base_speed;       // 基础前进速度 (m/s)
+    float max_turn_speed;   // 最大转向角速度 (rad/s)
+    PID_Controller pid;     // PID控制器（输入CTE，输出角速度）
+} LineFollower_Config;
+
+// 初始化巡线控制器
+void LineFollower_Init(LineFollower_Config *cfg,
+                       float base_speed,
+                       float kp, float ki, float kd);
+
+// 执行一次巡线控制（在控制周期中调用）
+void LineFollower_Update(LineFollower_Config *cfg);
+
+// 停止巡线
+void LineFollower_Stop(LineFollower_Config *cfg);
+
+#endif
+
+// line_follower.c
+#include "line_follower.h"
+#include <math.h>
+
+void LineFollower_Init(LineFollower_Config *cfg,
+                       float base_speed,
+                       float kp, float ki, float kd) {
+    cfg->base_speed = base_speed;
+    cfg->max_turn_speed = 2.0f;  // 最大 2 rad/s 转向
+    
+    PID_Init(&cfg->pid, kp, ki, kd);
+    PID_SetOutputLimits(&cfg->pid, -cfg->max_turn_speed, cfg->max_turn_speed);
+    PID_SetIntegralLimit(&cfg->pid, 1.0f);
+    PID_SetSetpoint(&cfg->pid, 0.0f);  // 目标：CTE = 0
+}
+
+void LineFollower_Update(LineFollower_Config *cfg) {
+    LineSensor_Data sensor_data;
+    LineSensor_Read(&sensor_data);
+    
+    if (!sensor_data.line_detected) {
+        // 丢线处理：停止或执行搜索策略
+        Motion_Stop();
+        return;
+    }
+    
+    // CTE = 传感器位置（正值表示偏右，需要左转）
+    float cte = sensor_data.position;
+    
+    // PID 计算转向角速度
+    // 注意：偏右（cte > 0）需要左转（omega < 0），所以取负号
+    float omega = -PID_Compute(&cfg->pid, cte);
+    
+    // 速度自适应：弯道减速
+    // 弯道越急（|omega|越大），前进速度越慢
+    float speed_factor = 1.0f - 0.5f * fabsf(omega) / cfg->max_turn_speed;
+    if (speed_factor < 0.3f) speed_factor = 0.3f;  // 最低保持30%速度
+    float linear_vel = cfg->base_speed * speed_factor;
+    
+    // 设置运动
+    Motion_SetVelocity(linear_vel, omega);
+}
+
+void LineFollower_Stop(LineFollower_Config *cfg) {
+    Motion_Stop();
+    PID_Reset(&cfg->pid);
+}
+```
+
+#### PID 参数调优指南（巡线专用）
+
+```
+巡线 PID 调优步骤：
+
+1. 先调 Kp（比例项）：
+   - 从 Kp=0.5 开始，Ki=0, Kd=0
+   - 增大 Kp 直到小车能跟线但有轻微振荡
+   - 典型值：Kp = 1.0 ~ 3.0
+
+2. 再调 Kd（微分项）：
+   - 增大 Kd 抑制振荡
+   - 典型值：Kd = 0.1 ~ 0.5
+   - 过大会导致对噪声过敏
+
+3. 最后调 Ki（积分项）：
+   - 巡线通常不需要 Ki，或设置很小的值
+   - 典型值：Ki = 0 ~ 0.05
+   - 过大会导致积分饱和，转向过度
+
+推荐初始参数（0.2m/s 速度）：
+  Kp = 2.0, Ki = 0.0, Kd = 0.2
+```
+
+**巡线效果评估**：
+
+```c
+// 巡线性能监控
+typedef struct {
+    float max_cte;          // 最大横向偏差
+    float avg_cte;          // 平均横向偏差
+    uint32_t lost_count;    // 丢线次数
+    uint32_t sample_count;  // 采样次数
+} LineFollower_Stats;
+
+void LineFollower_UpdateStats(LineFollower_Stats *stats, float cte) {
+    stats->sample_count++;
+    float abs_cte = fabsf(cte);
+    if (abs_cte > stats->max_cte) stats->max_cte = abs_cte;
+    // 指数移动平均
+    stats->avg_cte = 0.99f * stats->avg_cte + 0.01f * abs_cte;
+}
+```
+
+### 超声波避障（HC-SR04 精确实现）
+
+#### HC-SR04 时序图
+
+```
+Trig 引脚：
+  ___     ___________________________________________
+     |___|  10μs 触发脉冲  |________________________
+
+Echo 引脚：
+  _____________     ___________________________________
+               |___|  回波脉冲（宽度 = 飞行时间）  |___
+
+距离计算：
+  distance_cm = echo_pulse_width_us / 58
+  （声速 340m/s，往返除以2，单位换算）
+```
+
+#### 精确微秒定时实现
+
+```c
+// ultrasonic.h
+#ifndef ULTRASONIC_H
+#define ULTRASONIC_H
+
+#include "stm32f1xx_hal.h"
+#include <stdint.h>
+
+// HC-SR04 传感器配置
+typedef struct {
+    GPIO_TypeDef *trig_port;
+    uint16_t      trig_pin;
+    GPIO_TypeDef *echo_port;
+    uint16_t      echo_pin;
+} Ultrasonic_Config;
+
+// 传感器ID（前、左、右）
+typedef enum {
+    ULTRASONIC_FRONT = 0,
+    ULTRASONIC_LEFT  = 1,
+    ULTRASONIC_RIGHT = 2,
+    ULTRASONIC_COUNT = 3
+} Ultrasonic_ID;
+
+// 初始化
+void Ultrasonic_Init(void);
+
+// 测量距离（单位：cm），超时返回 400
+uint16_t Ultrasonic_Measure(Ultrasonic_ID id);
+
+// 获取所有传感器距离
+void Ultrasonic_MeasureAll(uint16_t distances[ULTRASONIC_COUNT]);
+
+#endif
+
+// ultrasonic.c
+#include "ultrasonic.h"
+
+// 使用 TIM1 作为微秒计时器（72MHz / 72 = 1MHz）
+extern TIM_HandleTypeDef htim1;
+
+// 传感器引脚配置
+static const Ultrasonic_Config sensors[ULTRASONIC_COUNT] = {
+    {GPIOB, GPIO_PIN_0,  GPIOB, GPIO_PIN_1},   // 前方
+    {GPIOB, GPIO_PIN_10, GPIOB, GPIO_PIN_11},  // 左侧
+    {GPIOB, GPIO_PIN_12, GPIOB, GPIO_PIN_13},  // 右侧
+};
+
+// 微秒延时（使用硬件定时器）
+static void delay_us(uint32_t us) {
+    __HAL_TIM_SET_COUNTER(&htim1, 0);
+    while (__HAL_TIM_GET_COUNTER(&htim1) < us);
+}
+
+void Ultrasonic_Init(void) {
+    // 启动微秒计时器
+    HAL_TIM_Base_Start(&htim1);
+}
+
+uint16_t Ultrasonic_Measure(Ultrasonic_ID id) {
+    const Ultrasonic_Config *cfg = &sensors[id];
+    uint32_t t_start, t_end;
+    
+    // 发送 10μs 触发脉冲
+    HAL_GPIO_WritePin(cfg->trig_port, cfg->trig_pin, GPIO_PIN_SET);
+    delay_us(10);
+    HAL_GPIO_WritePin(cfg->trig_port, cfg->trig_pin, GPIO_PIN_RESET);
+    
+    // 等待 Echo 上升沿（超时 30ms）
+    t_start = HAL_GetTick();
+    while (HAL_GPIO_ReadPin(cfg->echo_port, cfg->echo_pin) == GPIO_PIN_RESET) {
+        if (HAL_GetTick() - t_start > 30) return 400;
+    }
+    
+    // 记录上升沿时间（微秒精度）
+    uint32_t echo_start = __HAL_TIM_GET_COUNTER(&htim1);
+    
+    // 等待 Echo 下降沿（超时 30ms）
+    t_start = HAL_GetTick();
+    while (HAL_GPIO_ReadPin(cfg->echo_port, cfg->echo_pin) == GPIO_PIN_SET) {
+        if (HAL_GetTick() - t_start > 30) return 400;
+    }
+    
+    // 记录下降沿时间
+    uint32_t echo_end = __HAL_TIM_GET_COUNTER(&htim1);
+    
+    // 计算脉冲宽度（微秒）
+    uint32_t pulse_us;
+    if (echo_end >= echo_start) {
+        pulse_us = echo_end - echo_start;
+    } else {
+        // 定时器溢出处理（65535 计数器）
+        pulse_us = (65535 - echo_start) + echo_end;
+    }
+    
+    // 距离 = 脉冲时间(μs) / 58（声速 340m/s 往返）
+    uint16_t distance_cm = (uint16_t)(pulse_us / 58);
+    
+    // 限制有效范围 2-400cm
+    if (distance_cm < 2)   return 2;
+    if (distance_cm > 400) return 400;
+    
+    return distance_cm;
+}
+
+void Ultrasonic_MeasureAll(uint16_t distances[ULTRASONIC_COUNT]) {
+    for (int i = 0; i < ULTRASONIC_COUNT; i++) {
+        distances[i] = Ultrasonic_Measure((Ultrasonic_ID)i);
+        HAL_Delay(10);  // 传感器间隔，避免串扰
+    }
+}
+```
+
+#### 多传感器避障决策
+
+```c
+// obstacle_avoidance_v2.c - 改进版避障算法
+#include "obstacle_avoidance.h"
+#include "ultrasonic.h"
+#include "motion_control.h"
+
+// 距离阈值
+#define DIST_STOP    15   // cm：紧急停止
+#define DIST_SLOW    30   // cm：减速
+#define DIST_SAFE    50   // cm：安全距离
+
+// 避障状态机
+typedef enum {
+    AVOID_NORMAL = 0,   // 正常行驶
+    AVOID_SLOW,         // 减速
+    AVOID_STOP,         // 停止
+    AVOID_BACKUP,       // 后退
+    AVOID_TURN,         // 转向
+} AvoidState;
+
+static AvoidState avoid_state = AVOID_NORMAL;
+static uint32_t   state_timer = 0;
+
+void Obstacle_AvoidV2(float base_speed) {
+    uint16_t dist[ULTRASONIC_COUNT];
+    Ultrasonic_MeasureAll(dist);
+    
+    uint16_t front = dist[ULTRASONIC_FRONT];
+    uint16_t left  = dist[ULTRASONIC_LEFT];
+    uint16_t right = dist[ULTRASONIC_RIGHT];
+    
+    switch (avoid_state) {
+        case AVOID_NORMAL:
+            if (front < DIST_STOP) {
+                Motion_Stop();
+                avoid_state = AVOID_BACKUP;
+                state_timer = HAL_GetTick();
+            } else if (front < DIST_SLOW) {
+                // 减速，根据左右距离微调方向
+                float omega = 0.0f;
+                if (left > right) omega = 0.3f;   // 左边空间大，左转
+                else              omega = -0.3f;  // 右边空间大，右转
+                Motion_SetVelocity(base_speed * 0.4f, omega);
+                avoid_state = AVOID_SLOW;
+            } else {
+                Motion_SetVelocity(base_speed, 0.0f);
+            }
+            break;
+            
+        case AVOID_SLOW:
+            if (front >= DIST_SAFE) {
+                avoid_state = AVOID_NORMAL;
+            } else if (front < DIST_STOP) {
+                Motion_Stop();
+                avoid_state = AVOID_BACKUP;
+                state_timer = HAL_GetTick();
+            }
+            break;
+            
+        case AVOID_BACKUP:
+            // 后退 0.8 秒
+            Motion_SetVelocity(-0.15f, 0.0f);
+            if (HAL_GetTick() - state_timer > 800) {
+                // 选择转向方向（向空间更大的一侧）
+                avoid_state = AVOID_TURN;
+                state_timer = HAL_GetTick();
+            }
+            break;
+            
+        case AVOID_TURN:
+            // 转向 1.2 秒（约转 90°）
+            if (left > right) {
+                Motion_SetVelocity(0.0f, 1.2f);   // 左转
+            } else {
+                Motion_SetVelocity(0.0f, -1.2f);  // 右转
+            }
+            if (HAL_GetTick() - state_timer > 1200) {
+                avoid_state = AVOID_NORMAL;
+            }
+            break;
+            
+        default:
+            avoid_state = AVOID_NORMAL;
+            break;
+    }
+}
+```
+
+### 蓝牙远程控制（HC-05 AT 指令配置）
+
+#### HC-05 模块介绍
+
+HC-05 是常用的串口蓝牙模块（SPP，Serial Port Profile），支持主从模式切换，通过 AT 指令配置参数。
+
+**模块引脚**：
+```
+HC-05 引脚说明：
+  VCC  → 3.3V 或 5V（模块内部有稳压）
+  GND  → 地
+  TXD  → 连接 MCU RXD（PA10）
+  RXD  → 连接 MCU TXD（PA9），注意电平：5V MCU 需串联 1kΩ 分压
+  KEY  → AT 模式控制（上电前拉高进入 AT 模式）
+  STATE → 连接状态指示（已配对时高电平）
+```
+
+#### AT 指令配置流程
+
+```
+进入 AT 模式：
+  1. 断电
+  2. 按住 KEY 按钮（或将 KEY 引脚拉高）
+  3. 上电，LED 慢闪（2秒一次）表示进入 AT 模式
+  4. 串口设置：38400 baud, 8N1（AT 模式固定波特率）
+
+常用 AT 指令：
+  AT              → 测试通信，返回 OK
+  AT+VERSION?     → 查询固件版本
+  AT+NAME=SmartCar → 设置蓝牙名称
+  AT+PSWD=1234    → 设置配对密码（默认 1234）
+  AT+UART=115200,0,0 → 设置工作波特率为 115200
+  AT+ROLE=0       → 设置为从机模式（手机连接）
+  AT+RESET        → 重启模块（退出 AT 模式）
+
+配置完成后：
+  - 断电重启，KEY 不拉高
+  - LED 快闪（0.5秒一次）表示等待配对
+  - 配对成功后 LED 慢闪（2秒一次）
+```
+
+#### 蓝牙通信协议设计
+
+```c
+// bluetooth.h
+#ifndef BLUETOOTH_H
+#define BLUETOOTH_H
+
+#include "stm32f1xx_hal.h"
+#include <stdint.h>
+#include <stdbool.h>
+
+// 控制命令结构（简单文本协议）
+// 格式：CMD:param1,param2\n
+// 示例：
+//   MOVE:0.2,0.0\n    → 线速度0.2m/s，角速度0.0rad/s
+//   STOP:\n           → 停止
+//   MODE:LINE\n       → 切换到巡线模式
+//   MODE:AVOID\n      → 切换到避障模式
+//   MODE:MANUAL\n     → 切换到手动控制模式
+//   STATUS:\n         → 请求状态信息
+
+typedef enum {
+    CMD_MOVE   = 0,
+    CMD_STOP   = 1,
+    CMD_MODE   = 2,
+    CMD_STATUS = 3,
+    CMD_UNKNOWN = 255
+} BT_CommandType;
+
+typedef struct {
+    BT_CommandType type;
+    float param1;
+    float param2;
+    char  str_param[16];
+} BT_Command;
+
+// 工作模式
+typedef enum {
+    MODE_MANUAL  = 0,
+    MODE_LINE    = 1,
+    MODE_AVOID   = 2,
+} CarMode;
+
+// 初始化蓝牙模块
+void BT_Init(void);
+
+// 解析接收到的命令
+bool BT_ParseCommand(const char *buf, BT_Command *cmd);
+
+// 发送状态信息
+void BT_SendStatus(float speed, float omega, uint16_t front_dist, CarMode mode);
+
+// 处理接收中断
+void BT_UART_RxCallback(void);
+
+#endif
+
+// bluetooth.c
+#include "bluetooth.h"
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+extern UART_HandleTypeDef huart1;
+
+// 接收缓冲区
+#define BT_RX_BUF_SIZE 64
+static char rx_buf[BT_RX_BUF_SIZE];
+static uint8_t rx_byte;
+static uint8_t rx_idx = 0;
+static bool    cmd_ready = false;
+
+void BT_Init(void) {
+    // 启动 UART 接收中断（逐字节接收）
+    HAL_UART_Receive_IT(&huart1, &rx_byte, 1);
+}
+
+// UART 接收中断回调（在 HAL_UART_RxCpltCallback 中调用）
+void BT_UART_RxCallback(void) {
+    if (rx_byte == '\n' || rx_byte == '\r') {
+        if (rx_idx > 0) {
+            rx_buf[rx_idx] = '\0';
+            cmd_ready = true;
+            rx_idx = 0;
+        }
+    } else if (rx_idx < BT_RX_BUF_SIZE - 1) {
+        rx_buf[rx_idx++] = (char)rx_byte;
+    }
+    // 继续接收下一字节
+    HAL_UART_Receive_IT(&huart1, &rx_byte, 1);
+}
+
+bool BT_ParseCommand(const char *buf, BT_Command *cmd) {
+    cmd->type   = CMD_UNKNOWN;
+    cmd->param1 = 0.0f;
+    cmd->param2 = 0.0f;
+    
+    if (strncmp(buf, "MOVE:", 5) == 0) {
+        cmd->type = CMD_MOVE;
+        sscanf(buf + 5, "%f,%f", &cmd->param1, &cmd->param2);
+        return true;
+    } else if (strncmp(buf, "STOP:", 5) == 0) {
+        cmd->type = CMD_STOP;
+        return true;
+    } else if (strncmp(buf, "MODE:", 5) == 0) {
+        cmd->type = CMD_MODE;
+        strncpy(cmd->str_param, buf + 5, sizeof(cmd->str_param) - 1);
+        return true;
+    } else if (strncmp(buf, "STATUS:", 7) == 0) {
+        cmd->type = CMD_STATUS;
+        return true;
+    }
+    return false;
+}
+
+void BT_SendStatus(float speed, float omega, uint16_t front_dist, CarMode mode) {
+    char buf[128];
+    const char *mode_str = (mode == MODE_LINE) ? "LINE" :
+                           (mode == MODE_AVOID) ? "AVOID" : "MANUAL";
+    snprintf(buf, sizeof(buf),
+             "STATUS:v=%.2f,w=%.2f,dist=%d,mode=%s\n",
+             speed, omega, front_dist, mode_str);
+    HAL_UART_Transmit(&huart1, (uint8_t *)buf, strlen(buf), 100);
+}
+```
+
+#### 手机 APP 控制界面
+
+推荐使用 **Serial Bluetooth Terminal**（Android）或 **LightBlue**（iOS）进行调试。
+
+自定义按钮配置（Serial Bluetooth Terminal 宏）：
+```
+前进：MOVE:0.20,0.00\n
+后退：MOVE:-0.20,0.00\n
+左转：MOVE:0.00,1.00\n
+右转：MOVE:0.00,-1.00\n
+停止：STOP:\n
+巡线：MODE:LINE\n
+避障：MODE:AVOID\n
+手动：MODE:MANUAL\n
+状态：STATUS:\n
+```
+
+
+---
+
+## 深入原理：里程计航位推算与坐标系变换
+
+### 里程计航位推算（Odometry Dead Reckoning）
+
+航位推算（Dead Reckoning）是一种通过累积运动增量来估计当前位置的方法。对于差速驱动机器人，使用编码器数据进行里程计推算是最基础的定位方式。
+
+#### 推算原理
+
+```
+已知：
+  - 上一时刻位姿：(x_k, y_k, θ_k)
+  - 左轮行驶距离：ΔS_L（由编码器计算）
+  - 右轮行驶距离：ΔS_R（由编码器计算）
+
+计算：
+  ΔS = (ΔS_R + ΔS_L) / 2        // 机器人质心行驶距离
+  Δθ = (ΔS_R - ΔS_L) / L        // 朝向角变化量
+
+更新位姿（使用中点角度提高精度）：
+  θ_mid = θ_k + Δθ / 2
+  x_{k+1} = x_k + ΔS × cos(θ_mid)
+  y_{k+1} = y_k + ΔS × sin(θ_mid)
+  θ_{k+1} = θ_k + Δθ
+```
+
+**编码器脉冲到距离的转换**：
+```
+每转脉冲数 = 编码器线数 × 4（四倍频） × 减速比
+每脉冲距离 = 车轮周长 / 每转脉冲数
+           = (π × 轮径) / (编码器线数 × 4 × 减速比)
+
+示例（11线编码器，48:1减速，65mm轮径）：
+  每转脉冲数 = 11 × 4 × 48 = 2112 脉冲/转
+  每脉冲距离 = (π × 0.065) / 2112 ≈ 9.67 × 10⁻⁵ m/脉冲
+```
+
+#### 完整里程计实现
+
+```c
+// odometry.h
+#ifndef ODOMETRY_H
+#define ODOMETRY_H
+
+#include <math.h>
+#include <stdint.h>
+
+// 里程计参数
+#define ODOM_ENCODER_LINES   11      // 编码器线数（单相）
+#define ODOM_GEAR_RATIO      48      // 减速比
+#define ODOM_WHEEL_DIAM_M    0.065f  // 车轮直径 (m)
+#define ODOM_WHEEL_BASE_M    0.150f  // 轮距 (m)
+
+// 每脉冲行驶距离 (m)
+#define ODOM_DIST_PER_PULSE  \
+    ((float)(M_PI * ODOM_WHEEL_DIAM_M) / \
+     (ODOM_ENCODER_LINES * 4 * ODOM_GEAR_RATIO))
+
+// 机器人位姿
+typedef struct {
+    float x;        // 世界坐标 X (m)
+    float y;        // 世界坐标 Y (m)
+    float theta;    // 朝向角 (rad)，逆时针为正
+    float v;        // 当前线速度 (m/s)
+    float omega;    // 当前角速度 (rad/s)
+    float dist;     // 累计行驶距离 (m)
+} Odometry_State;
+
+// 初始化里程计
+void Odometry_Init(Odometry_State *odom);
+
+// 重置位姿
+void Odometry_Reset(Odometry_State *odom);
+
+// 更新里程计（在控制周期中调用）
+// left_pulses, right_pulses: 本周期内的编码器脉冲增量（带符号）
+void Odometry_Update(Odometry_State *odom,
+                     int32_t left_pulses,
+                     int32_t right_pulses,
+                     float dt);
+
+// 打印当前位姿（调试用）
+void Odometry_Print(const Odometry_State *odom);
+
+#endif
+
+// odometry.c
+#include "odometry.h"
+#include <stdio.h>
+
+void Odometry_Init(Odometry_State *odom) {
+    Odometry_Reset(odom);
+}
+
+void Odometry_Reset(Odometry_State *odom) {
+    odom->x     = 0.0f;
+    odom->y     = 0.0f;
+    odom->theta = 0.0f;
+    odom->v     = 0.0f;
+    odom->omega = 0.0f;
+    odom->dist  = 0.0f;
+}
+
+void Odometry_Update(Odometry_State *odom,
+                     int32_t left_pulses,
+                     int32_t right_pulses,
+                     float dt) {
+    // 脉冲数转换为距离
+    float ds_left  = (float)left_pulses  * ODOM_DIST_PER_PULSE;
+    float ds_right = (float)right_pulses * ODOM_DIST_PER_PULSE;
+    
+    // 质心行驶距离和朝向变化
+    float ds    = (ds_right + ds_left) / 2.0f;
+    float dtheta = (ds_right - ds_left) / ODOM_WHEEL_BASE_M;
+    
+    // 使用中点角度积分（提高曲线精度）
+    float theta_mid = odom->theta + dtheta / 2.0f;
+    
+    // 更新位姿
+    odom->x     += ds * cosf(theta_mid);
+    odom->y     += ds * sinf(theta_mid);
+    odom->theta += dtheta;
+    odom->dist  += fabsf(ds);
+    
+    // 角度归一化
+    while (odom->theta >  (float)M_PI) odom->theta -= 2.0f * (float)M_PI;
+    while (odom->theta < -(float)M_PI) odom->theta += 2.0f * (float)M_PI;
+    
+    // 计算速度（用于状态估计）
+    if (dt > 1e-6f) {
+        odom->v     = ds / dt;
+        odom->omega = dtheta / dt;
+    }
+}
+
+void Odometry_Print(const Odometry_State *odom) {
+    printf("Odom: x=%.3f y=%.3f θ=%.2f° v=%.3f ω=%.3f dist=%.3f\n",
+           odom->x, odom->y,
+           odom->theta * 180.0f / (float)M_PI,
+           odom->v, odom->omega, odom->dist);
+}
+```
+
+#### 里程计误差分析
+
+```
+里程计误差来源：
+
+1. 系统误差（可校准）：
+   ├── 轮径测量误差：轮径偏差 1mm → 速度误差 ~3%
+   ├── 轮距测量误差：轮距偏差 1mm → 转向误差 ~0.7%
+   └── 编码器分辨率：11线×4倍频×48减速 = 2112脉冲/转
+
+2. 随机误差（不可消除）：
+   ├── 轮胎打滑：急加速/急转弯时
+   ├── 地面不平：颠簸导致轮子离地
+   └── 编码器噪声：低速时脉冲不稳定
+
+3. 累积误差：
+   └── 误差随行驶距离线性增长
+   └── 典型值：行驶 1m 后位置误差 ~1-3cm，角度误差 ~1-3°
+
+校准方法：
+  1. 直线校准：命令前进 1m，测量实际距离，调整 ODOM_WHEEL_DIAM_M
+  2. 转向校准：命令原地转 360°，测量实际角度，调整 ODOM_WHEEL_BASE_M
+```
+
+### 坐标系变换
+
+#### 坐标系层次结构
+
+```
+世界坐标系 (World Frame, W)
+    │
+    └── 机器人坐标系 (Robot Frame, R)
+            │
+            └── 传感器坐标系 (Sensor Frame, S)
+                    │
+                    └── 目标坐标系 (Target Frame, T)
+```
+
+#### 齐次变换矩阵（2D）
+
+2D 坐标变换使用 3×3 齐次变换矩阵：
+
+```
+从机器人坐标系到世界坐标系的变换矩阵 T_WR：
+
+T_WR = | cos(θ)  -sin(θ)  x |
+       | sin(θ)   cos(θ)  y |
+       |    0        0    1 |
+
+其中 (x, y, θ) 是机器人在世界坐标系中的位姿。
+
+点变换：
+  P_world = T_WR × P_robot
+
+  | x_w |   | cos(θ)  -sin(θ)  x |   | x_r |
+  | y_w | = | sin(θ)   cos(θ)  y | × | y_r |
+  |  1  |   |    0        0    1 |   |  1  |
+```
+
+#### 坐标变换实现
+
+```c
+// coordinate_transform.h
+#ifndef COORD_TRANSFORM_H
+#define COORD_TRANSFORM_H
+
+#include <math.h>
+
+// 2D 点
+typedef struct { float x, y; } Point2D;
+
+// 2D 位姿
+typedef struct { float x, y, theta; } Pose2D;
+
+// 将机器人坐标系中的点变换到世界坐标系
+Point2D Transform_RobotToWorld(const Pose2D *robot_pose, Point2D p_robot);
+
+// 将世界坐标系中的点变换到机器人坐标系
+Point2D Transform_WorldToRobot(const Pose2D *robot_pose, Point2D p_world);
+
+// 计算从当前位姿到目标位姿的相对位姿
+Pose2D Transform_RelativePose(const Pose2D *current, const Pose2D *target);
+
+// 计算到目标点的距离和角度（机器人坐标系）
+void Transform_TargetBearing(const Pose2D *robot_pose,
+                              Point2D target,
+                              float *distance,
+                              float *bearing_rad);
+
+#endif
+
+// coordinate_transform.c
+#include "coordinate_transform.h"
+
+Point2D Transform_RobotToWorld(const Pose2D *pose, Point2D p_robot) {
+    float c = cosf(pose->theta);
+    float s = sinf(pose->theta);
+    Point2D p_world;
+    p_world.x = c * p_robot.x - s * p_robot.y + pose->x;
+    p_world.y = s * p_robot.x + c * p_robot.y + pose->y;
+    return p_world;
+}
+
+Point2D Transform_WorldToRobot(const Pose2D *pose, Point2D p_world) {
+    float c = cosf(pose->theta);
+    float s = sinf(pose->theta);
+    float dx = p_world.x - pose->x;
+    float dy = p_world.y - pose->y;
+    Point2D p_robot;
+    p_robot.x =  c * dx + s * dy;
+    p_robot.y = -s * dx + c * dy;
+    return p_robot;
+}
+
+Pose2D Transform_RelativePose(const Pose2D *current, const Pose2D *target) {
+    // 目标在当前机器人坐标系中的位姿
+    Point2D target_pt = {target->x, target->y};
+    Point2D rel_pt = Transform_WorldToRobot(current, target_pt);
+    Pose2D rel;
+    rel.x = rel_pt.x;
+    rel.y = rel_pt.y;
+    rel.theta = target->theta - current->theta;
+    // 角度归一化
+    while (rel.theta >  (float)M_PI) rel.theta -= 2.0f * (float)M_PI;
+    while (rel.theta < -(float)M_PI) rel.theta += 2.0f * (float)M_PI;
+    return rel;
+}
+
+void Transform_TargetBearing(const Pose2D *robot_pose,
+                              Point2D target,
+                              float *distance,
+                              float *bearing_rad) {
+    float dx = target.x - robot_pose->x;
+    float dy = target.y - robot_pose->y;
+    *distance    = sqrtf(dx * dx + dy * dy);
+    *bearing_rad = atan2f(dy, dx) - robot_pose->theta;
+    // 归一化到 [-π, π]
+    while (*bearing_rad >  (float)M_PI) *bearing_rad -= 2.0f * (float)M_PI;
+    while (*bearing_rad < -(float)M_PI) *bearing_rad += 2.0f * (float)M_PI;
+}
+```
+
+#### 路径点导航示例
+
+```c
+// 基于里程计的路径点导航
+typedef struct {
+    float x, y;         // 目标位置 (m)
+    float tolerance;    // 到达容差 (m)
+} Waypoint;
+
+// 导航到目标路径点
+bool Navigate_ToWaypoint(const Odometry_State *odom,
+                          const Waypoint *wp,
+                          float *linear_vel,
+                          float *angular_vel) {
+    Pose2D robot_pose = {odom->x, odom->y, odom->theta};
+    Point2D target    = {wp->x, wp->y};
+    
+    float distance, bearing;
+    Transform_TargetBearing(&robot_pose, target, &distance, &bearing);
+    
+    // 到达判断
+    if (distance < wp->tolerance) {
+        *linear_vel  = 0.0f;
+        *angular_vel = 0.0f;
+        return true;  // 已到达
+    }
+    
+    // 先转向目标方向，再前进
+    if (fabsf(bearing) > 0.2f) {
+        // 转向阶段：原地转向
+        *linear_vel  = 0.0f;
+        *angular_vel = (bearing > 0) ? 0.8f : -0.8f;
+    } else {
+        // 前进阶段：速度与距离成正比（接近时减速）
+        float speed = fminf(0.3f, distance * 0.5f);
+        *linear_vel  = speed;
+        *angular_vel = bearing * 1.5f;  // 比例转向修正
+    }
+    return false;  // 未到达
+}
+```
+
+
+---
+
+## 完整项目实战：多功能智能小车
+
+### 项目概述
+
+本节实现一个集成巡线、避障和蓝牙遥控三种模式的完整智能小车系统，支持模式切换和实时状态上报。
+
+#### 系统架构图
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                    STM32F103C8T6                         │
+│                                                         │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐             │
+│  │ 巡线模块  │  │ 避障模块  │  │ 遥控模块  │             │
+│  │LineFollow│  │Obstacle  │  │Bluetooth │             │
+│  └────┬─────┘  └────┬─────┘  └────┬─────┘             │
+│       │              │              │                   │
+│  ┌────▼──────────────▼──────────────▼────┐             │
+│  │           运动控制层 (Motion Control)   │             │
+│  │    Motion_SetVelocity(v, ω)           │             │
+│  └────────────────────┬──────────────────┘             │
+│                        │                               │
+│  ┌─────────────────────▼──────────────────┐            │
+│  │         PID 速度控制器 (左/右轮)         │            │
+│  └──────────┬──────────────────┬──────────┘            │
+│             │                  │                       │
+│  ┌──────────▼──┐          ┌────▼──────────┐            │
+│  │  左电机驱动  │          │  右电机驱动   │            │
+│  │  L298N CH1  │          │  L298N CH2   │            │
+│  └─────────────┘          └──────────────┘            │
+│                                                         │
+│  传感器输入：                                            │
+│  ├── 5路IR传感器 → ADC1 (PA0-PA4)                      │
+│  ├── 前超声波   → PB0(Trig)/PB1(Echo)                  │
+│  ├── 左超声波   → PB10(Trig)/PB11(Echo)                │
+│  ├── 右超声波   → PB12(Trig)/PB13(Echo)                │
+│  ├── 左编码器   → TIM4 (PB6/PB7)                       │
+│  ├── 右编码器   → TIM3 (PA6/PA7)                       │
+│  └── 蓝牙HC-05 → USART1 (PA9/PA10)                    │
+└─────────────────────────────────────────────────────────┘
+```
+
+#### 完整物料清单（BOM）
+
+| 序号 | 名称 | 型号/规格 | 数量 | 参考价 | 采购建议 |
+|------|------|-----------|------|--------|----------|
+| 1 | 主控板 | STM32F103C8T6（蓝色药丸） | 1 | ¥15 | 淘宝/立创 |
+| 2 | 电机驱动 | L298N 双H桥模块 | 1 | ¥10 | 淘宝 |
+| 3 | 直流减速电机 | 6V 1:48 带AB相编码器 | 2 | ¥35/个 | 淘宝 |
+| 4 | 超声波模块 | HC-SR04 | 3 | ¥4/个 | 淘宝 |
+| 5 | 红外传感器 | TCRT5000 5路模块 | 1 | ¥8 | 淘宝 |
+| 6 | 蓝牙模块 | HC-05 | 1 | ¥15 | 淘宝 |
+| 7 | 锂电池 | 7.4V 2S 2000mAh | 1 | ¥30 | 淘宝 |
+| 8 | 降压模块 | MP1584 5V/3A | 1 | ¥5 | 立创 |
+| 9 | 小车底盘 | 双层亚克力+铜柱 | 1 | ¥40 | 淘宝 |
+| 10 | OLED显示屏 | 0.96寸 I2C SSD1306 | 1 | ¥10 | 淘宝（可选） |
+| 11 | 杜邦线 | 20cm 公母各一包 | 若干 | ¥5 | 淘宝 |
+| 12 | 电源开关 | 船型开关 | 1 | ¥1 | 淘宝 |
+| **合计** | | | | **≈¥200** | |
+
+### 完整主程序
+
+```c
+// main_smart_car.c - 完整智能小车主程序
+// STM32F103C8T6, HAL库, 系统时钟72MHz
+// 版本：v2.0，日期：2026-03-10
+
+#include "main.h"
+#include "motor_driver.h"
+#include "encoder.h"
+#include "pid.h"
+#include "motion_control.h"
+#include "line_sensor.h"
+#include "line_follower.h"
+#include "ultrasonic.h"
+#include "obstacle_avoidance.h"
+#include "bluetooth.h"
+#include "odometry.h"
+#include <stdio.h>
+#include <string.h>
+
+// ============================================================
+// 全局变量
+// ============================================================
+TIM_HandleTypeDef htim1;   // 微秒计时器（超声波）
+TIM_HandleTypeDef htim2;   // PWM（电机）
+TIM_HandleTypeDef htim3;   // 编码器（右轮）
+TIM_HandleTypeDef htim4;   // 编码器（左轮）
+TIM_HandleTypeDef htim6;   // 控制周期（10ms）
+UART_HandleTypeDef huart1; // 蓝牙/调试串口
+ADC_HandleTypeDef hadc1;   // 巡线传感器ADC
+
+// 系统状态
+static CarMode    current_mode = MODE_MANUAL;
+static Odometry_State odom;
+static LineFollower_Config line_cfg;
+
+// 编码器脉冲计数（用于里程计）
+static int32_t encoder_left_last  = 0;
+static int32_t encoder_right_last = 0;
+
+// 控制周期标志
+static volatile bool control_tick = false;
+
+// ============================================================
+// 初始化函数
+// ============================================================
+void SmartCar_Init(void) {
+    // 硬件初始化（由CubeMX生成）
+    HAL_Init();
+    SystemClock_Config();
+    MX_GPIO_Init();
+    MX_TIM1_Init();   // 微秒计时
+    MX_TIM2_Init();   // PWM
+    MX_TIM3_Init();   // 右编码器
+    MX_TIM4_Init();   // 左编码器
+    MX_TIM6_Init();   // 控制周期
+    MX_USART1_UART_Init();
+    MX_ADC1_Init();
+    
+    // 模块初始化
+    Motor_Init();
+    Encoder_Init();
+    Motion_Init();
+    Ultrasonic_Init();
+    LineSensor_Init();
+    BT_Init();
+    Odometry_Init(&odom);
+    
+    // 巡线PID参数（需根据实际调整）
+    LineFollower_Init(&line_cfg, 0.20f, 2.0f, 0.0f, 0.2f);
+    
+    printf("SmartCar v2.0 Ready!\r\n");
+    printf("Mode: MANUAL | BT: HC-05 @ 115200\r\n");
+}
+
+// ============================================================
+// 蓝牙命令处理
+// ============================================================
+extern char rx_buf[];
+extern bool cmd_ready;
+
+void SmartCar_ProcessBTCommand(void) {
+    if (!cmd_ready) return;
+    cmd_ready = false;
+    
+    BT_Command cmd;
+    if (!BT_ParseCommand(rx_buf, &cmd)) return;
+    
+    switch (cmd.type) {
+        case CMD_MOVE:
+            if (current_mode == MODE_MANUAL) {
+                Motion_SetVelocity(cmd.param1, cmd.param2);
+            }
+            break;
+            
+        case CMD_STOP:
+            Motion_Stop();
+            current_mode = MODE_MANUAL;
+            break;
+            
+        case CMD_MODE:
+            if (strcmp(cmd.str_param, "LINE") == 0) {
+                current_mode = MODE_LINE;
+                printf("Mode: LINE FOLLOWING\r\n");
+            } else if (strcmp(cmd.str_param, "AVOID") == 0) {
+                current_mode = MODE_AVOID;
+                printf("Mode: OBSTACLE AVOID\r\n");
+            } else if (strcmp(cmd.str_param, "MANUAL") == 0) {
+                current_mode = MODE_MANUAL;
+                Motion_Stop();
+                printf("Mode: MANUAL\r\n");
+            }
+            break;
+            
+        case CMD_STATUS: {
+            float v, w;
+            Motion_GetVelocity(&v, &w);
+            uint16_t front_dist = Ultrasonic_Measure(ULTRASONIC_FRONT);
+            BT_SendStatus(v, w, front_dist, current_mode);
+            break;
+        }
+        default: break;
+    }
+}
+
+// ============================================================
+// 主循环
+// ============================================================
+int main(void) {
+    SmartCar_Init();
+    
+    // 启动控制周期定时器（10ms中断）
+    HAL_TIM_Base_Start_IT(&htim6);
+    
+    uint32_t status_timer = 0;
+    
+    while (1) {
+        // 处理蓝牙命令
+        SmartCar_ProcessBTCommand();
+        
+        // 控制周期任务（由定时器中断触发）
+        if (control_tick) {
+            control_tick = false;
+            
+            // 更新编码器和里程计
+            int32_t left_now  = Encoder_GetCount(ENCODER_LEFT);
+            int32_t right_now = Encoder_GetCount(ENCODER_RIGHT);
+            int32_t dl = left_now  - encoder_left_last;
+            int32_t dr = right_now - encoder_right_last;
+            encoder_left_last  = left_now;
+            encoder_right_last = right_now;
+            
+            Encoder_Update();
+            Odometry_Update(&odom, dl, dr, 0.01f);
+            
+            // 根据模式执行控制
+            switch (current_mode) {
+                case MODE_LINE:
+                    LineFollower_Update(&line_cfg);
+                    break;
+                    
+                case MODE_AVOID: {
+                    uint16_t dists[ULTRASONIC_COUNT];
+                    Ultrasonic_MeasureAll(dists);
+                    float v = 0.2f, w = 0.0f;
+                    if (dists[ULTRASONIC_FRONT] < 20) {
+                        v = 0.0f;
+                        w = (dists[ULTRASONIC_LEFT] > dists[ULTRASONIC_RIGHT]) ? 1.0f : -1.0f;
+                    } else if (dists[ULTRASONIC_FRONT] < 40) {
+                        v = 0.1f;
+                    }
+                    Motion_SetVelocity(v, w);
+                    break;
+                }
+                    
+                case MODE_MANUAL:
+                default:
+                    // 手动模式：由蓝牙命令控制，此处只更新PID
+                    break;
+            }
+            
+            // 运动控制PID更新
+            Motion_Update();
+        }
+        
+        // 每500ms发送一次状态（调试用）
+        if (HAL_GetTick() - status_timer > 500) {
+            status_timer = HAL_GetTick();
+            Odometry_Print(&odom);
+        }
+    }
+}
+
+// ============================================================
+// 中断回调
+// ============================================================
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+    if (htim->Instance == TIM6) {
+        control_tick = true;  // 设置控制周期标志
+    }
+}
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
+    if (huart->Instance == USART1) {
+        BT_UART_RxCallback();
+    }
+}
+
+// printf 重定向到 USART1
+int fputc(int ch, FILE *f) {
+    HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 0xFFFF);
+    return ch;
+}
+```
+
+### CubeMX 配置摘要
+
+```yaml
+# STM32CubeMX 关键配置
+
+时钟树：
+  HSE: 8MHz 外部晶振
+  PLL: ×9 → 72MHz 系统时钟
+  APB1: 36MHz（TIM2/3/4/6）
+  APB2: 72MHz（TIM1, USART1, ADC1）
+
+TIM1（微秒计时器）：
+  时钟源: Internal Clock (72MHz)
+  预分频: 71 → 1MHz 计数频率
+  自动重装载: 65535
+  模式: 向上计数，不开中断
+
+TIM2（PWM 电机驱动）：
+  时钟源: Internal Clock (72MHz)
+  预分频: 71 → 1MHz
+  自动重装载: 999 → 1kHz PWM
+  CH1: PWM Generation（左电机）
+  CH4: PWM Generation（右电机）
+
+TIM3（右轮编码器）：
+  模式: Encoder Mode TI1 and TI2
+  极性: Rising Edge
+  自动重装载: 65535
+
+TIM4（左轮编码器）：
+  模式: Encoder Mode TI1 and TI2
+  极性: Rising Edge
+  自动重装载: 65535
+
+TIM6（控制周期）：
+  时钟源: Internal Clock (36MHz)
+  预分频: 3599 → 10kHz
+  自动重装载: 99 → 10ms 中断
+  中断: Update interrupt 使能
+
+USART1（蓝牙）：
+  波特率: 115200
+  数据位: 8, 停止位: 1, 无校验
+  模式: 异步，接收中断使能
+
+ADC1（巡线传感器）：
+  通道: IN0~IN4（PA0~PA4）
+  扫描模式: 使能
+  连续转换: 使能
+  分辨率: 12位
+```
+
+### 调试与验证流程
+
+```
+阶段1：硬件验证（上电前检查）
+  □ 用万用表测量电源电压（7.4V电池，5V降压输出）
+  □ 检查所有模块共地
+  □ 检查电机驱动模块方向控制引脚
+  □ 检查编码器供电（5V）
+
+阶段2：单模块测试
+  □ 电机测试：左右电机分别正转/反转
+  □ 编码器测试：手动转动轮子，观察计数变化
+  □ 超声波测试：用手遮挡，观察距离读数
+  □ 巡线传感器测试：在黑线上移动，观察位置输出
+  □ 蓝牙测试：发送 STATUS: 命令，观察响应
+
+阶段3：集成测试
+  □ PID速度控制：设置目标速度，观察实际速度跟踪
+  □ 直线行驶：前进1m，测量偏差（目标<5cm）
+  □ 巡线测试：在标准赛道上测试，调整PID参数
+  □ 避障测试：放置障碍物，验证避障行为
+  □ 蓝牙遥控：测试所有命令响应
+
+阶段4：性能优化
+  □ 调整巡线PID参数（Kp/Ki/Kd）
+  □ 调整速度PID参数
+  □ 优化避障阈值
+  □ 测试电池续航
+```
+
+
+---
+
+## 常见问题与调试指南（扩展版）
+
+### 问题1：左右电机速度不匹配，小车跑偏
+
+**现象**：设置相同速度，小车向一侧偏转，无法直线行驶。
+
+**根本原因分析**：
+```
+原因层次：
+  硬件层：
+    ├── 两个电机特性不一致（死区电压不同）
+    ├── 减速比存在微小差异（±5%）
+    ├── 车轮直径不完全相同
+    └── 编码器安装位置影响计数精度
+
+  软件层：
+    ├── PID参数左右不对称
+    ├── PWM死区补偿未实现
+    └── 编码器方向配置错误
+```
+
+**诊断步骤**：
+```c
+// 诊断代码：测量两轮在相同PWM下的实际速度
+void Diagnose_MotorMismatch(void) {
+    // 设置相同PWM，不使用PID
+    Motor_SetSpeed(MOTOR_LEFT,  500, MOTOR_FORWARD);
+    Motor_SetSpeed(MOTOR_RIGHT, 500, MOTOR_FORWARD);
+    
+    HAL_Delay(2000);  // 等待稳定
+    
+    float v_left  = Encoder_GetSpeed(ENCODER_LEFT);
+    float v_right = Encoder_GetSpeed(ENCODER_RIGHT);
+    float mismatch = (v_right - v_left) / ((v_right + v_left) / 2.0f) * 100.0f;
+    
+    printf("Left: %.3f m/s, Right: %.3f m/s, Mismatch: %.1f%%\n",
+           v_left, v_right, mismatch);
+    // 正常范围：不匹配度 < 5%
+    
+    Motor_StopAll();
+}
+```
+
+**解决方案**：
+
+方案A：独立PID（推荐）
+```c
+// 左右轮使用独立PID控制器，各自补偿
+// 已在 motion_control.c 中实现
+// 关键：确保两个PID参数相同，让反馈自动补偿差异
+```
+
+方案B：PWM 死区补偿
+```c
+// 测量每个电机的最小启动PWM（死区）
+#define MOTOR_LEFT_DEADBAND   120  // 左电机死区PWM值
+#define MOTOR_RIGHT_DEADBAND  135  // 右电机死区PWM值（通常略大）
+
+int16_t Motor_CompensateDeadband(Motor_ID motor, int16_t pwm) {
+    int16_t deadband = (motor == MOTOR_LEFT) ? 
+                        MOTOR_LEFT_DEADBAND : MOTOR_RIGHT_DEADBAND;
+    if (pwm == 0) return 0;
+    // 在死区值基础上叠加控制量
+    return (pwm > 0) ? (deadband + pwm) : -(deadband - pwm);
+}
+```
+
+---
+
+### 问题2：巡线传感器噪声，小车抖动
+
+**现象**：在直线段小车左右抖动，传感器读数不稳定。
+
+**原因分析**：
+```
+噪声来源：
+  1. 电机PWM干扰：电机开关噪声通过电源线耦合到传感器
+  2. 地面反射不均匀：地面光泽度变化导致读数波动
+  3. 传感器安装高度不一致：各传感器距地面高度差异
+  4. ADC采样时序：在PWM高频切换时采样
+```
+
+**软件滤波方案**：
+```c
+// 移动平均滤波器（对每个传感器独立滤波）
+#define FILTER_SIZE 4
+
+typedef struct {
+    uint16_t buf[LINE_SENSOR_COUNT][FILTER_SIZE];
+    uint8_t  idx;
+} SensorFilter;
+
+static SensorFilter sensor_filter = {0};
+
+void SensorFilter_Update(SensorFilter *f, uint16_t raw[LINE_SENSOR_COUNT]) {
+    for (int i = 0; i < LINE_SENSOR_COUNT; i++) {
+        f->buf[i][f->idx] = raw[i];
+    }
+    f->idx = (f->idx + 1) % FILTER_SIZE;
+}
+
+void SensorFilter_GetFiltered(SensorFilter *f, uint16_t out[LINE_SENSOR_COUNT]) {
+    for (int i = 0; i < LINE_SENSOR_COUNT; i++) {
+        uint32_t sum = 0;
+        for (int j = 0; j < FILTER_SIZE; j++) {
+            sum += f->buf[i][j];
+        }
+        out[i] = (uint16_t)(sum / FILTER_SIZE);
+    }
+}
+```
+
+**硬件改善措施**：
+```
+1. 电源去耦：在传感器电源引脚附近添加 100nF 陶瓷电容
+2. 采样时序：在 PWM 低电平期间采样 ADC（避开开关噪声）
+3. 传感器高度：统一调整到 5mm，用固定支架保证一致性
+4. 屏蔽：传感器信号线使用屏蔽线或远离电机驱动线
+```
+
+---
+
+### 问题3：PID 控制振荡
+
+**现象**：速度控制或巡线控制出现持续振荡，无法稳定。
+
+**振荡类型诊断**：
+```
+类型1：高频振荡（>5Hz）
+  原因：Kd 过大，放大了传感器噪声
+  解决：减小 Kd，或在微分项加低通滤波
+
+类型2：低频振荡（<2Hz）
+  原因：Kp 过大，系统增益过高
+  解决：减小 Kp
+
+类型3：积分饱和振荡
+  原因：Ki 过大，积分项累积过多
+  解决：减小 Ki，增大积分限幅
+
+类型4：死区振荡
+  原因：电机死区导致小信号无响应，大信号过冲
+  解决：实现死区补偿
+```
+
+**带微分滤波的改进 PID**：
+```c
+// 改进版 PID：微分项低通滤波
+typedef struct {
+    float Kp, Ki, Kd;
+    float setpoint;
+    float integral;
+    float prev_error;
+    float prev_derivative;  // 上次微分值（用于滤波）
+    float output_min, output_max;
+    float integral_max;
+    float d_filter_coeff;   // 微分滤波系数 [0,1]，越小滤波越强
+} PID_Improved;
+
+float PID_Improved_Compute(PID_Improved *pid, float input) {
+    float error = pid->setpoint - input;
+    
+    // 积分项（带限幅）
+    pid->integral += error;
+    if (pid->integral >  pid->integral_max) pid->integral =  pid->integral_max;
+    if (pid->integral < -pid->integral_max) pid->integral = -pid->integral_max;
+    
+    // 微分项（低通滤波，减少噪声放大）
+    float raw_derivative = error - pid->prev_error;
+    float derivative = pid->d_filter_coeff * raw_derivative +
+                       (1.0f - pid->d_filter_coeff) * pid->prev_derivative;
+    pid->prev_derivative = derivative;
+    
+    float output = pid->Kp * error +
+                   pid->Ki * pid->integral +
+                   pid->Kd * derivative;
+    
+    // 输出限幅
+    if (output >  pid->output_max) output =  pid->output_max;
+    if (output < -pid->output_min) output = -pid->output_min;
+    
+    pid->prev_error = error;
+    return output;
+}
+```
+
+---
+
+### 问题4：超声波测距不稳定
+
+**现象**：距离读数跳变，偶尔返回 400cm（超时）。
+
+**原因与解决**：
+
+```
+原因1：多个传感器同时触发，回波串扰
+  解决：错开触发时序，每个传感器间隔 ≥10ms
+
+原因2：障碍物表面吸声（布料、泡沫）
+  解决：使用多次测量取中位数
+
+原因3：测量角度过大（>15°）
+  解决：确保传感器正对障碍物
+
+原因4：温度变化影响声速
+  解决：声速补偿（可选）
+```
+
+**中位数滤波实现**：
+```c
+// 对超声波测距进行3次采样取中位数
+uint16_t Ultrasonic_MeasureFiltered(Ultrasonic_ID id) {
+    uint16_t samples[3];
+    for (int i = 0; i < 3; i++) {
+        samples[i] = Ultrasonic_Measure(id);
+        HAL_Delay(15);  // 传感器恢复时间
+    }
+    
+    // 冒泡排序取中位数
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2 - i; j++) {
+            if (samples[j] > samples[j+1]) {
+                uint16_t tmp = samples[j];
+                samples[j] = samples[j+1];
+                samples[j+1] = tmp;
+            }
+        }
+    }
+    return samples[1];  // 中位数
+}
+```
+
+---
+
+### 问题5：蓝牙连接不稳定，命令丢失
+
+**现象**：蓝牙偶尔断连，或命令执行不完整。
+
+**诊断与解决**：
+```
+原因1：波特率不匹配
+  检查：AT+UART? 查询HC-05当前波特率
+  解决：确保MCU USART1 波特率与HC-05一致（115200）
+
+原因2：电源干扰
+  现象：电机启动时蓝牙断连
+  解决：HC-05 使用独立 3.3V LDO 供电，与电机电源隔离
+
+原因3：接收缓冲区溢出
+  现象：快速发送多条命令时丢失
+  解决：实现命令队列，或在命令处理完成后再发送下一条
+
+原因4：命令格式错误
+  解决：在解析函数中添加校验和或帧头帧尾
+```
+
+**带校验的通信协议**：
+```c
+// 增强版协议：帧头 + 数据 + 校验和
+// 格式：$CMD:param1,param2*XX\n
+// XX = 从 $ 到 * 之间所有字符的异或校验
+
+uint8_t BT_CalcChecksum(const char *data, int len) {
+    uint8_t cs = 0;
+    for (int i = 0; i < len; i++) cs ^= (uint8_t)data[i];
+    return cs;
+}
+
+bool BT_ParseWithChecksum(const char *buf, BT_Command *cmd) {
+    // 查找帧头 '$' 和校验分隔符 '*'
+    const char *start = strchr(buf, '$');
+    const char *star  = strchr(buf, '*');
+    if (!start || !star || star <= start) return false;
+    
+    // 提取校验和
+    uint8_t received_cs = (uint8_t)strtol(star + 1, NULL, 16);
+    
+    // 计算校验和（从 $ 后到 * 前）
+    uint8_t calc_cs = BT_CalcChecksum(start + 1, (int)(star - start - 1));
+    
+    if (received_cs != calc_cs) {
+        printf("Checksum error: got %02X, expected %02X\n",
+               received_cs, calc_cs);
+        return false;
+    }
+    
+    // 解析命令（去掉帧头和校验）
+    return BT_ParseCommand(start + 1, cmd);
+}
+```
+
+---
+
+### 问题6：里程计累积误差过大
+
+**现象**：行驶一段距离后，里程计位置与实际位置偏差明显。
+
+**误差来源与量化**：
+```
+误差类型          典型值          影响
+轮径误差 1mm    → 速度误差 3%   → 1m后位置误差 3cm
+轮距误差 1mm    → 角度误差 0.7% → 转90°后角度误差 0.6°
+打滑（急加速）  → 随机误差      → 不可预测
+地面不平        → 随机误差      → 不可预测
+```
+
+**校准程序**：
+```c
+// 里程计校准：直线行驶1m，测量实际距离
+void Odometry_CalibrateLinear(void) {
+    Odometry_Reset(&odom);
+    
+    // 以固定速度前进，直到里程计显示1m
+    Motion_SetVelocity(0.2f, 0.0f);
+    while (odom.dist < 1.0f) {
+        HAL_Delay(10);
+    }
+    Motion_Stop();
+    
+    printf("Odometry says: %.3f m\n", odom.dist);
+    printf("Measure actual distance and adjust ODOM_WHEEL_DIAM_M\n");
+    // 如果实际距离是 0.98m，则：
+    // 新轮径 = 旧轮径 × (实际距离 / 里程计距离)
+    //        = 0.065 × (0.98 / 1.0) = 0.0637m
+}
+```
+
+---
+
+### 性能调优总结
+
+| 问题 | 快速诊断 | 主要解决方案 |
+|------|----------|--------------|
+| 跑偏 | 测量两轮速度差 | 独立PID + 死区补偿 |
+| 巡线抖动 | 观察传感器原始值 | 移动平均滤波 + 降低Kd |
+| 速度振荡 | 观察速度波形 | 减小Kp/Kd，加微分滤波 |
+| 超声波跳变 | 连续打印距离值 | 中位数滤波 + 错开触发 |
+| 蓝牙断连 | 检查电源纹波 | 独立供电 + 命令队列 |
+| 里程计漂移 | 直线行驶测量 | 校准轮径/轮距参数 |
+
+---
+
+## 延伸阅读
+
+### 相关文章
+
+- [编码器接口与测速](../../../02-driver-bsp-layer/04-interrupt-exception-handling/intermediate/04-encoder-interface.md) — 编码器硬件接口和 STM32 定时器编码器模式详解
+- [加速度计与陀螺仪](../../04-sensor-technology/intermediate/04-accelerometer-gyroscope.md) — IMU 传感器融合，提升里程计精度
+- [运动控制算法](./02-motion-control-algorithms.md) — 梯形/S曲线加速度规划
+- [多轴同步控制](./03-multi-axis-sync.md) — 多电机协调控制
+
+### 外部参考资料
+
+1. [Probabilistic Robotics - Thrun et al.](http://www.probabilistic-robotics.org/) — 里程计误差模型和卡尔曼滤波
+2. [STM32F103 Reference Manual RM0008](https://www.st.com/resource/en/reference_manual/cd00171190.pdf) — 定时器编码器模式配置
+3. [HC-SR04 Datasheet](https://cdn.sparkfun.com/datasheets/Sensors/Proximity/HCSR04.pdf) — 超声波传感器时序规格
+4. [HC-05 AT Command Set](http://www.electronicaestudio.com/docs/istd016A.pdf) — 蓝牙模块 AT 指令完整列表
+5. [PID Without a PhD - Tim Wescott](http://www.wescottdesign.com/articles/pid/pidWithoutAPhd.pdf) — PID 调参实用指南
+

@@ -2002,13 +2002,13 @@ void measurePower() {
 
 - **[PWM技术详解](../intermediate/01-pwm-advanced.md)** - 深入学习PWM原理和应用
 - **[PID控制算法](../intermediate/03-pid-control.md)** - 学习精确控制算法
-- **[智能家居系统](../../09-industry-domains/iot/advanced/01-smart-home-system.md)** - 完整的智能家居方案
+- **智能家居系统** - 完整的智能家居方案
 
 ### 项目实践
 
-- **[智能插座项目](../advanced/01-smart-socket-project.md)** - 制作WiFi智能插座
-- **[自动化控制系统](../advanced/02-automation-system.md)** - 多路继电器控制系统
-- **[环境监控系统](../advanced/03-environment-control.md)** - 传感器联动控制
+- **[智能插座项目](../advanced/07-smart-socket-project.md)** - 制作WiFi智能插座
+- **[自动化控制系统](../advanced/08-automation-system.md)** - 多路继电器控制系统
+- **[环境监控系统](../advanced/09-environment-control.md)** - 传感器联动控制
 
 ## 参考资料
 

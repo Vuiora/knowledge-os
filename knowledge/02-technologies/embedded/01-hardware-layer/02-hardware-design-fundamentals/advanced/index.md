@@ -12,8 +12,11 @@ description: 本部分包含 高级 级别的学习内容。
 
 ## 文档列表
 
-- [usb interface project](01-usb-interface-project.md)
-- [rf antenna matching](02-rf-antenna-matching.md)
+- [四层板高速USB接口设计实战](01-usb-interface-project.md)
+- [RF天线匹配网络设计](02-rf-antenna-matching.md)
+- [FPGA开发入门：从数字电路到可编程逻辑](03-fpga-basics.md)
+- [Verilog硬件描述语言：语法精要与设计实践](04-verilog-intro.md)
+- [状态机设计：FSM理论与Verilog实现](05-state-machine.md)
 
 ---
 

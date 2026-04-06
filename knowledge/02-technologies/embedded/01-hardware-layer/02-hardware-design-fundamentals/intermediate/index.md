@@ -12,11 +12,12 @@ description: 本部分包含 进阶 级别的学习内容。
 
 ## 文档列表
 
-- [signal integrity](01-signal-integrity.md)
-- [emc design](02-emc-design.md)
-- [high speed pcb](03-high-speed-pcb.md)
-- [multilayer pcb](04-multilayer-pcb.md)
-- [thermal design](05-thermal-design.md)
+- [信号完整性分析基础](01-signal-integrity.md)
+- [EMC设计基础](02-emc-design.md)
+- [高速PCB设计](03-high-speed-pcb.md)
+- [多层PCB设计](04-multilayer-pcb.md)
+- [热设计基础](05-thermal-design.md)
+- [电机驱动电路设计](06-motor-driver-circuit.md)
 
 ---
 

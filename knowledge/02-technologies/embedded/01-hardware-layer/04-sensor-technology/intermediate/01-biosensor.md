@@ -24,7 +24,7 @@ prerequisites:
   - "02-hardware-design-fundamentals/beginner/08-interface-circuits"
   - "04-sensor-technology/beginner/01-temperature-humidity-sensor"
 related_contents:
-  - "02-accelerometer-gyroscope"
+  - "04-accelerometer-gyroscope"
   - "intermediate/02-sensor-fusion"
 
 # 学习信息
@@ -1619,11 +1619,10 @@ void motion_artifact_removal_example(void) {
    - FDA指南文件
 
 ---
-
 **相关内容推荐**：
-- [加速度计与陀螺仪基础](02-accelerometer-gyroscope.md)
-- [传感器数据融合技术](intermediate/02-sensor-fusion.md)
-- [低功耗设计技术入门](../03-power-management/beginner/02-low-power-design.md)
+- [加速度计与陀螺仪基础](04-accelerometer-gyroscope.md)
+- [传感器数据融合技术](../intermediate/02-sensor-fusion.md)
+- [低功耗设计技术入门](../../03-power-management/beginner/02-low-power-design.md)
 
 **下一步学习**：
 - 实现完整的心率监测系统

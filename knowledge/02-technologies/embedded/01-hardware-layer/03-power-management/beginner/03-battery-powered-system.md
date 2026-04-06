@@ -1807,8 +1807,8 @@ uint16_t predict_battery_life(uint16_t current_cycles,
    - [功耗测量与分析方法](05-power-measurement.md)
 
 3. **实践项目**：
-   - [便携式设备电源设计](../projects/01-portable-device-power.md)
-   - [无线传感器节点](../projects/02-wireless-sensor-node.md)
+   - 便携式设备电源设计
+   - 无线传感器节点
 
 ## 参考资料
 

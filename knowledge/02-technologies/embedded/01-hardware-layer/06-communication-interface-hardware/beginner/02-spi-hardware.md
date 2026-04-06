@@ -1727,9 +1727,9 @@ bool SPI_TransferByte_Timeout(uint8_t data, uint8_t *result, uint32_t timeout) {
 
 ### 外设应用
 
-- [Flash存储器应用](../../04-middleware-layer/02-storage-management/beginner/01-flash-storage.md)
-- [SD卡文件系统](../../04-middleware-layer/02-storage-management/intermediate/01-sd-card-filesystem.md)
-- [TFT显示屏驱动](../../05-application-layer/02-user-interface/intermediate/01-tft-display.md)
+- Flash存储器应用
+- SD卡文件系统
+- TFT显示屏驱动
 
 ### 高级主题
 

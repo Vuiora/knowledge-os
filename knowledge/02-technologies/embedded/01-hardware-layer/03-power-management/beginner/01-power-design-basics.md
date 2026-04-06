@@ -1553,12 +1553,12 @@ void test_power_sequence(void) {
    - [电源监控与保护电路设计](04-power-monitoring.md)
 
 2. **相关知识**：
-   - [电源电路设计：LDO与DC-DC选择](../02-hardware-design-fundamentals/beginner/04-power-supply-design.md)
+   - [电源电路设计：LDO与DC-DC选择](../../02-hardware-design-fundamentals/beginner/04-power-supply-design.md)
    - [动态电源管理(DPM)技术](../intermediate/02-dynamic-power-management.md)
    - [电源完整性分析与优化](../advanced/02-power-integrity.md)
 
 3. **实践项目**：
-   - [简易电源设计项目](../projects/01-simple-power-supply.md)
+   - 简易电源设计项目
    - [电池管理系统设计](../intermediate/01-bms-design.md)
 
 ## 参考资料

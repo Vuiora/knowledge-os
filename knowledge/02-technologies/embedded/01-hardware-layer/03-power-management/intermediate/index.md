@@ -15,6 +15,7 @@ description: 本部分包含 进阶 级别的学习内容。
 - [bms design](01-bms-design.md)
 - [dynamic power management](02-dynamic-power-management.md)
 - [power mode switching](03-power-mode-switching.md)
+- [switching power supply design](04-switching-power-supply.md) - 开关电源设计完全指南，涵盖Buck/Boost/Buck-Boost转换器、PWM控制、元件选型和保护电路设计
 
 ---
 

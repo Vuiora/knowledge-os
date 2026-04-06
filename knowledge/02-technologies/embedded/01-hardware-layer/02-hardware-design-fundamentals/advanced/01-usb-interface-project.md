@@ -74,7 +74,7 @@ USB（Universal Serial Bus）是目前最常用的外设接口标准之一，广
 
 ### 项目演示
 
-![USB接口板实物图](assets/usb-board-photo.jpg)
+!USB接口板实物图
 *完成后的USB接口板实物图*
 
 ### 学习目标

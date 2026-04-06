@@ -1334,13 +1334,13 @@ void loop() {
 
 - **[PID控制算法](../intermediate/03-pid-control.md)** - 学习更精确的控制算法
 - **[无刷电机控制](../intermediate/02-bldc-motor-control.md)** - 学习高性能电机控制
-- **[机械臂运动学](../../09-industry-domains/robotics/intermediate/01-kinematics.md)** - 学习机械臂的数学建模
+- **机械臂运动学** - 学习机械臂的数学建模
 
 ### 项目实践
 
-- **[智能云台项目](../advanced/02-smart-gimbal-project.md)** - 制作自动追踪云台
-- **[四自由度机械臂](../advanced/03-robot-arm-project.md)** - 完整的机械臂控制系统
-- **[六足机器人](../advanced/04-hexapod-robot.md)** - 多舵机协调控制
+- **[智能云台项目](../advanced/04-smart-gimbal-project.md)** - 制作自动追踪云台
+- **[四自由度机械臂](../advanced/05-robot-arm-project.md)** - 完整的机械臂控制系统
+- **[六足机器人](../advanced/06-hexapod-robot.md)** - 多舵机协调控制
 
 
 ## 参考资料

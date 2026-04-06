@@ -2132,15 +2132,15 @@ bool I2C_WriteWithCRC(uint8_t addr, uint8_t *data, uint16_t len) {
 
 ### 外设应用
 
-- [EEPROM存储管理](../../04-middleware-layer/02-storage-management/beginner/02-eeprom-storage.md)
-- [RTC实时时钟应用](../../04-middleware-layer/03-communication-protocols/beginner/03-rtc-application.md)
-- [传感器数据采集](../../05-application-layer/01-data-acquisition/beginner/01-sensor-reading.md)
+- EEPROM存储管理
+- RTC实时时钟应用
+- 传感器数据采集
 
 ### 高级主题
 
-- [I2C多路复用器应用](../intermediate/04-i2c-multiplexer.md)
-- [SMBus协议详解](../intermediate/05-smbus-protocol.md)
-- [PMBus电源管理](../advanced/01-pmbus-power-management.md)
+- I2C多路复用器应用
+- SMBus协议详解
+- PMBus电源管理
 
 ## 参考资料
 

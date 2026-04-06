@@ -1184,8 +1184,8 @@ void loop() {
 
 ### 进阶主题
 - [无刷电机控制](../intermediate/02-bldc-motor-control.md) - 学习BLDC电机的FOC控制
-- [编码器应用](../../02-driver-bsp-layer/04-interrupt-exception-handling/intermediate/02-encoder-interface.md) - 学习编码器接口和速度测量
-- [电机驱动电路设计](../../02-hardware-design-fundamentals/intermediate/04-motor-driver-circuit.md) - 学习自己设计电机驱动电路
+- [编码器应用](../../../02-driver-bsp-layer/04-interrupt-exception-handling/intermediate/04-encoder-interface.md) - 学习编码器接口和速度测量
+- [电机驱动电路设计](../../02-hardware-design-fundamentals/intermediate/06-motor-driver-circuit.md) - 学习自己设计电机驱动电路
 
 ## 参考资料
 

@@ -2356,9 +2356,9 @@ EnvMonitorStation/
 完成本项目后，建议继续学习：
 
 - [低功耗设计进阶](../../03-power-management/advanced/01-ultra-low-power-sensor.md) - 优化功耗设计
-- [无线通信协议](../../../06-communication-networking/01-wireless-communication/intermediate/01-mqtt-protocol.md) - 深入学习MQTT
+- [无线通信协议](../../../06-communication-networking/01-wireless-communication/intermediate/03-mqtt-protocol.md) - 深入学习MQTT
 - [云平台集成](../../../07-cloud-backend/01-backend-development/beginner/01-restful-api.md) - 学习云端开发
-- [数据可视化](../../../07-cloud-backend/03-data-analytics-visualization/beginner/01-data-visualization.md) - 创建数据看板
+- [数据可视化](../../../07-cloud-backend/03-data-analysis-visualization/beginner/03-data-visualization.md) - 创建数据看板
 
 ## 参考资料
 

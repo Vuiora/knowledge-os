@@ -12,9 +12,11 @@ description: 本部分包含 进阶 级别的学习内容。
 
 ## 文档列表
 
-- [biosensor](01-biosensor.md)
-- [sensor fusion](02-sensor-fusion.md)
-- [sensor calibration](03-sensor-calibration.md)
+- [电流采样与保护完全指南](01-current-sensing.md) - 全面讲解电流检测方法、分流电阻、霍尔传感器、ADC采样、过流保护和校准技术
+- [生物传感器技术详解](01-biosensor.md)
+- [传感器数据融合技术](02-sensor-fusion.md)
+- [传感器标定与校准](03-sensor-calibration.md)
+- [加速度计与陀螺仪：原理、驱动与姿态解算](04-accelerometer-gyroscope.md)
 
 ---
 

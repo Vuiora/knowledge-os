@@ -1697,9 +1697,9 @@ void moveTo3D(Point3D target, int feedrate) {
 - [PID控制算法](../intermediate/03-pid-control.md) - 深入学习闭环控制
 
 ### 进阶主题
-- [运动控制算法](../advanced/01-motion-control-algorithms.md) - 学习高级运动规划
-- [多轴同步控制](../advanced/02-multi-axis-sync.md) - 学习多电机协调
-- [编码器反馈](../../02-driver-bsp-layer/04-interrupt-exception-handling/intermediate/02-encoder-interface.md) - 实现闭环控制
+- [运动控制算法](../advanced/02-motion-control-algorithms.md) - 学习高级运动规划
+- [多轴同步控制](../advanced/03-multi-axis-sync.md) - 学习多电机协调
+- [编码器反馈](../../../02-driver-bsp-layer/04-interrupt-exception-handling/intermediate/04-encoder-interface.md) - 实现闭环控制
 
 ## 参考资料
 

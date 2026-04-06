@@ -1505,8 +1505,8 @@ void CAN_Watchdog(void) {
 
 ### 协议标准
 
-- [CANopen协议实现](../../04-middleware-layer/03-communication-protocols/intermediate/02-canopen-protocol.md)
-- [J1939协议应用](../../04-middleware-layer/03-communication-protocols/advanced/01-j1939-protocol.md)
+- CANopen协议实现
+- J1939协议应用
 
 ### 硬件设计
 
