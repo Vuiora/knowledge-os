@@ -1,0 +1,14 @@
+title: 金融知识
+nav:
+  - index.md
+  - 学习路径: learning-paths.md
+  - 知识地图: knowledge-map.md
+  - 仪表盘: dashboard.md
+  - 金融认知: 01-financial-cognition
+  - 经济基础: 02-economic-foundation
+  - 公司分析: 03-company-analysis
+  - 投资体系: 04-investment-system
+  - 全球视野: 05-global-perspective
+  - 宏观框架: 06-macro-framework
+  - 金融历史: 07-financial-history
+  - 实用工具: 08-practical-tools

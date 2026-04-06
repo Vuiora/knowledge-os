@@ -592,7 +592,7 @@ graph TD
 
 ### 相关文章
 
-- [科技板块总览](../technology/overview.md)
+- 科技板块总览
 - [消费板块总览](../consumer/overview.md)
 - [行业分析框架](../../industry-analysis/overview.md)
 - [平台型商业模式](../../../03-company-analysis/business-models/platform-business.md)

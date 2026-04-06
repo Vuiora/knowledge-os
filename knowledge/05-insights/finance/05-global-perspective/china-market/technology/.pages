@@ -1,0 +1,7 @@
+title: 科技
+nav:
+  - index.md
+  - overview.md
+  - 人工智能: ai
+  - 互联网: internet
+  - 半导体: semiconductors

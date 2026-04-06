@@ -10,7 +10,7 @@
 
 ## 市场板块
 
-### [科技板块](technology/index.md)
+### [科技板块](tech-sector/index.md)
 **学习时间**：2 周
 
 研究美国科技行业的领导者：

@@ -1,0 +1,5 @@
+title: 医疗
+nav:
+  - index.md
+  - overview.md
+  - 医药: pharma

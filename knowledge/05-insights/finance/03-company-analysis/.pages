@@ -1,0 +1,8 @@
+title: 公司分析
+nav:
+  - index.md
+  - 财务报表: financial-statements
+  - 估值方法: valuation-methods
+  - 竞争分析: competitive-analysis
+  - 商业模式: business-models
+  - 案例研究: case-studies

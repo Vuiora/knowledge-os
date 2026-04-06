@@ -682,7 +682,7 @@ graph LR
 ### 相关文章
 
 - [通信服务板块总览](../overview.md)
-- [Netflix 分析](../../technology/internet/netflix.md)
+- Netflix 分析
 - 流媒体行业分析
 - IP 价值评估
 

@@ -1,0 +1,11 @@
+title: 美股市场
+nav:
+  - index.md
+  - 科技板块: tech-sector
+  - 通信服务: communication
+  - 消费板块: consumer
+  - 能源板块: energy
+  - 金融板块: financials
+  - 医疗健康: healthcare
+  - 工业板块: industrials
+  - 房地产: real-estate

@@ -1,0 +1,8 @@
+title: 科技板块
+nav:
+  - index.md
+  - overview.md
+  - 云计算: cloud
+  - 互联网: internet
+  - 半导体: semiconductor
+  - 软件: software
