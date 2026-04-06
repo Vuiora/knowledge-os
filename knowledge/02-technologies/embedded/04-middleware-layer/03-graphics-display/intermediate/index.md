@@ -12,6 +12,7 @@ description: 本部分包含 进阶 级别的学习内容。
 
 ## 文档列表
 
+- [TFT显示屏驱动完全指南](01-tft-display.md) - 全面讲解TFT LCD原理、ILI9341/ST7789驱动、图形绘制和帧缓冲管理
 - [gui design patterns](01-gui-design-patterns.md)
 - [graphics optimization](02-graphics-optimization.md)
 

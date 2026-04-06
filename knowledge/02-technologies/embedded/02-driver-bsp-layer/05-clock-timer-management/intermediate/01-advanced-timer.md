@@ -2041,11 +2041,11 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 
 完整的示例代码可以在这里下载：
 
-- [输入捕获示例](assets/code/input_capture_example.c)
-- [PWM控制示例](assets/code/pwm_control_example.c)
-- [编码器接口示例](assets/code/encoder_interface_example.c)
-- [超声波测距项目](assets/code/ultrasonic_project.zip)
-- [舵机控制项目](assets/code/servo_control_project.zip)
+- 输入捕获示例
+- PWM控制示例
+- 编码器接口示例
+- 超声波测距项目
+- 舵机控制项目
 
 ## 下一步
 

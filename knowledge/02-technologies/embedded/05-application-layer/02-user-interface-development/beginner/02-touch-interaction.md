@@ -1493,7 +1493,7 @@ void handle_swipe_gesture(void)
 
 - [语音交互技术应用](../intermediate/01-voice-interaction.md) - 学习语音交互
 - [手势识别与体感控制](../intermediate/02-gesture-recognition.md) - 深入手势识别
-- [GUI动画设计](../intermediate/03-gui-animation.md) - 提升界面动效
+- GUI动画设计 - 提升界面动效
 
 ## 参考资料
 

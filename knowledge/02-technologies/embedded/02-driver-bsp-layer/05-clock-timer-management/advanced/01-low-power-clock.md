@@ -2347,19 +2347,19 @@ void Enter_Long_Sleep(void)
 
 完整的示例代码可以在这里下载:
 
-- [时钟门控示例](assets/code/clock_gating_example.c)
-- [动态调频示例](assets/code/dvfs_example.c)
-- [睡眠模式示例](assets/code/sleep_mode_example.c)
-- [完整电源管理系统](assets/code/power_manager_complete.c)
-- [完整工程文件](assets/code/low_power_clock_project.zip)
+- 时钟门控示例
+- 动态调频示例
+- 睡眠模式示例
+- 完整电源管理系统
+- 完整工程文件
 
 ## 下一步
 
 建议继续学习:
 
-- [RTOS任务调度与功耗管理](../../03-operating-system-layer/02-rtos-basics/advanced/03-power-management.md)
-- [电池管理系统设计](../../10-cross-cutting-concerns/03-power-management/advanced/01-battery-management.md)
-- [无线通信低功耗优化](../../06-communication-networking/04-wireless/advanced/02-low-power-wireless.md)
+- RTOS任务调度与功耗管理
+- 电池管理系统设计
+- 无线通信低功耗优化
 
 ## 参考资料
 

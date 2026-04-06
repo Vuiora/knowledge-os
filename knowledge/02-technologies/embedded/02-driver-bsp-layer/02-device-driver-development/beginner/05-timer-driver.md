@@ -948,7 +948,7 @@ void TIM_PrintConfig(TIM_TypeDef *TIMx) {
 
 - [GPIO驱动开发：LED控制实战](01-gpio-driver.md) - 学习GPIO基础
 - [UART串口驱动开发与调试](02-uart-driver.md) - 串口通信基础
-- [通用定时器高级应用](../intermediate/01-advanced-timer.md) - 定时器进阶
+- 通用定时器高级应用 - 定时器进阶
 - [PWM驱动开发：电机调速控制](07-pwm-driver.md) - PWM深入应用
 - [中断系统基础概念](../../04-interrupt-exception-handling/beginner/01-interrupt-basics.md) - 中断原理
 

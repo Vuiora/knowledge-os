@@ -1620,6 +1620,6 @@ for(int i = 0; i < 100; i++) {
 ---
 
 **下一步学习**：
-- [轻量级任务调度器设计](advanced/01-lightweight-scheduler.md)
-- [裸机程序的实时性分析](advanced/02-real-time-analysis.md)
-- [RTOS基础](../02-rtos-fundamentals/beginner/01-rtos-overview.md)
+- 轻量级任务调度器设计
+- 裸机程序的实时性分析
+- RTOS基础

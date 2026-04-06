@@ -12,9 +12,10 @@ description: 本部分包含 进阶 级别的学习内容。
 
 ## 文档列表
 
-- [interrupt priority](01-interrupt-priority.md)
-- [interrupt vs polling](02-interrupt-vs-polling.md)
-- [interrupt safety](03-interrupt-safety.md)
+- [中断优先级配置与抢占机制](01-interrupt-priority.md)
+- [中断与轮询对比](02-interrupt-vs-polling.md)
+- [中断安全编程](03-interrupt-safety.md)
+- [编码器接口与速度测量](04-encoder-interface.md)
 
 ---
 

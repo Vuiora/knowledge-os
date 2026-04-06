@@ -1286,5 +1286,5 @@ void apply_calibration(float raw[3], float calibrated[3])
 - 电池续航>8小时
 - 提供用户校准和训练功能
 
-**下一步**：建议学习 [软件架构设计原则](../03-application-framework/beginner/01-software-architecture.md)，了解如何设计可维护和可扩展的应用架构。
+**下一步**：建议学习 软件架构设计原则，了解如何设计可维护和可扩展的应用架构。
 

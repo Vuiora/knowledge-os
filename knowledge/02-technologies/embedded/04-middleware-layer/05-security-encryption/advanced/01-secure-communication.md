@@ -2827,8 +2827,8 @@ printf("空闲堆: %u 字节\n", xPortGetFreeHeapSize());
 
 完成本项目后，建议继续学习：
 
-- [安全启动与固件验证](intermediate/02-secure-boot-verification.md) - 保护固件安全
-- [密钥管理与安全存储](intermediate/03-key-management.md) - 深入学习密钥管理
+- 安全启动与固件验证 - 保护固件安全
+- 密钥管理与安全存储 - 深入学习密钥管理
 - [区块链与分布式账本](link) - 学习分布式安全
 - [零信任网络架构](link) - 现代安全架构
 

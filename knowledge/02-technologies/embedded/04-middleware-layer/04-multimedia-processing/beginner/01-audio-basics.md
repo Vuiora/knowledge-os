@@ -954,19 +954,19 @@ int16_t Get_Sine_Sample(uint32_t phase) {
 建议继续学习以下内容：
 
 1. **音频编解码**
-   - [MP3解码实现](../intermediate/02-mp3-decoder.md)
-   - [AAC编解码](../intermediate/03-aac-codec.md)
-   - [音频压缩算法](../advanced/01-audio-compression.md)
+   - MP3解码实现
+   - AAC编解码
+   - 音频压缩算法
 
 2. **高级音频处理**
-   - [数字滤波器设计](../intermediate/04-digital-filters.md)
-   - [音频特效算法](../advanced/02-audio-effects.md)
-   - [语音识别基础](../advanced/03-speech-recognition.md)
+   - 数字滤波器设计
+   - 音频特效算法
+   - 语音识别基础
 
 3. **相关技术**
-   - [DMA高级应用](../../03-operating-system-layer/dma-advanced.md)
-   - [实时操作系统](../../03-operating-system-layer/rtos-basics.md)
-   - [SD卡文件系统](../../01-file-systems/sd-card-filesystem.md)
+   - DMA高级应用
+   - 实时操作系统
+   - SD卡文件系统
 
 ## 参考资料
 

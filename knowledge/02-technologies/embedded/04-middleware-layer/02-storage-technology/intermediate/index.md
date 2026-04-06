@@ -14,6 +14,7 @@ description: 本部分包含 进阶 级别的学习内容。
 
 - [wear leveling](01-wear-leveling.md)
 - [data persistence](02-data-persistence.md)
+- [sd card filesystem](03-sd-card-filesystem.md) - SD卡文件系统完全指南，涵盖SPI/SDIO接口、FAT文件系统、FatFs库使用和实战项目
 
 ---
 

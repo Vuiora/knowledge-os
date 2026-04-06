@@ -1625,8 +1625,8 @@ HAL_Delay(5);  // 200Hz扫描频率
    - Multi-Touch Protocol Specification
 
 6. **相关教程**
-   - [SPI通信协议详解](../../06-communication-networking/01-serial-communication/beginner/01-spi-basics.md)
-   - [I2C通信协议详解](../../06-communication-networking/01-serial-communication/beginner/02-i2c-basics.md)
+   - SPI通信协议详解
+   - I2C通信协议详解
    - [LCD显示驱动开发](03-display-driver.md)
    - [LVGL图形库入门](01-lvgl-quickstart.md)
 

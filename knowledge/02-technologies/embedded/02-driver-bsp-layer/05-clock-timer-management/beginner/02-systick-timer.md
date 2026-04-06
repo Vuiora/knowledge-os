@@ -1121,9 +1121,9 @@ uint32_t elapsed = current_time - start_time;
 
 完整的示例代码可以在这里下载：
 
-- [基础示例代码](assets/code/systick_basic_example.c)
-- [任务调度器代码](assets/code/systick_scheduler.c)
-- [完整工程文件](assets/code/systick_complete_project.zip)
+- 基础示例代码
+- 任务调度器代码
+- 完整工程文件
 
 ## 下一步
 
@@ -1131,7 +1131,7 @@ uint32_t elapsed = current_time - start_time;
 
 - [通用定时器高级应用](../intermediate/01-advanced-timer.md) - 学习更强大的定时器功能
 - [时钟精度优化与校准](../intermediate/02-clock-calibration.md) - 提高时钟精度
-- [RTOS任务调度原理](../../03-operating-system-layer/02-rtos-basics/beginner/02-task-scheduling.md) - 学习专业的任务调度
+- RTOS任务调度原理 - 学习专业的任务调度
 
 ## 参考资料
 

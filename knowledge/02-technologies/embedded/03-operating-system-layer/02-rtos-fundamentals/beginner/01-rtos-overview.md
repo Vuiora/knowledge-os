@@ -1299,7 +1299,7 @@ SemaphoreHandle_t mutex = xSemaphoreCreateMutex();
 - [RTOS任务管理基础](02-rtos-task-management.md) - 深入学习任务创建和管理
 - [RTOS调度算法详解](03-rtos-scheduling.md) - 理解调度原理和策略
 - [信号量使用实战](04-semaphore.md) - 掌握任务同步机制
-- [FreeRTOS快速入门](../03-freertos/beginner/01-freertos-quickstart.md) - 开始实践RTOS开发
+- FreeRTOS快速入门 - 开始实践RTOS开发
 
 
 ## 参考资料

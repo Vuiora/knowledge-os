@@ -1221,9 +1221,9 @@ printf("Memory: used=%d, free=%d, frag=%d%%\n",
    - [LVGL Blog](https://blog.lvgl.io/)
 
 5. **相关教程**
-   - [SPI通信协议详解](../../06-communication-networking/01-serial-communication/beginner/01-spi-basics.md)
-   - [I2C通信协议详解](../../06-communication-networking/01-serial-communication/beginner/02-i2c-basics.md)
-   - [DMA数据传输](../../03-operating-system-layer/02-memory-management/intermediate/02-dma-usage.md)
+   - SPI通信协议详解
+   - I2C通信协议详解
+   - DMA数据传输
 
 ---
 

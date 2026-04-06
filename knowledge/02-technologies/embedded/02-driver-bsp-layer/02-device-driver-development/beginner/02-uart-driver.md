@@ -1766,7 +1766,7 @@ UART是嵌入式系统中最常用的通信接口，掌握UART驱动开发对于
 - [DMA驱动开发：高效数据传输](../intermediate/01-dma-driver.md) - 深入学习DMA
 
 **相关主题**：
-- [中断系统基础概念](../../04-interrupt-handling/beginner/01-interrupt-basics.md) - 深入理解中断
+- 中断系统基础概念 - 深入理解中断
 - [定时器驱动基础与应用](05-timer-driver.md) - 学习定时器
 - [USB驱动开发基础](../intermediate/02-usb-driver-basics.md) - 学习USB通信
 

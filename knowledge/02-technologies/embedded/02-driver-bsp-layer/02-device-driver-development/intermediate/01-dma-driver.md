@@ -1746,7 +1746,7 @@ DMA是提高嵌入式系统性能的关键技术，掌握DMA驱动开发可以�
 - [ADC驱动开发：模拟信号采集](../beginner/06-adc-driver.md) - ADC DMA应用
 
 **相关主题**：
-- [中断系统基础概念](../../04-interrupt-handling/beginner/01-interrupt-basics.md) - 理解DMA中断
+- 中断系统基础概念 - 理解DMA中断
 - [内存管理](../../03-memory-management/beginner/01-memory-management-basics.md) - 理解内存访问
 - [驱动性能优化技术](../advanced/02-driver-optimization.md) - 高级优化技巧
 

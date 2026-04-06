@@ -2334,8 +2334,8 @@ A: 调试步骤：
 **作者**: 嵌入式知识平台
 
 **相关教程**:
-- [Linux内核裁剪与配置](02-kernel-configuration.md)
-- [设备树详解](03-device-tree.md)
+- Linux内核裁剪与配置
+- 设备树详解
 - [Linux驱动开发入门](01-linux-driver-basics.md)
 - [Linux进程与线程编程](03-process-thread.md)
 

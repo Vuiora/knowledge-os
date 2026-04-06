@@ -895,9 +895,9 @@ void StartUartTask(void const * argument)
 - 理解互斥量和临界区保护
 
 ### 4. 高级特性
-- [FreeRTOS软件定时器](intermediate/01-freertos-timer.md)
-- [FreeRTOS事件标志组](intermediate/02-freertos-event-group.md)
-- [FreeRTOS任务通知](intermediate/03-freertos-notification.md)
+- FreeRTOS软件定时器
+- FreeRTOS事件标志组
+- FreeRTOS任务通知
 
 ## 参考资料
 

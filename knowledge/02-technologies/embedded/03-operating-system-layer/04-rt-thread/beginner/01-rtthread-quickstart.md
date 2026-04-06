@@ -1171,17 +1171,17 @@ int main(void)
 - 理解线程优先级和调度策略
 
 ### 2. 设备驱动框架
-- [RT-Thread设备驱动框架](intermediate/01-rtthread-device-framework.md)
+- RT-Thread设备驱动框架
 - 学习设备模型和驱动框架
 - 掌握驱动开发方法
 
 ### 3. 组件和软件包
-- [RT-Thread组件与软件包](intermediate/02-rtthread-components.md)
+- RT-Thread组件与软件包
 - 学习常用组件的使用
 - 掌握软件包管理
 
 ### 4. 实战项目
-- [基于RT-Thread的IoT项目](advanced/01-rtthread-iot-project.md)
+- 基于RT-Thread的IoT项目
 - 综合运用所学知识
 - 完成完整的IoT系统
 

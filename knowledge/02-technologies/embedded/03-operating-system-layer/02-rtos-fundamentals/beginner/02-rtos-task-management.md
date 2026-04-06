@@ -1925,7 +1925,7 @@ xTaskGetHandle()
 - [RTOS调度算法详解](03-rtos-scheduling.md) - 深入理解调度原理
 - [信号量使用实战](04-semaphore.md) - 学习任务同步机制
 - [互斥量与临界区保护](05-mutex.md) - 保护共享资源
-- [FreeRTOS任务创建与管理](../03-freertos/beginner/02-freertos-tasks.md) - FreeRTOS具体实现
+- FreeRTOS任务创建与管理 - FreeRTOS具体实现
 
 ## 参考资料
 

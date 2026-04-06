@@ -1681,7 +1681,7 @@ setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
    - 性能优化
 
 3. **网络编程**
-   - [TCP/IP网络编程](../../06-communication-networking/tcp-ip-basics.md)
+   - TCP/IP网络编程
    - Socket编程
    - 网络协议
 

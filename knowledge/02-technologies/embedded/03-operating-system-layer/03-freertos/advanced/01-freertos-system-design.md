@@ -2705,8 +2705,8 @@ SensorData_t* AllocateData(void) {
 
 完成本项目后，建议继续学习：
 
-- [RT-Thread快速入门](../../../04-rt-thread/beginner/01-rtthread-quickstart.md) - 学习国产RTOS
-- [嵌入式Linux系统概述](../../../05-embedded-linux/beginner/01-embedded-linux-overview.md) - 学习Linux系统
+- RT-Thread快速入门 - 学习国产RTOS
+- 嵌入式Linux系统概述 - 学习Linux系统
 - [实时性分析与调度可行性](../../02-rtos-fundamentals/advanced/01-real-time-schedulability.md) - 深入理解实时性
 
 ## 参考资料

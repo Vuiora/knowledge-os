@@ -1511,7 +1511,7 @@ SPI是嵌入式系统中非常重要的通信接口，掌握SPI驱动开发对�
 **相关主题**：
 - [GPIO驱动开发：LED控制实战](01-gpio-driver.md) - 复习GPIO基础
 - [定时器驱动基础与应用](05-timer-driver.md) - 学习定时器
-- [文件系统移植与应用](../../04-middleware-layer/beginner/03-fatfs-filesystem.md) - FATFS文件系统
+- 文件系统移植与应用 - FATFS文件系统
 
 **Flash应用**：
 - 程序在线升级（IAP）
@@ -1650,7 +1650,7 @@ SPI是嵌入式系统中非常重要的通信接口，掌握SPI驱动开发对�
 
 1. [I2C驱动开发：传感器数据读取](04-i2c-driver.md) - 学习另一种常用总线
 2. [DMA驱动开发：高效数据传输](../intermediate/01-dma-driver.md) - 提高传输效率
-3. [文件系统移植与应用](../../04-middleware-layer/beginner/03-fatfs-filesystem.md) - 实现文件管理
+3. 文件系统移植与应用 - 实现文件管理
 
 **学习路线图**：
 

@@ -1455,10 +1455,10 @@ QSPI Flash可以工作在SPI模式，向下兼容。
 
 推荐进一步学习的资源：
 
-- [FAT文件系统原理与应用](../01-file-systems/beginner/01-fat-filesystem.md) - 了解Flash上的文件系统
+- FAT文件系统原理与应用 - 了解Flash上的文件系统
 - [EEPROM数据存储应用](./02-eeprom-storage.md) - 学习另一种非易失存储
 - [Flash磨损均衡算法](../intermediate/01-wear-leveling.md) - 深入学习寿命管理
-- [LittleFS轻量级文件系统](../01-file-systems/beginner/02-littlefs.md) - Flash文件系统实战
+- LittleFS轻量级文件系统 - Flash文件系统实战
 
 ## 参考资料
 

@@ -2074,8 +2074,8 @@ void respond_with_emotion(const char *text, emotion_t emotion)
 建议继续学习：
 
 - [手势识别与体感控制](02-gesture-recognition.md) - 学习多模态交互
-- [嵌入式AI与机器学习](../01-embedded-ai-ml/01-tflite-intro.md) - 深入AI技术
-- [应用框架设计](../03-application-framework/01-software-architecture.md) - 系统架构设计
+- 嵌入式AI与机器学习 - 深入AI技术
+- 应用框架设计 - 系统架构设计
 
 ## 参考资料
 

@@ -1266,8 +1266,8 @@ CONFIG_OF_UNITTEST=y
 
 推荐进一步学习的资源：
 
-- [设备树编写与调试](device-tree-writing.md) - 深入学习设备树编写技巧
-- [板级支持包开发](bsp-development.md) - 完整的BSP开发流程
+- 设备树编写与调试 - 深入学习设备树编写技巧
+- 板级支持包开发 - 完整的BSP开发流程
 - [Linux设备驱动开发](../02-device-driver-development/) - 驱动如何使用设备树
 - [Device Tree Specification](https://www.devicetree.org/) - 官方设备树规范
 
@@ -1287,4 +1287,4 @@ CONFIG_OF_UNITTEST=y
 3. 修改现有设备树，添加一个LED设备节点
 4. 使用设备树引用机制，在板级DTS中使能SoC的外设
 
-**下一步**：建议学习 [设备树编写与调试](device-tree-writing.md)，深入掌握设备树的高级用法和调试技巧。
+**下一步**：建议学习 设备树编写与调试，深入掌握设备树的高级用法和调试技巧。

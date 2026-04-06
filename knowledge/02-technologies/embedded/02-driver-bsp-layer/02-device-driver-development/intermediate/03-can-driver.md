@@ -2194,7 +2194,7 @@ CAN总线是工业和汽车领域最重要的通信协议之一，掌握CAN驱�
 - [DMA驱动开发：高效数据传输](01-dma-driver.md) - 提高CAN性能
 
 **相关主题**：
-- [中断系统基础概念](../../04-interrupt-handling/beginner/01-interrupt-basics.md) - 理解CAN中断
+- 中断系统基础概念 - 理解CAN中断
 - [驱动性能优化技术](../advanced/02-driver-optimization.md) - 高级优化技巧
 - [通用驱动框架设计与实现](../advanced/01-driver-framework.md) - 驱动架构设计
 

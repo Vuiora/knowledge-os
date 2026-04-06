@@ -1272,9 +1272,9 @@ hmac = HMAC-SHA256(key, message)
 
 推荐进一步学习的资源：
 
-- [AES加密算法实战](../01-aes-encryption.md) - 学习对称加密
-- [RSA非对称加密实战](../02-rsa-encryption.md) - 学习公钥加密
-- [数字签名技术详解](../../intermediate/01-digital-signature.md) - 深入数字签名
+- AES加密算法实战 - 学习对称加密
+- RSA非对称加密实战 - 学习公钥加密
+- 数字签名技术详解 - 深入数字签名
 - [NIST SHA-3标准](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf) - 官方标准文档
 - [mbedTLS文档](https://tls.mbed.org/api/) - 加密库API文档
 
@@ -1298,5 +1298,5 @@ hmac = HMAC-SHA256(key, message)
 4. 实现HMAC-SHA256消息认证
 5. 比较MD5、SHA-256和SHA-512在你的开发板上的性能
 
-**下一步**：建议学习 [数字签名技术详解](../../intermediate/01-digital-signature.md)，了解哈希算法在数字签名中的应用。
+**下一步**：建议学习 数字签名技术详解，了解哈希算法在数字签名中的应用。
 

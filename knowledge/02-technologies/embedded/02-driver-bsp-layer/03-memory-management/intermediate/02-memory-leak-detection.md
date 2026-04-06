@@ -1389,7 +1389,7 @@ int main(void) {
 
 完整的项目代码可以在这里下载：
 - [GitHub仓库](https://github.com/embedded-knowledge/memory-leak-detection)
-- [示例项目](./assets/code/memory-tracker-example.zip)
+- 示例项目
 
 ## 下一步
 

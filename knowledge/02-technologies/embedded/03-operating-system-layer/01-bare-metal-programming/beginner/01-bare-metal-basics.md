@@ -669,7 +669,7 @@ GPIO_BIT(5) = 1;  // 设置PA5
 - [超级循环程序设计](02-super-loop.md) - 学习最基本的程序架构
 - [状态机设计模式实战](03-state-machine.md) - 掌握状态机设计方法
 - [软件定时器实现](05-software-timer.md) - 实现精确的时间管理
-- [ARM Cortex-M架构基础](../../01-hardware-layer/01-chip-architecture/beginner/01-arm-cortex-m-intro.md) - 理解底层硬件
+- ARM Cortex-M架构基础 - 理解底层硬件
 
 ## 参考资料
 

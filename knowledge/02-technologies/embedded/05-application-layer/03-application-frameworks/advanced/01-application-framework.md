@@ -2315,9 +2315,9 @@ void test_memory_usage() {
 
 完成本项目后，建议继续学习：
 
-- [OTA远程升级](../04-ota-remote-management/beginner/01-ota-mechanism.md) - 实现固件远程更新
-- [网络通信](../../06-communication-networking/01-wireless-communication/intermediate/01-wifi-application.md) - 添加网络功能
-- [数据库管理](../../04-middleware-layer/06-database-data-management/intermediate/01-embedded-database.md) - 数据持久化
+- OTA远程升级 - 实现固件远程更新
+- 网络通信 - 添加网络功能
+- 数据库管理 - 数据持久化
 
 
 ## 参考资料

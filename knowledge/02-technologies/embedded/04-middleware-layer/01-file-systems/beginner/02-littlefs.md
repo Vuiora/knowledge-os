@@ -1970,7 +1970,7 @@ Failed to write file: -28 (LFS_ERR_NOSPC)
 - [SPIFFS文件系统](03-spiffs.md) - 另一种轻量级文件系统
 - [文件系统移植与集成](../intermediate/01-filesystem-porting.md) - 深入学习移植技巧
 - [Flash文件系统设计](../intermediate/02-flash-filesystem.md) - 文件系统设计原理
-- [SD卡存储应用](../02-storage-technology/beginner/03-sd-card-storage.md) - 大容量存储方案
+- SD卡存储应用 - 大容量存储方案
 
 ## 参考资料
 

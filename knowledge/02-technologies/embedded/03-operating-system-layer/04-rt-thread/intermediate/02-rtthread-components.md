@@ -1855,12 +1855,12 @@ int main(void)
 建议按以下顺序继续学习：
 
 ### 1. 深入学习网络编程
-- [lwIP网络协议栈详解](../../06-communication-networking/01-network-basics/intermediate/01-lwip-stack.md)
+- lwIP网络协议栈详解
 - Socket编程实战
 - HTTP/MQTT协议应用
 
 ### 2. 文件系统高级应用
-- [文件系统原理与实现](../../05-application-layer/03-file-system/intermediate/01-filesystem-basics.md)
+- 文件系统原理与实现
 - Flash文件系统
 - 数据库应用
 

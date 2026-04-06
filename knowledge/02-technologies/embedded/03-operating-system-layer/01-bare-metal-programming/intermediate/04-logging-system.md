@@ -1956,9 +1956,9 @@ A: 需要合理使用：
 ## 延伸阅读
 
 ### 相关教程
-- [环形缓冲区设计与实现](beginner/06-ring-buffer.md)
-- [命令行接口实现](intermediate/03-cli-implementation.md)
-- [裸机程序调试技巧](beginner/08-bare-metal-debugging.md)
+- 环形缓冲区设计与实现
+- 命令行接口实现
+- 裸机程序调试技巧
 
 ### 参考资料
 - [C语言格式化输出](https://en.cppreference.com/w/c/io/fprintf)

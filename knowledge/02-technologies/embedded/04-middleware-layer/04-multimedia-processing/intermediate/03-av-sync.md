@@ -1389,18 +1389,18 @@ void print_sync_statistics(SyncLogger *logger) {
 
 1. **硬件加速**
    - [GPU视频解码](../advanced/01-hardware-acceleration.md)
-   - [硬件编解码器集成](../advanced/02-hardware-codec.md)
-   - [DSP音频处理](../advanced/03-dsp-audio.md)
+   - 硬件编解码器集成
+   - DSP音频处理
 
 2. **流媒体协议**
    - [RTSP/RTMP协议详解](./02-streaming-media.md)
-   - [HLS自适应流](../advanced/04-hls-streaming.md)
-   - [WebRTC实时通信](../advanced/05-webrtc.md)
+   - HLS自适应流
+   - WebRTC实时通信
 
 3. **音视频编解码**
    - [H.264/H.265编解码](./01-video-codec.md)
-   - [AAC音频编解码](../intermediate/04-aac-codec.md)
-   - [编解码优化技术](../advanced/06-codec-optimization.md)
+   - AAC音频编解码
+   - 编解码优化技术
 
 ### 深入研究方向
 

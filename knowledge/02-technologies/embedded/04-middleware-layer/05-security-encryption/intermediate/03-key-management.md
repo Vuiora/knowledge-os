@@ -1341,8 +1341,8 @@ int store_encrypted_firmware(const uint8_t *firmware, size_t firmware_size)
 推荐进一步学习的资源：
 
 - [NIST密钥管理指南](https://csrc.nist.gov/publications/detail/sp/800-57-part-1/rev-5/final) - 权威的密钥管理标准
-- [安全启动与固件验证](intermediate/02-secure-boot-verification.md) - 密钥在安全启动中的应用
-- [TLS/SSL协议详解](advanced/01-secure-communication.md) - 密钥在安全通信中的应用
+- 安全启动与固件验证 - 密钥在安全启动中的应用
+- TLS/SSL协议详解 - 密钥在安全通信中的应用
 - [硬件安全模块(HSM)技术](https://www.cryptomathic.com/news-events/blog/what-is-a-hardware-security-module-hsm) - HSM深入介绍
 
 ## 参考资料
@@ -1363,4 +1363,4 @@ int store_encrypted_firmware(const uint8_t *firmware, size_t firmware_size)
 4. 设计一个固件加密存储方案，确保固件的机密性和完整性
 5. 实现一个密钥审计系统，记录所有密钥操作
 
-**下一步**：建议学习 [安全启动与固件验证](intermediate/02-secure-boot-verification.md)，了解密钥在系统启动安全中的应用。
+**下一步**：建议学习 安全启动与固件验证，了解密钥在系统启动安全中的应用。

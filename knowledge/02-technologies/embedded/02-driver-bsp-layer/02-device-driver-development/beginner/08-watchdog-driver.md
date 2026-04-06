@@ -1506,7 +1506,7 @@ void StressTestWatchdog(void) {
 
 **相关主题**：
 - [中断系统基础概念](../../04-interrupt-exception-handling/beginner/01-interrupt-basics.md) - 理解中断机制
-- [系统可靠性设计](../../10-cross-cutting-concerns/reliability/01-reliability-basics.md) - 可靠性设计方法
+- 系统可靠性设计 - 可靠性设计方法
 
 **官方文档**：
 - [STM32F4xx参考手册](https://www.st.com/resource/en/reference_manual/dm00031020.pdf) - 看门狗章节
@@ -1631,7 +1631,7 @@ void StressTestWatchdog(void) {
 
 1. [DMA驱动开发：高效数据传输](../intermediate/01-dma-driver.md) - 学习DMA提高性能
 2. [中断系统基础概念](../../04-interrupt-exception-handling/beginner/01-interrupt-basics.md) - 深入理解中断
-3. [系统可靠性设计](../../10-cross-cutting-concerns/reliability/01-reliability-basics.md) - 全面的可靠性设计
+3. 系统可靠性设计 - 全面的可靠性设计
 
 **学习路线图**：
 

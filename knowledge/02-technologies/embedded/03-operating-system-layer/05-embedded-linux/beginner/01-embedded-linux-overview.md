@@ -1300,25 +1300,25 @@ cover_image: ""
 - 掌握设备树使用
 
 ### 3. 驱动开发
-- [Linux驱动开发入门](intermediate/01-linux-driver-basics.md)
+- Linux驱动开发入门
 - 学习驱动框架
 - 开发字符设备驱动
 - 掌握调试技巧
 
 ### 4. 系统集成
-- [文件系统与根文件系统制作](intermediate/02-rootfs.md)
+- 文件系统与根文件系统制作
 - 制作根文件系统
 - 配置启动脚本
 - 系统优化
 
 ### 5. 应用开发
-- [Linux进程与线程编程](intermediate/03-process-thread.md)
+- Linux进程与线程编程
 - 进程和线程管理
 - 进程间通信
 - 并发编程
 
 ### 6. 完整项目
-- [嵌入式Linux完整系统构建](advanced/01-complete-linux-system.md)
+- 嵌入式Linux完整系统构建
 - 从零构建完整系统
 - 集成所有组件
 - 项目实战

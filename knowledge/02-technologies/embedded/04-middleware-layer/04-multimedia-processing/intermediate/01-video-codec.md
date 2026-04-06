@@ -805,11 +805,11 @@ Profile：High 10（10位色深）
 
 2. **多媒体基础**
    - [音频采集与播放基础](../beginner/01-audio-basics.md)
-   - [图像处理基础](../../03-graphics-display/beginner/01-image-processing.md)
+   - 图像处理基础
 
 3. **系统集成**
-   - [嵌入式Linux多媒体开发](../../03-operating-system-layer/linux-multimedia.md)
-   - [RTSP流媒体服务器](../../06-communication-networking/rtsp-server.md)
+   - 嵌入式Linux多媒体开发
+   - RTSP流媒体服务器
 
 ### 技术社区
 

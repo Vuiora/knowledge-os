@@ -1327,7 +1327,7 @@ GPIO是嵌入式系统最基础的外设，掌握GPIO驱动开发是学习其他
 - [DMA驱动开发：高效数据传输](../intermediate/01-dma-driver.md) - 提高GPIO性能
 
 **相关主题**：
-- [中断系统基础概念](../../04-interrupt-handling/beginner/01-interrupt-basics.md) - 深入理解中断
+- 中断系统基础概念 - 深入理解中断
 - [时钟系统架构与配置](../../05-clock-timer-management/beginner/01-clock-system.md) - 理解时钟配置
 
 **官方文档**：
@@ -1453,7 +1453,7 @@ uint8_t led_pattern[] = {
 
 1. [UART串口驱动开发与调试](02-uart-driver.md) - 学习串口通信，为后续调试打基础
 2. [定时器驱动基础与应用](05-timer-driver.md) - 学习定时器，实现精确延时和PWM
-3. [中断系统基础概念](../../04-interrupt-handling/beginner/01-interrupt-basics.md) - 深入理解中断机制
+3. 中断系统基础概念 - 深入理解中断机制
 
 **学习路线图**：
 
