@@ -1,0 +1,368 @@
+# Implementation Plan: Embedded Docs Enrichment
+
+## Overview
+
+Enrich all 18 embedded systems articles to 1500+ lines each. Tasks are ordered by dependency: foundational articles first, project articles last. Each task enriches one article by appending new sections and expanding existing ones using strReplace. Testing sub-tasks verify the correctness properties from the design document.
+
+## Tasks
+
+- [ ] 1. Set up verification tooling
+  - Create `verify_articles.py` script at workspace root that checks all 7 correctness properties
+  - Script checks: line count ≥1500, code blocks ≥5, diagrams ≥3, internal links ≥3, front matter valid
+  - _Requirements: 1.1, 2.3, 3.1, 8.1_
+
+- [x] 2. Enrich FPGA Basics (03-fpga-basics.md)
+  - [x] 2.1 Expand Background: add FPGA internal architecture deep-dive (CLB/LUT/BRAM/DSP internals, routing fabric, clock networks)
+    - Add detailed LUT truth-table explanation with 4-input example
+    - Add FPGA vs ASIC vs MCU decision matrix with cost/performance/flexibility axes
+    - _Requirements: 1.2, 3.1_
+  - [x] 2.2 Expand Core Content: add Vivado project creation walkthrough (step-by-step with screenshots described in text)
+    - Add complete counter project with parameterized width
+    - Add PWM generator project with duty cycle control
+    - Add 7-segment display decoder project
+    - _Requirements: 2.1, 2.6_
+  - [x] 2.3 Add Deep Dive section: timing closure, clock domain crossing, MMCM/PLL usage
+    - Add timing constraint examples for multi-clock designs
+    - Add CDC synchronizer circuit with Verilog implementation
+    - _Requirements: 1.2, 4.2_
+  - [x] 2.4 Add Full Project: UART loopback on FPGA (complete transmitter + receiver + testbench)
+    - _Requirements: 2.6, 4.4_
+  - [x] 2.5 Add Troubleshooting section: 10+ common FPGA development errors with solutions
+    - _Requirements: 4.4_
+  - [ ]* 2.6 Verify article meets all correctness properties (line count, code blocks, diagrams, links)
+    - **Property 1: Length Invariant** — line count ≥ 1500
+    - **Property 2: Code Block Count** — ≥ 5 code blocks
+    - **Validates: Requirements 1.1, 2.3**
+
+- [x] 3. Enrich Verilog Introduction (04-verilog-intro.md)
+  - [x] 3.1 Expand Background: add Verilog vs VHDL vs SystemVerilog comparison table
+    - Add synthesis vs simulation semantics explanation
+    - Add event-driven simulation model explanation
+    - _Requirements: 1.2, 3.1_
+  - [x] 3.2 Expand Core Content: add task/function definitions, generate blocks, `$display`/`$monitor`
+    - Add complete testbench writing guide with self-checking assertions
+    - Add SystemVerilog interface and always_ff/always_comb introduction
+    - _Requirements: 2.1, 2.3_
+  - [x] 3.3 Add Deep Dive: synthesis gotchas (priority vs parallel case, full_case, parallel_case)
+    - Add timing path analysis: combinational depth, register-to-register paths
+    - _Requirements: 1.2, 4.2_
+  - [x] 3.4 Add Full Project: complete SPI master controller (CPOL/CPHA configurable)
+    - Include testbench with self-checking assertions
+    - _Requirements: 2.6, 4.4_
+  - [x] 3.5 Add Troubleshooting: latch inference, multiple drivers, X-propagation debugging
+    - _Requirements: 4.4_
+  - [ ]* 3.6 Verify article correctness properties
+    - **Property 1: Length Invariant**, **Property 2: Code Block Count**
+    - **Validates: Requirements 1.1, 2.3**
+
+- [x] 4. Enrich State Machine Design (05-state-machine.md)
+  - [x] 4.1 Expand Background: add Mealy vs Moore detailed timing diagrams with waveforms
+    - Add formal FSM definition (5-tuple: Q, Σ, δ, q0, F)
+    - _Requirements: 1.2, 3.2_
+  - [x] 4.2 Expand Core Content: add one-hot vs binary vs Gray code encoding comparison with synthesis results
+    - Add safe FSM design (unreachable state handling)
+    - Add FSM with datapath (counter-based FSM)
+    - _Requirements: 2.1, 2.3_
+  - [x] 4.3 Add Deep Dive: formal verification of FSMs with assertions, coverage-driven verification
+    - Add SystemVerilog assertions (SVA) for FSM properties
+    - _Requirements: 1.2, 4.2_
+  - [x] 4.4 Add Full Project: SD card SPI initialization FSM (complete with CRC7 calculation)
+    - _Requirements: 2.6, 4.4_
+  - [x] 4.5 Add Troubleshooting: FSM getting stuck, output glitches, simulation vs synthesis mismatch
+    - _Requirements: 4.4_
+  - [ ]* 4.6 Verify article correctness properties
+    - **Property 1: Length Invariant**, **Property 3: Diagram Count**
+    - **Validates: Requirements 1.1, 3.1**
+
+- [x] 5. Enrich Motor Driver Circuit (06-motor-driver-circuit.md)
+  - [x] 5.1 Expand Background: add power MOSFET physics (body diode, avalanche rating, SOA)
+    - Add H-bridge shoot-through analysis with timing diagrams
+    - Add PWM frequency selection guide (audible noise, switching losses, motor inductance)
+    - _Requirements: 1.2, 3.2_
+  - [x] 5.2 Expand Core Content: add complete gate drive design (bootstrap capacitor sizing, Zener clamp)
+    - Add current sensing: shunt resistor + INA240 differential amplifier
+    - Add regenerative braking circuit analysis
+    - _Requirements: 2.1, 2.3_
+  - [x] 5.3 Add Deep Dive: thermal design (junction temperature, thermal resistance, heatsink sizing)
+    - Add EMI filter design for motor drive (common-mode choke, X/Y capacitors)
+    - _Requirements: 1.2, 4.2_
+  - [x] 5.4 Add Full Project: complete 12V/10A H-bridge with STM32 complementary PWM
+    - Include PCB layout guidelines with layer stack
+    - _Requirements: 2.6, 4.4_
+  - [x] 5.5 Add Troubleshooting: shoot-through, gate oscillation, thermal runaway, EMI failures
+    - _Requirements: 4.4_
+  - [ ]* 5.6 Verify article correctness properties
+    - **Property 1: Length Invariant**, **Property 3: Diagram Count**
+    - **Validates: Requirements 1.1, 3.1**
+
+- [ ] 6. Checkpoint — Verify first 4 articles pass all properties
+  - Run verify_articles.py on articles 2–5, ensure all pass. Ask user if questions arise.
+
+- [x] 7. Enrich Accelerometer & Gyroscope (04-accelerometer-gyroscope.md)
+  - [x] 7.1 Expand Background: add MEMS fabrication overview, noise density, Allan variance
+    - Add IMU error model (bias instability, random walk, scale factor error)
+    - _Requirements: 1.2, 3.1_
+  - [x] 7.2 Expand Core Content: add DMP (Digital Motion Processor) usage on MPU6050
+    - Add ICM-42688-P driver as modern alternative
+    - Add magnetometer integration (HMC5883L/QMC5883L) for 9-DOF
+    - _Requirements: 2.1, 2.3_
+  - [x] 7.3 Add Deep Dive: Mahony filter implementation, quaternion representation
+    - Add sensor fusion with GPS for dead reckoning
+    - _Requirements: 1.2, 4.2_
+  - [x] 7.4 Add Full Project: self-balancing robot angle measurement with PID
+    - _Requirements: 2.6, 4.4_
+  - [x] 7.5 Add Troubleshooting: I2C noise, vibration aliasing, gimbal lock
+    - _Requirements: 4.4_
+  - [ ]* 7.6 Verify article correctness properties
+    - **Property 1: Length Invariant**, **Property 4: Internal Link Count**
+    - **Validates: Requirements 1.1, 8.1**
+
+- [x] 8. Enrich Encoder Interface (04-encoder-interface.md)
+  - [x] 8.1 Expand Background: add absolute vs incremental encoder comparison
+    - Add magnetic vs optical encoder technology comparison
+    - Add encoder signal conditioning (Schmitt trigger, RS422 differential)
+    - _Requirements: 1.2, 3.1_
+  - [x] 8.2 Expand Core Content: add 32-bit timer usage (TIM2/TIM5) for high-resolution counting
+    - Add Z-index homing sequence implementation
+    - Add encoder error detection (signal loss, excessive speed)
+    - _Requirements: 2.1, 2.3_
+  - [x] 8.3 Add Deep Dive: position control loop (position → velocity → current cascade)
+    - Add anti-windup PID for position control
+    - _Requirements: 1.2, 4.2_
+  - [x] 8.4 Add Full Project: closed-loop DC motor position control with encoder feedback
+    - _Requirements: 2.6, 4.4_
+  - [x] 8.5 Add Troubleshooting: count direction errors, noise-induced miscounts, overflow handling
+    - _Requirements: 4.4_
+  - [ ]* 8.6 Verify article correctness properties
+    - **Property 1: Length Invariant**, **Property 2: Code Block Count**
+    - **Validates: Requirements 1.1, 2.3**
+
+- [x] 9. Enrich MQTT Protocol (03-mqtt-protocol.md)
+  - [x] 9.1 Expand Background: add MQTT 5.0 vs 3.1.1 feature comparison
+    - Add broker architecture internals (subscription tree, session store)
+    - Add MQTT vs CoAP vs AMQP vs HTTP/2 comparison for IoT
+    - _Requirements: 1.2, 3.1_
+  - [x] 9.2 Expand Core Content: add MQTT 5.0 features (user properties, reason codes, shared subscriptions)
+    - Add ESP-IDF native MQTT client (not Arduino)
+    - Add AWS IoT Core / Alibaba Cloud IoT integration
+    - _Requirements: 2.1, 2.3_
+  - [x] 9.3 Add Deep Dive: broker clustering (EMQX cluster), message persistence, bridge configuration
+    - Add MQTT over WebSocket for browser clients
+    - _Requirements: 1.2, 4.2_
+  - [x] 9.4 Add Full Project: complete IoT sensor network (5 nodes → broker → InfluxDB → Grafana)
+    - _Requirements: 2.6, 4.4_
+  - [x] 9.5 Add Troubleshooting: connection drops, message ordering, duplicate delivery, broker overload
+    - _Requirements: 4.4_
+  - [ ]* 9.6 Verify article correctness properties
+    - **Property 1: Length Invariant**, **Property 5: Section Completeness**
+    - **Validates: Requirements 1.1, 4.2**
+
+- [x] 10. Enrich Data Visualization (03-data-visualization.md)
+  - [x] 10.1 Expand Background: add time-series data concepts (cardinality, retention policies, downsampling)
+    - Add Grafana architecture (frontend, backend, plugin system)
+    - _Requirements: 1.2, 3.1_
+  - [x] 10.2 Expand Core Content: add Prometheus data source and PromQL basics
+    - Add Grafana alerting v2 (unified alerting, notification policies)
+    - Add dashboard provisioning via JSON/YAML (GitOps for dashboards)
+    - _Requirements: 2.1, 2.3_
+  - [x] 10.3 Add Deep Dive: InfluxDB 2.x tasks (scheduled Flux scripts for downsampling)
+    - Add Grafana plugin development basics
+    - _Requirements: 1.2, 4.2_
+  - [x] 10.4 Add Full Project: complete monitoring stack with docker-compose (Mosquitto + Telegraf + InfluxDB + Grafana + alerting)
+    - _Requirements: 2.6, 4.4_
+  - [x] 10.5 Add Troubleshooting: data source connection errors, high cardinality, slow queries, alert flapping
+    - _Requirements: 4.4_
+  - [ ]* 10.6 Verify article correctness properties
+    - **Property 1: Length Invariant**, **Property 2: Code Block Count**
+    - **Validates: Requirements 1.1, 2.3**
+
+- [ ] 11. Checkpoint — Verify articles 7–10 pass all properties
+  - Run verify_articles.py on articles 7–10, ensure all pass. Ask user if questions arise.
+
+- [x] 12. Enrich Smart Car Control (01-smart-car-control.md)
+  - [x] 12.1 Expand/create Background: differential drive kinematics, turning radius calculation
+    - Add line-following sensor array (IR reflectance sensors, ADC sampling)
+    - _Requirements: 1.2, 3.1_
+  - [x] 12.2 Expand Core Content: add PID line-following algorithm with cross-track error
+    - Add obstacle avoidance with ultrasonic sensor (HC-SR04)
+    - Add Bluetooth remote control (HC-05 AT commands)
+    - _Requirements: 2.1, 2.3_
+  - [x] 12.3 Add Deep Dive: odometry-based dead reckoning, coordinate frame transforms
+    - _Requirements: 1.2, 4.2_
+  - [x] 12.4 Add Full Project: complete smart car with line-following + obstacle avoidance + remote control
+    - _Requirements: 2.6, 4.4_
+  - [x] 12.5 Add Troubleshooting: motor speed mismatch, sensor noise, PID oscillation
+    - _Requirements: 4.4_
+  - [ ]* 12.6 Verify article correctness properties
+    - **Property 1: Length Invariant**, **Property 3: Diagram Count**
+    - **Validates: Requirements 1.1, 3.1**
+
+- [x] 13. Enrich Motion Control Algorithms (02-motion-control-algorithms.md)
+  - [x] 13.1 Expand Background: stepper motor physics (holding torque, detent torque, resonance)
+    - Add microstepping theory and current waveform shaping
+    - _Requirements: 1.2, 3.1_
+  - [x] 13.2 Expand Core Content: add S-curve derivation (jerk-limited profile)
+    - Add real-time trajectory generation with position/velocity/acceleration output
+    - Add DRV8825 microstepping driver configuration
+    - _Requirements: 2.1, 2.3_
+  - [x] 13.3 Add Deep Dive: step loss detection, stall detection (back-EMF sensing)
+    - Add closed-loop stepper with encoder feedback
+    - _Requirements: 1.2, 4.2_
+  - [x] 13.4 Add Full Project: CNC single-axis controller with limit switches and homing
+    - _Requirements: 2.6, 4.4_
+  - [x] 13.5 Add Troubleshooting: resonance/vibration, missed steps, acceleration too aggressive
+    - _Requirements: 4.4_
+  - [ ]* 13.6 Verify article correctness properties
+    - **Property 1: Length Invariant**, **Property 2: Code Block Count**
+    - **Validates: Requirements 1.1, 2.3**
+
+- [x] 14. Enrich Multi-Axis Sync (03-multi-axis-sync.md)
+  - [x] 14.1 Expand Background: CNC coordinate systems (machine, work, tool), G-code overview
+    - Add Bresenham line algorithm derivation
+    - _Requirements: 1.2, 3.1_
+  - [x] 14.2 Expand Core Content: add 3D linear interpolation with velocity blending
+    - Add arc interpolation with chord error control
+    - Add look-ahead buffer for continuous path execution
+    - _Requirements: 2.1, 2.3_
+  - [x] 14.3 Add Deep Dive: GRBL architecture analysis, real-time motion planning
+    - Add electronic gearing for synchronized axes
+    - _Requirements: 1.2, 4.2_
+  - [x] 14.4 Add Full Project: 2-axis XY plotter with G-code interpreter
+    - _Requirements: 2.6, 4.4_
+  - [x] 14.5 Add Troubleshooting: arc chord error, velocity discontinuities, axis desync
+    - _Requirements: 4.4_
+  - [ ]* 14.6 Verify article correctness properties
+    - **Property 1: Length Invariant**, **Property 3: Diagram Count**
+    - **Validates: Requirements 1.1, 3.1**
+
+- [x] 15. Enrich Smart Gimbal Project (04-smart-gimbal-project.md)
+  - [x] 15.1 Expand Background: gimbal mechanics (brushless vs servo), stabilization theory
+    - Add SimpleBGC/Storm32 open-source gimbal controller overview
+    - _Requirements: 1.2, 3.1_
+  - [x] 15.2 Expand Core Content: add cascade PID (angle → rate → current)
+    - Add feed-forward compensation for gravity torque
+    - Add follow mode vs lock mode switching
+    - _Requirements: 2.1, 2.3_
+  - [x] 15.3 Add Deep Dive: brushless motor FOC basics for gimbal application
+    - Add vibration isolation mount design
+    - _Requirements: 1.2, 4.2_
+  - [x] 15.4 Add Full Project: complete 2-axis gimbal with auto-leveling and joystick control
+    - _Requirements: 2.6, 4.4_
+  - [x] 15.5 Add Troubleshooting: oscillation, drift, gimbal lock, motor cogging
+    - _Requirements: 4.4_
+  - [ ]* 15.6 Verify article correctness properties
+    - **Property 1: Length Invariant**, **Property 4: Internal Link Count**
+    - **Validates: Requirements 1.1, 8.1**
+
+- [ ] 16. Checkpoint — Verify articles 12–15 pass all properties
+  - Run verify_articles.py on articles 12–15, ensure all pass. Ask user if questions arise.
+
+- [x] 17. Enrich Robot Arm Project (05-robot-arm-project.md)
+  - [x] 17.1 Expand Background: DH parameters, homogeneous transformation matrices
+    - Add workspace analysis (reachable vs dexterous workspace)
+    - _Requirements: 1.2, 3.1_
+  - [x] 17.2 Expand Core Content: add geometric IK solution for 4-DOF arm
+    - Add trajectory planning in joint space vs Cartesian space
+    - Add servo torque calculation and selection guide
+    - _Requirements: 2.1, 2.3_
+  - [x] 17.3 Add Deep Dive: singularity analysis, joint limit handling, collision detection
+    - _Requirements: 1.2, 4.2_
+  - [x] 17.4 Add Full Project: pick-and-place task with vision-guided positioning
+    - _Requirements: 2.6, 4.4_
+  - [x] 17.5 Add Troubleshooting: servo jitter, IK no-solution handling, mechanical backlash
+    - _Requirements: 4.4_
+  - [ ]* 17.6 Verify article correctness properties
+    - **Property 1: Length Invariant**, **Property 2: Code Block Count**
+    - **Validates: Requirements 1.1, 2.3**
+
+- [x] 18. Enrich Hexapod Robot (06-hexapod-robot.md)
+  - [x] 18.1 Expand Background: hexapod stability analysis (static vs dynamic stability margin)
+    - Add PCA9685 PWM controller deep-dive (12-bit resolution, I2C chaining)
+    - _Requirements: 1.2, 3.1_
+  - [x] 18.2 Expand Core Content: add body pose control (roll/pitch/yaw/height)
+    - Add terrain adaptation algorithm
+    - Add gait transition logic (tripod → wave → ripple)
+    - _Requirements: 2.1, 2.3_
+  - [x] 18.3 Add Deep Dive: center of mass calculation, stability polygon
+    - Add IMU-based terrain following
+    - _Requirements: 1.2, 4.2_
+  - [x] 18.4 Add Full Project: complete hexapod with PS2 controller and terrain adaptation
+    - _Requirements: 2.6, 4.4_
+  - [x] 18.5 Add Troubleshooting: servo overload, gait instability, I2C bus contention
+    - _Requirements: 4.4_
+  - [ ]* 18.6 Verify article correctness properties
+    - **Property 1: Length Invariant**, **Property 3: Diagram Count**
+    - **Validates: Requirements 1.1, 3.1**
+
+- [x] 19. Enrich Smart Socket Project (07-smart-socket-project.md)
+  - [x] 19.1 Expand Background: AC power measurement theory (true RMS, power factor, reactive power)
+    - Add electrical safety standards (IEC 60884, UL 498) overview
+    - _Requirements: 1.2, 3.1_
+  - [x] 19.2 Expand Core Content: add energy metering with HLW8012/BL0937 chip
+    - Add OTA firmware update via MQTT
+    - Add local web server for configuration (captive portal)
+    - _Requirements: 2.1, 2.3_
+  - [x] 19.3 Add Deep Dive: zero-crossing detection for phase-angle dimming
+    - Add power quality monitoring (THD, harmonics)
+    - _Requirements: 1.2, 4.2_
+  - [x] 19.4 Add Full Project: complete smart socket with energy monitoring, scheduling, and OTA
+    - _Requirements: 2.6, 4.4_
+  - [x] 19.5 Add Troubleshooting: WiFi reconnection, relay chatter, ACS712 noise, OTA failures
+    - _Requirements: 4.4_
+  - [ ]* 19.6 Verify article correctness properties
+    - **Property 1: Length Invariant**, **Property 2: Code Block Count**
+    - **Validates: Requirements 1.1, 2.3**
+
+- [x] 20. Enrich Automation System (08-automation-system.md)
+  - [x] 20.1 Expand Background: industrial automation hierarchy (field → control → supervisory)
+    - Add Modbus RTU frame structure byte-by-byte diagram
+    - Add RS485 electrical characteristics (differential signaling, termination)
+    - _Requirements: 1.2, 3.2_
+  - [x] 20.2 Expand Core Content: add Modbus TCP gateway implementation
+    - Add PLC ladder logic equivalent in C
+    - Add SCADA integration example (Node-RED dashboard)
+    - _Requirements: 2.1, 2.3_
+  - [x] 20.3 Add Deep Dive: IEC 61131-3 programming models, safety relay concepts
+    - Add watchdog timer for fail-safe operation
+    - _Requirements: 1.2, 4.2_
+  - [x] 20.4 Add Full Project: complete 16-relay automation panel with HMI touchscreen
+    - _Requirements: 2.6, 4.4_
+  - [x] 20.5 Add Troubleshooting: Modbus CRC errors, RS485 bus contention, relay contact wear
+    - _Requirements: 4.4_
+  - [ ]* 20.6 Verify article correctness properties
+    - **Property 1: Length Invariant**, **Property 3: Diagram Count**
+    - **Validates: Requirements 1.1, 3.1**
+
+- [x] 21. Enrich Environment Control (09-environment-control.md)
+  - [x] 21.1 Expand Background: HVAC control theory (PID vs on-off, deadband, hysteresis)
+    - Add sensor placement guidelines (ASHRAE standards)
+    - _Requirements: 1.2, 3.1_
+  - [x] 21.2 Expand Core Content: add SHT31 high-accuracy sensor driver
+    - Add CO₂ auto-calibration (ABC algorithm)
+    - Add time-based rules (day/night schedules)
+    - _Requirements: 2.1, 2.3_
+  - [x] 21.3 Add Deep Dive: PID temperature control with anti-windup and derivative filter
+    - Add energy efficiency optimization (minimize relay switching)
+    - _Requirements: 1.2, 4.2_
+  - [x] 21.4 Add Full Project: greenhouse controller with cloud dashboard and mobile alerts
+    - _Requirements: 2.6, 4.4_
+  - [x] 21.5 Add Troubleshooting: sensor drift, rule conflicts, MQTT disconnection during control
+    - _Requirements: 4.4_
+  - [ ]* 21.6 Verify article correctness properties
+    - **Property 1: Length Invariant**, **Property 4: Internal Link Count**
+    - **Validates: Requirements 1.1, 8.1**
+
+- [ ] 22. Final checkpoint — Run full verification across all 18 articles
+  - Run verify_articles.py on all 18 articles
+  - Confirm all pass: line count ≥1500, code blocks ≥5, diagrams ≥3, internal links ≥3
+  - Ensure all internal links resolve to existing files
+  - Ask user if questions arise.
+
+## Notes
+
+- Tasks marked with `*` are optional test/verification sub-tasks
+- Each task enriches exactly one article — do not mix content between articles
+- Preserve all existing correct content; only add or improve, never remove
+- Code examples must specify exact chip/library versions in comments
+- All Chinese prose must use professional technical language with English terms in parentheses on first use
+- Property tests validate universal correctness properties across all articles
