@@ -12,8 +12,9 @@ description: 本部分包含 进阶 级别的学习内容。
 
 ## 文档列表
 
-- [nb iot](01-nb-iot.md)
-- [5g embedded](02-5g-embedded.md)
+- [NB-IoT窄带物联网技术详解](01-nb-iot.md)
+- [5G嵌入式应用](02-5g-embedded.md)
+- [MQTT协议详解：物联网消息传输实践](03-mqtt-protocol.md)
 
 ---
 

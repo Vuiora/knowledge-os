@@ -2059,10 +2059,10 @@ void bootloader_verify_and_boot(void) {
 
 ### 相关文章
 
-- [持续集成环境搭建](ci-setup-tutorial.md)
-- [自动化测试集成](automated-testing-integration.md)
-- [DevOps最佳实践](devops-best-practices.md)
-- [CI/CD实践指南](cicd-practice-for-embedded-systems.md)
+- 持续集成环境搭建
+- 自动化测试集成
+- DevOps最佳实践
+- CI/CD实践指南
 
 ### 标准和规范
 

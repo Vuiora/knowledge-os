@@ -1919,18 +1919,18 @@ chmod +x verify-sources.sh
 
 ### 相关主题
 - [交叉编译工具链配置](../intermediate/02-cross-compilation.md) - 使用现成的工具链
-- [编译器优化选项](../intermediate/compiler-optimization.md) - 优化编译输出
+- 编译器优化选项 - 优化编译输出
 - [Docker化开发环境](../advanced/02-dockerized-dev-env.md) - 容器化工具链
 
 ### 深入学习
-- [GCC内部机制](../advanced/gcc-internals.md) - 理解编译器工作原理
-- [链接器脚本详解](../advanced/linker-scripts.md) - 掌握链接过程
-- [LLVM工具链](../advanced/llvm-toolchain.md) - 学习替代方案
+- GCC内部机制 - 理解编译器工作原理
+- 链接器脚本详解 - 掌握链接过程
+- LLVM工具链 - 学习替代方案
 
 ### 实践项目
-- [构建多平台工具链](../projects/multi-platform-toolchain.md)
-- [工具链性能对比](../projects/toolchain-benchmark.md)
-- [自动化工具链测试](../projects/toolchain-testing.md)
+- 构建多平台工具链
+- 工具链性能对比
+- 自动化工具链测试
 
 
 ## 实践项目建议

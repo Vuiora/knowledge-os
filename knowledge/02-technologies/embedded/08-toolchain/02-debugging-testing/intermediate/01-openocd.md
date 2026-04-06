@@ -2301,8 +2301,8 @@ add_custom_target(flash
 - [硬件在环(HIL)测试系统](../advanced/02-hil-testing-system.md) - 系统级测试
 
 ### 高级进阶
-- [自定义OpenOCD驱动开发](../advanced/custom-openocd-driver.md) - 扩展OpenOCD
-- [JTAG边界扫描测试](../advanced/jtag-boundary-scan.md) - 硬件测试
+- 自定义OpenOCD驱动开发 - 扩展OpenOCD
+- JTAG边界扫描测试 - 硬件测试
 
 ## 实践项目建议
 

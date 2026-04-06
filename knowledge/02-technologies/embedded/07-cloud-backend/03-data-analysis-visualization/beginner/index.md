@@ -12,8 +12,9 @@ description: 本部分包含 入门 级别的学习内容。
 
 ## 文档列表
 
-- [time series db](01-time-series-db.md)
-- [data analysis tools](02-data-analysis-tools.md)
+- [时序数据库入门：InfluxDB与TimescaleDB实践应用](01-time-series-db.md)
+- [数据分析工具](02-data-analysis-tools.md)
+- [数据可视化入门：Grafana看板搭建实践](03-data-visualization.md)
 
 ---
 

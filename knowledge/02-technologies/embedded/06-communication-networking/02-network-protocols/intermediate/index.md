@@ -15,6 +15,8 @@ description: 本部分包含 进阶 级别的学习内容。
 - [websocket](01-websocket.md)
 - [modbus protocol](02-modbus-protocol.md)
 - [can protocol](03-can-protocol.md)
+- [lwIP协议栈移植与应用开发](04-lwip-stack.md) - 深入学习lwIP轻量级TCP/IP协议栈的架构原理、移植方法、配置优化和实战应用
+- [Modbus TCP协议实现与应用开发](05-modbus-tcp.md) - 深入学习Modbus TCP工业以太网协议的原理、实现方法和实战应用
 
 ---
 
@@ -44,4 +46,4 @@ description: 本部分包含 进阶 级别的学习内容。
 
 ---
 
-*最后更新：2026-03-16*
+*最后更新：2026-04-05*

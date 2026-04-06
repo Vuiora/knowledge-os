@@ -1908,7 +1908,7 @@ stream-processing-tutorial/
 
 - [大数据处理技术](../intermediate/02-big-data-processing.md) - 深入理解批处理
 - [时序数据库应用](../beginner/01-time-series-db.md) - 学习时序数据存储
-- [数据可视化框架](./01-visualization-frameworks.md) - 学习Grafana可视化
+- 数据可视化框架 - 学习Grafana可视化
 - [Kafka深入](link) - 深入学习Kafka架构和优化
 - [Flink高级特性](link) - 学习Flink CEP、SQL等
 

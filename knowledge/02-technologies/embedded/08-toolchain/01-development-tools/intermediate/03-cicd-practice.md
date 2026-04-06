@@ -2180,19 +2180,19 @@ build:
 建议继续学习以下内容:
 
 ### 初级进阶
-- [自动化测试集成](../intermediate/04-automated-testing.md) - 深入测试自动化
-- [代码静态分析工具](../intermediate/05-static-analysis.md) - 提升代码质量
-- [Docker容器化开发](../../07-cloud-backend/02-cloud-services/beginner/02-docker-basics.md) - 容器化实践
+- 自动化测试集成 - 深入测试自动化
+- 代码静态分析工具 - 提升代码质量
+- Docker容器化开发 - 容器化实践
 
 ### 中级进阶
-- [Kubernetes部署](../../07-cloud-backend/02-cloud-services/intermediate/01-kubernetes.md) - 容器编排
-- [监控和日志](../advanced/01-monitoring-logging.md) - 运维监控
-- [DevOps文化](../advanced/02-devops-culture.md) - 团队协作
+- Kubernetes部署 - 容器编排
+- 监控和日志 - 运维监控
+- DevOps文化 - 团队协作
 
 ### 高级进阶
-- [GitOps实践](../advanced/03-gitops.md) - 声明式部署
-- [微服务CI/CD](../advanced/04-microservices-cicd.md) - 微服务架构
-- [安全DevSecOps](../advanced/05-devsecops.md) - 安全集成
+- GitOps实践 - 声明式部署
+- 微服务CI/CD - 微服务架构
+- 安全DevSecOps - 安全集成
 
 
 ## 常见问题FAQ

@@ -1469,14 +1469,14 @@ git ci    # git commit
 - [Makefile编写入门](../beginner/05-makefile-basics.md) - 自动化构建
 
 ### 中级进阶
-- [Git进阶技巧](../intermediate/01-git-advanced.md) - 深入学习Git
-- [GitHub Actions](../intermediate/02-github-actions.md) - 自动化工作流
-- [代码审查最佳实践](../intermediate/03-code-review.md) - 提升代码质量
+- Git进阶技巧 - 深入学习Git
+- GitHub Actions - 自动化工作流
+- 代码审查最佳实践 - 提升代码质量
 
 ### 高级进阶
-- [Git内部原理](../advanced/01-git-internals.md) - 深入理解Git
-- [大型项目Git管理](../advanced/02-git-large-projects.md) - 企业级应用
-- [自定义Git工作流](../advanced/03-custom-git-workflow.md) - 定制化方案
+- Git内部原理 - 深入理解Git
+- 大型项目Git管理 - 企业级应用
+- 自定义Git工作流 - 定制化方案
 
 
 ## 常见问题FAQ

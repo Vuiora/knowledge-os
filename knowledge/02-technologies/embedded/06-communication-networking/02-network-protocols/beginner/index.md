@@ -13,6 +13,8 @@ description: 本部分包含 入门 级别的学习内容。
 ## 文档列表
 
 - [tcpip stack](01-tcpip-stack.md)
+- [at commands](02-at-commands.md) - AT命令集应用完全指南，包括命令语法、响应解析、UART通信、GSM/WiFi/蓝牙模块控制
+- [rtc application](03-rtc-application.md) - RTC实时时钟应用完全指南，包括DS1307/DS3231/PCF8563芯片、I2C通信、时间管理、闹钟功能、电池备份
 - [mqtt protocol](02-mqtt-protocol.md)
 - [coap protocol](03-coap-protocol.md)
 - [http https](04-http-https.md)

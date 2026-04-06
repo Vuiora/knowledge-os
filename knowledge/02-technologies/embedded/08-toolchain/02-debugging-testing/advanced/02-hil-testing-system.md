@@ -2981,7 +2981,7 @@ if __name__ == '__main__':
 
 1. **测试理论**
    - [单元测试框架搭建](./01-unit-testing-framework.md)
-   - [自动化测试集成](../../01-development-tools/intermediate/02-automated-testing.md)
+   - 自动化测试集成
    - [持续集成CI/CD实践](../../01-development-tools/intermediate/03-cicd-practice.md)
 
 2. **硬件接口**

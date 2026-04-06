@@ -1745,8 +1745,8 @@ arm-none-eabi-readelf -r firmware.elf
 - [Docker化开发环境](../advanced/02-dockerized-dev-env.md) - 容器化开发
 
 ### 高级进阶
-- [编译器优化原理](../../03-performance-optimization/advanced/01-compiler-optimization.md) - 深入理解优化
-- [链接器脚本详解](../../03-performance-optimization/advanced/02-linker-script.md) - 掌握内存布局
+- 编译器优化原理 - 深入理解优化
+- 链接器脚本详解 - 掌握内存布局
 
 ## 参考资料
 

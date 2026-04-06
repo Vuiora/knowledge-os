@@ -680,9 +680,9 @@ GROUP BY
 
 - [腾讯云IoT Hub官方文档](https://cloud.tencent.com/document/product/634) - 完整的产品文档
 - [腾讯云IoT Explorer](https://cloud.tencent.com/document/product/1081) - 低代码开发平台
-- [AWS IoT Core平台接入实战](01-aws-iot.md) - 学习AWS IoT平台
-- [阿里云IoT平台设备接入实战](03-aliyun-iot.md) - 学习阿里云IoT平台
-- [MQTT协议应用开发](../02-network-protocols/beginner/02-mqtt-protocol.md) - 深入学习MQTT协议
+- AWS IoT Core平台接入实战 - 学习AWS IoT平台
+- 阿里云IoT平台设备接入实战 - 学习阿里云IoT平台
+- MQTT协议应用开发 - 深入学习MQTT协议
 
 ## 参考资料
 
